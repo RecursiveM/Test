@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MAQSAF</string>
+    <string name="home_welcome">مرحبا بك..</string>
+    <string name="continue_as_customer">الإستمرار كمستخدم</string>
+    <string name="continue_as_seller">الإستمرار كموفر خدمة</string>
+    <string name="ncgr_logo">NCGR Logo</string>
 </resources>
