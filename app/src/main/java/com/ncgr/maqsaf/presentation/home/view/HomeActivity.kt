@@ -1,19 +1,16 @@
 package com.ncgr.maqsaf.presentation.home.view
 
-import android.app.Activity
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import androidx.activity.viewModels
-import com.ncgr.maqsaf.R
 import com.ncgr.maqsaf.databinding.ActivityHomeBinding
-import com.ncgr.maqsaf.presentation.home.viewModel.HomeViewModel
+import com.ncgr.maqsaf.presentation.customer.view.CustomerActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
 
     private var binding: ActivityHomeBinding? = null
-    private val viewModel: HomeViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,7 +19,16 @@ class HomeActivity : AppCompatActivity() {
 
         binding?.apply {
             lifecycleOwner = this@HomeActivity
-            viewModel = this@HomeActivity.viewModel
+            homeActivity = this@HomeActivity
         }
+    }
+
+    fun navigateToCustomerActivity(){
+        startActivity(Intent(this, CustomerActivity::class.java))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        binding = null
     }
 }

@@ -1,4 +1,4 @@
-package com.ncgr.maqsaf.data.remote.dto
+package com.ncgr.maqsaf.data.remote.model
 
 import com.google.gson.annotations.SerializedName
 import com.ncgr.maqsaf.domain.menu.model.Item

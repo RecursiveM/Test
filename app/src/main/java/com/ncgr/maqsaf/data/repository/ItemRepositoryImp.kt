@@ -12,25 +12,30 @@ import retrofit2.HttpException
 import java.io.IOException
 
 class ItemRepositoryImp(
-    private val itemApi : ItemApi
+    private val itemApi: ItemApi
 ) : ItemRepository {
     override fun getItems(): Flow<Resource<List<Item>>> = flow {
         emit(Resource.Loading())
         try {
             val response = itemApi.getItems()
+            Log.d("TEST", response.toString())
             if (response.isSuccessful) {
                 val items = response.body()?.map { it.toItem() }
-                    emit(Resource.Success(items!!))
+                emit(Resource.Success(items!!))
             }
-        }
-        catch (e: HttpException){
+        } catch (e: HttpException) {
             emit(Resource.Error(ApiError(e.code(), e.message())))
-        }
-        catch (e: IOException){
-            emit(Resource.Error(ApiError(e.hashCode(), "Please check your internet connection and try again")))
-        }
-        catch (e: Exception) {
-            emit(Resource.Error(ApiError(0,"${e.message}")))
+        } catch (e: IOException) {
+            emit(
+                Resource.Error(
+                    ApiError(
+                        e.hashCode(),
+                        "Please check your internet connection and try again"
+                    )
+                )
+            )
+        } catch (e: Exception) {
+            emit(Resource.Error(ApiError(0, "Something went wrong")))
         }
     }
 }
