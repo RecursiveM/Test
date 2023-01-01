@@ -47,6 +47,7 @@
             android:layout_marginHorizontal="50dp"
             android:text="@string/continue_as_seller"
             android:textSize="30sp"
+            android:onClick="@{() -> homeActivity.showPromptDialog()}"
             android:background="@drawable/home_button"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/customer_button" />
