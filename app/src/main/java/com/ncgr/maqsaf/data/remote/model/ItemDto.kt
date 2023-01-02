@@ -6,7 +6,7 @@ import com.ncgr.maqsaf.domain.menu.model.Item
 data class ItemDto(
 
 	@field:SerializedName("item_image")
-	val itemImage: String,
+	val imageUrl: String,
 
 	@field:SerializedName("id")
 	val id: String,
@@ -18,8 +18,9 @@ data class ItemDto(
 {
 	fun toItem(): Item{
 		return Item(
+			id = id,
             type = type,
-			itemImage = itemImage
+			imageUrl = imageUrl
 		)
 	}
 }

@@ -9,4 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="screen_background_color">#FFEDF5E9</color>
     <color name="toolbar_color">#FFDCE0DA</color>
+    <color name="red">#FFE06666</color>
+    <color name="green">#FF93C47D</color>
+    <color name="blue">#FF6FA8DC</color>
+    <color name="yellow">#FFFFD966</color>
 </resources>

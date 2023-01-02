@@ -1,6 +1,7 @@
 package com.ncgr.maqsaf.domain.menu.model
 
 data class Item(
-    val itemImage: String,
+    val id : String,
+    val imageUrl: String,
     val type: String
 )
