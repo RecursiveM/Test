@@ -1,12 +1,12 @@
 package com.ncgr.maqsaf.presentation.home.view
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.InputType
+import android.widget.Button
 import android.widget.EditText
+import com.ncgr.maqsaf.R
 import com.ncgr.maqsaf.databinding.ActivityHomeBinding
 import com.ncgr.maqsaf.presentation.customer.view.CustomerActivity
 import com.ncgr.maqsaf.presentation.seller.view.SellerActivity
@@ -32,33 +32,30 @@ class HomeActivity : AppCompatActivity() {
         startActivity(Intent(this, CustomerActivity::class.java))
     }
 
-    fun showPromptDialog(){
-        val builder: AlertDialog.Builder = AlertDialog.Builder(this)
-        builder.setTitle("Title")
+    fun showAlertDialog(){
+        val alertDialog = AlertDialog.Builder(this).create()
+        val alertView = layoutInflater.inflate(R.layout.alert_dialog,null)
+        val cancelButton : Button = alertView.findViewById(R.id.dialog_dismiss_button)
+        val confirmButton : Button = alertView.findViewById(R.id.dialog_confirm_button)
+        val passwordText : EditText = alertView.findViewById(R.id.password_text)
 
-        // Set up the input
-        val input = EditText(this)
-        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-        input.hint = "Enter Password"
-        input.inputType = InputType.TYPE_CLASS_NUMBER
-        builder.setView(input)
-
-        // Set up the buttons
-        builder.setPositiveButton("OK") { dialog, which ->
-            // Here you get get input text from the Edittext
-            var m_Text = input.text.toString()
-            if (m_Text == "123456"){
+        alertDialog.setView(alertView)
+        cancelButton.setOnClickListener {
+            alertDialog.dismiss()
+        }
+        confirmButton.setOnClickListener {
+            if (passwordText.text.toString() == "123456"){
+                alertDialog.dismiss()
                 startActivity(Intent(this, SellerActivity::class.java))
-            }else{
-                val errorDialog: AlertDialog.Builder = AlertDialog.Builder(this)
-                errorDialog.setTitle("Wrong Password").show()
+            }
+            else {
+                alertDialog.dismiss()
+               AlertDialog.Builder(this).setTitle("Wrong Password").show()
             }
         }
-        builder.setNegativeButton("Cancel") { dialog, which ->
-            dialog.cancel()
-        }
+        alertDialog.setCanceledOnTouchOutside(false)
+        alertDialog.show()
 
-        builder.show()
     }
 
 

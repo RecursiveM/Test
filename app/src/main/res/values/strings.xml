@@ -16,4 +16,8 @@
     <string name="choose_zone_color">إختر لون مكانك</string>
     <string name="choose_item">إختر طلبك</string>
     <string name="order_now">اطلب الآن</string>
+    <string name="cancel">Cancel</string>
+    <string name="your_password">Your Password</string>
+    <string name="password">Password</string>
+    <string name="confirm">Confirm</string>
 </resources>
