@@ -2,11 +2,7 @@ package com.ncgr.maqsaf.presentation.customer.view
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
 import androidx.activity.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.recyclerview.widget.RecyclerView
-import com.ncgr.maqsaf.R
 import com.ncgr.maqsaf.databinding.ActivityCustomerBinding
 import com.ncgr.maqsaf.presentation.customer.adapter.ItemListAdapter
 import com.ncgr.maqsaf.presentation.customer.viewModel.CustomerViewModel
