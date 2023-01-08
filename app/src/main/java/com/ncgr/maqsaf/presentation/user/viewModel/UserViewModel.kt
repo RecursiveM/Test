@@ -21,7 +21,7 @@ class UserViewModel @Inject constructor(
     private val getItemsUseCase: GetItemsUseCase
 ) : ViewModel() {
 
-    private val _itemList = MutableSharedFlow<List<Item>>()
+    private val _itemList = MutableSharedFlow<Resource<List<Item>>>()
     val itemList = _itemList.asSharedFlow()
 
     private val _selectedZoneColor = MutableSharedFlow<String>()
@@ -31,22 +31,20 @@ class UserViewModel @Inject constructor(
     val selectedItem = _selectedItem.asSharedFlow()
 
     init {
-        getItems()
+        getItemList()
     }
 
-    private fun getItems() {
+    private fun getItemList() {
         getItemsUseCase().onEach { resource ->
-
             when (resource) {
                 is Resource.Loading -> {
-                    Log.d("TEST", resource.toString())
+                    _itemList.emit(resource)
                 }
                 is Resource.Success -> {
-                    Log.d("TEST", resource.data.size.toString())
-                    _itemList.emit(resource.data)
+                    _itemList.emit(resource)
                 }
                 is Resource.Error -> {
-                    Log.d("TEST", resource.apiError.toString())
+                    _itemList.emit(resource)
                 }
             }
         }.launchIn(viewModelScope)

@@ -1,9 +1,8 @@
 package com.ncgr.maqsaf.presentation.user.composable
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -12,15 +11,16 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ncgr.maqsaf.domain.menu.model.Item
+import com.ncgr.maqsaf.presentation.common.utils.Resource
 import com.ncgr.maqsaf.presentation.user.viewModel.UserViewModel
 import com.ncgr.maqsaf.ui.theme.*
 
 @Composable
 fun UserScreenBody(
     modifier: Modifier = Modifier,
-    zoneColor: String,
-    itemList: List<Item>,
-    selectedItem : String,
+    selectedZoneColor: String,
+    itemList: Resource<List<Item>>,
+    selectedItem: String,
     viewModel: UserViewModel,
 ) {
     Box(
@@ -53,10 +53,30 @@ fun UserScreenBody(
                     .padding(horizontal = 10.dp)
 
             ) {
-                ZoneColorButton(color = Blue, strokeTriggerColor = "Blue", zoneColorState = zoneColor, viewModel = viewModel)
-                ZoneColorButton(color = Green, strokeTriggerColor = "Green", zoneColorState = zoneColor, viewModel = viewModel)
-                ZoneColorButton(color = Yellow, strokeTriggerColor = "Yellow", zoneColorState = zoneColor, viewModel = viewModel)
-                ZoneColorButton(color = Red, strokeTriggerColor = "Red", zoneColorState = zoneColor, viewModel = viewModel)
+                ZoneColorButton(
+                    color = Blue,
+                    strokeTriggerColor = "Blue",
+                    selectedZoneColor = selectedZoneColor,
+                    viewModel = viewModel
+                )
+                ZoneColorButton(
+                    color = Green,
+                    strokeTriggerColor = "Green",
+                    selectedZoneColor = selectedZoneColor,
+                    viewModel = viewModel
+                )
+                ZoneColorButton(
+                    color = Yellow,
+                    strokeTriggerColor = "Yellow",
+                    selectedZoneColor = selectedZoneColor,
+                    viewModel = viewModel
+                )
+                ZoneColorButton(
+                    color = Red,
+                    strokeTriggerColor = "Red",
+                    selectedZoneColor = selectedZoneColor,
+                    viewModel = viewModel
+                )
             }
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -70,15 +90,12 @@ fun UserScreenBody(
 
             Spacer(modifier = Modifier.height(20.dp))
 
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                modifier = Modifier
-                    .weight(1f)
-            ) {
-                items(itemList.size) { index ->
-                    MenuItem(selectedItem = selectedItem, itemList = itemList, index = index, viewModel = viewModel)
-                }
-            }
+            MenuLazyGrid(
+                modifier = Modifier.weight(1f),
+                selectedItem = selectedItem,
+                viewModel = viewModel,
+                itemList = itemList,
+            )
         }
     }
 }
