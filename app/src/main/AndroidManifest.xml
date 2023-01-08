@@ -16,7 +16,7 @@
         android:theme="@style/Theme.MAQSAF"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.seller.view.SellerActivity"
+            android:name=".presentation.serviceProvider.view.ServiceProviderActivity"
             android:exported="false"
             android:label="@string/title_activity_seller"
             android:theme="@style/Theme.MAQSAF.NoActionBar">
@@ -25,7 +25,7 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".presentation.customer.view.CustomerActivity"
+            android:name=".presentation.user.view.UserActivity"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
