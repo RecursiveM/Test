@@ -79,7 +79,7 @@ class CustomerViewModel @Inject constructor(
 
     fun changeItem(item: String) {
         viewModelScope.launch {
-            _selectedItem.emit("")
+            _selectedItem.emit(item)
         }
     }
 }

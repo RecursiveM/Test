@@ -51,7 +51,7 @@ class CustomerActivity : AppCompatActivity() {
     ) {
         val itemList by viewModel.itemList.collectAsState()
         val zoneColor by viewModel.zoneColor.collectAsState()
-        val selectedItem by viewModel.zoneColor.collectAsState()
+        val selectedItem by viewModel.selectedItem.collectAsState("")
 
         Scaffold(
             backgroundColor = screenBackgroundColor,
@@ -128,7 +128,12 @@ class CustomerActivity : AppCompatActivity() {
                                     .width(80.dp)
                                     .height(50.dp)
                                     .background(blue)
-                                    .border(BorderStroke(if (zoneColor == "Blue")3.dp else 0.dp, Color.Black))
+                                    .border(
+                                        BorderStroke(
+                                            if (zoneColor == "Blue") 3.dp else 0.dp,
+                                            Color.Black
+                                        )
+                                    )
                                     .clickable {
                                         viewModel.changeZoneColor(blue)
                                     }
@@ -138,7 +143,12 @@ class CustomerActivity : AppCompatActivity() {
                                     .width(80.dp)
                                     .height(50.dp)
                                     .background(green)
-                                    .border(BorderStroke(if (zoneColor == "Green") 3.dp else 0.dp, Color.Black))
+                                    .border(
+                                        BorderStroke(
+                                            if (zoneColor == "Green") 3.dp else 0.dp,
+                                            Color.Black
+                                        )
+                                    )
                                     .clickable {
                                         viewModel.changeZoneColor(green)
                                     }
@@ -148,7 +158,12 @@ class CustomerActivity : AppCompatActivity() {
                                     .width(80.dp)
                                     .height(50.dp)
                                     .background(yellow)
-                                    .border(BorderStroke(if (zoneColor == "Yellow")3.dp else 0.dp, Color.Black))
+                                    .border(
+                                        BorderStroke(
+                                            if (zoneColor == "Yellow") 3.dp else 0.dp,
+                                            Color.Black
+                                        )
+                                    )
                                     .clickable {
                                         viewModel.changeZoneColor(yellow)
                                     }
@@ -158,7 +173,12 @@ class CustomerActivity : AppCompatActivity() {
                                     .width(80.dp)
                                     .height(50.dp)
                                     .background(red)
-                                    .border(BorderStroke(if (zoneColor == "Red")3.dp else 0.dp, Color.Black))
+                                    .border(
+                                        BorderStroke(
+                                            if (zoneColor == "Red") 3.dp else 0.dp,
+                                            Color.Black
+                                        )
+                                    )
                                     .clickable {
                                         viewModel.changeZoneColor(red)
                                     }
@@ -188,7 +208,22 @@ class CustomerActivity : AppCompatActivity() {
                                         .height(250.dp)
                                         .padding(10.dp)
                                         .clip(RoundedCornerShape(20))
-                                        .clickable { }
+                                        .border(
+                                            if (selectedItem == itemList[index].type)
+                                            BorderStroke(
+                                                 3.dp,
+                                                Color.Black
+                                            )
+                                            else
+                                                BorderStroke(
+                                                    0.dp,
+                                                    Color.Transparent
+                                                ) ,
+                                            shape = RoundedCornerShape(20)
+                                        )
+                                        .clickable {
+                                            viewModel.changeItem(itemList[index].type)
+                                        }
                                 ) {
                                     AsyncImage(
                                         model = itemList[index].imageUrl,
@@ -196,10 +231,6 @@ class CustomerActivity : AppCompatActivity() {
                                         contentScale = ContentScale.Inside,
                                         modifier = Modifier
                                             .fillMaxSize()
-                                            //.border(BorderStroke(if (selectedItem == itemList[index].type)3.dp else 0.dp, Color.Black))
-                                            //.clickable {
-                                            //    viewModel.changeItem(itemList[index].type)
-                                            //}
                                     )
                                 }
                             }
