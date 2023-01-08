@@ -18,20 +18,23 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.ncgr.maqsaf.R
+import com.ncgr.maqsaf.presentation.home.viewModel.HomeViewModel
 import com.ncgr.maqsaf.ui.theme.Green
 import com.ncgr.maqsaf.ui.theme.Red
 
 @Composable
 fun CustomAlertDialog(
-    openDialog: MutableState<Boolean>,
+    viewModel: HomeViewModel,
     navigateToServiceProviderActivity: () -> Unit
 ) {
-    var text by remember { mutableStateOf("") }
+    var passwordText by remember { mutableStateOf("") }
     val openPasswordError = remember { mutableStateOf(false) }
+
+    if (openPasswordError.value) WrongPasswordDialog(openPasswordError)
 
     AlertDialog(
         onDismissRequest = {
-            openDialog.value = false
+            viewModel.closeDialog()
         },
         title = {
             Box(
@@ -49,10 +52,10 @@ fun CustomAlertDialog(
 
             Column() {
                 TextField(
-                    value = text,
+                    value = passwordText,
                     label = { Text("Password") },
                     placeholder = { Text("Your Password") },
-                    onValueChange = { text = it },
+                    onValueChange = { passwordText = it },
                     visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     trailingIcon = {
@@ -86,7 +89,7 @@ fun CustomAlertDialog(
                     modifier = Modifier
                         .clip(RoundedCornerShape(20.dp))
                         .background(Red)
-                        .clickable { openDialog.value = false }
+                        .clickable { viewModel.closeDialog() }
                         .padding(10.dp)
                 ) {
                     Text("Cancel")
@@ -96,8 +99,8 @@ fun CustomAlertDialog(
                         .clip(RoundedCornerShape(20.dp))
                         .background(Green)
                         .clickable {
-                            if (text == "123456") {
-                                openDialog.value = false
+                            if (passwordText == "123456") {
+                                viewModel.closeDialog()
                                 navigateToServiceProviderActivity()
                             }
                             else {
@@ -111,34 +114,34 @@ fun CustomAlertDialog(
             }
         }
     )
+}
 
-    if (openPasswordError.value) {
-        AlertDialog(
-            onDismissRequest = {
-                openPasswordError.value = false
-            },
-            text = {
-                Column(
-                    verticalArrangement = Arrangement.SpaceBetween,
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxSize()
+@Composable
+fun WrongPasswordDialog(
+    openPasswordError: MutableState<Boolean>
+){
+    AlertDialog(
+        onDismissRequest = {
+            openPasswordError.value = false
+        },
+        text = {
+            Column(
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.fillMaxSize()
+            ) {
+                Box(
+                    modifier = Modifier.fillMaxWidth(),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.ic_baseline_warning_24),
-                            contentDescription = "Wrong Password",
-                        )
-                    }
-                    Text("Wrong Password")
+                    Image(
+                        painter = painterResource(id = R.drawable.ic_baseline_warning_24),
+                        contentDescription = "Wrong Password",
+                    )
                 }
-            },
-            buttons = {}
-        )
-
-    }
-
-
+                Text("Wrong Password")
+            }
+        },
+        buttons = {}
+    )
 }

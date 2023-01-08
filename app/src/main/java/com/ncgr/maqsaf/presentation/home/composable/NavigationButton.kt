@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun HomeButton(
+fun NavigationButton(
     modifier: Modifier = Modifier,
     title: String,
     onClick: () -> Unit,
