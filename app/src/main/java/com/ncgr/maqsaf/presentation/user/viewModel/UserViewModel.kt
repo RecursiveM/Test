@@ -21,32 +21,30 @@ class UserViewModel @Inject constructor(
     private val getItemsUseCase: GetItemsUseCase
 ) : ViewModel() {
 
-    private val _itemList = MutableSharedFlow<List<Item>>()
+    private val _itemList = MutableSharedFlow<Resource<List<Item>>>()
     val itemList = _itemList.asSharedFlow()
 
-    private val _zoneColor = MutableSharedFlow<String>()
-    val zoneColor = _zoneColor.asSharedFlow()
+    private val _selectedZoneColor = MutableSharedFlow<String>()
+    val selectedZoneColor = _selectedZoneColor.asSharedFlow()
 
     private val _selectedItem = MutableSharedFlow<String>()
     val selectedItem = _selectedItem.asSharedFlow()
 
     init {
-        getItems()
+        getItemList()
     }
 
-    private fun getItems() {
+    private fun getItemList() {
         getItemsUseCase().onEach { resource ->
-
             when (resource) {
                 is Resource.Loading -> {
-                    Log.d("TEST", resource.toString())
+                    _itemList.emit(resource)
                 }
                 is Resource.Success -> {
-                    Log.d("TEST", resource.data.size.toString())
-                    _itemList.emit(resource.data)
+                    _itemList.emit(resource)
                 }
                 is Resource.Error -> {
-                    Log.d("TEST", resource.apiError.toString())
+                    _itemList.emit(resource)
                 }
             }
         }.launchIn(viewModelScope)
@@ -56,26 +54,26 @@ class UserViewModel @Inject constructor(
     fun changeZoneColor(color: Color) {
         viewModelScope.launch {
             if (color == Blue) {
-                _zoneColor.emit("Blue")
+                _selectedZoneColor.emit("Blue")
                 return@launch
             }
 
             if (color == Green) {
-                _zoneColor.emit("Green")
+                _selectedZoneColor.emit("Green")
                 return@launch
             }
 
             if (color == Yellow) {
-                _zoneColor.emit("Yellow")
+                _selectedZoneColor.emit("Yellow")
                 return@launch
             }
 
             if (color == Red) {
-                _zoneColor.emit("Red")
+                _selectedZoneColor.emit("Red")
                 return@launch
             }
 
-            _zoneColor.emit("")
+            _selectedZoneColor.emit("")
         }
     }
 

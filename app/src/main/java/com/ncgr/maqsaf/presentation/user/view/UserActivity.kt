@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.ncgr.maqsaf.presentation.common.composable.AppBar
+import com.ncgr.maqsaf.presentation.common.utils.Resource
 import com.ncgr.maqsaf.presentation.user.composable.OrderNowButton
 import com.ncgr.maqsaf.presentation.user.composable.UserScreenBody
 import com.ncgr.maqsaf.presentation.user.viewModel.UserViewModel
@@ -38,8 +39,8 @@ class UserActivity : AppCompatActivity() {
     fun UserScreen(
         modifier: Modifier = Modifier,
     ) {
-        val itemList by viewModel.itemList.collectAsState(listOf())
-        val zoneColor by viewModel.zoneColor.collectAsState("")
+        val itemList by viewModel.itemList.collectAsState(Resource.Loading())
+        val selectedZoneColor by viewModel.selectedZoneColor.collectAsState("")
         val selectedItem by viewModel.selectedItem.collectAsState("")
 
         Scaffold(
@@ -59,7 +60,7 @@ class UserActivity : AppCompatActivity() {
                 AppBar()
 
                 //Body
-                UserScreenBody(modifier = Modifier.weight(1f),zoneColor,itemList,selectedItem,viewModel)
+                UserScreenBody(modifier = Modifier.weight(1f),selectedZoneColor,itemList,selectedItem,viewModel)
 
                 //Order Now Button
                 OrderNowButton()

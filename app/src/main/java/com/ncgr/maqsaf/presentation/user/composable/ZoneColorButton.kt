@@ -17,7 +17,7 @@ import com.ncgr.maqsaf.presentation.user.viewModel.UserViewModel
 fun ZoneColorButton(
     color: Color,
     strokeTriggerColor: String,
-    zoneColorState : String,
+    selectedZoneColor : String,
     viewModel: UserViewModel
 ) {
     Box(
@@ -27,7 +27,7 @@ fun ZoneColorButton(
             .background(color)
             .border(
                 BorderStroke(
-                    if (zoneColorState == strokeTriggerColor) 3.dp else 0.dp,
+                    if (selectedZoneColor == strokeTriggerColor) 3.dp else 0.dp,
                     Color.Black
                 )
             )
