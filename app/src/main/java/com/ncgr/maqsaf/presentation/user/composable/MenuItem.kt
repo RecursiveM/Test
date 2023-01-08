@@ -10,7 +10,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import com.ncgr.maqsaf.R
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import com.ncgr.maqsaf.domain.menu.model.Item
@@ -20,8 +22,7 @@ import com.ncgr.maqsaf.presentation.user.viewModel.UserViewModel
 fun MenuItem(
     modifier: Modifier = Modifier,
     selectedItem: String,
-    itemList: List<Item>,
-    index: Int,
+    item: Item,
     viewModel: UserViewModel
 ) {
     Box(contentAlignment = Alignment.Center,
@@ -31,7 +32,7 @@ fun MenuItem(
             .padding(10.dp)
             .clip(RoundedCornerShape(20))
             .border(
-                if (selectedItem == itemList[index].type)
+                if (selectedItem == item.type)
                     BorderStroke(
                         3.dp,
                         Color.Black
@@ -44,15 +45,17 @@ fun MenuItem(
                 shape = RoundedCornerShape(20)
             )
             .clickable {
-                viewModel.changeItem(itemList[index].type)
+                viewModel.changeItem(item.type)
             }
     ) {
         AsyncImage(
-            model = itemList[index].imageUrl,
-            contentDescription = itemList[index].type,
+            model = item.imageUrl,
+            contentDescription = item.type,
             contentScale = ContentScale.Inside,
+            error = painterResource(id = R.drawable.ic_broken_image),
             modifier = Modifier
                 .fillMaxSize()
         )
+
     }
 }

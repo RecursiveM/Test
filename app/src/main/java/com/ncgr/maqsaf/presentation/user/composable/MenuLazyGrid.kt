@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -39,12 +40,11 @@ fun MenuLazyGrid(
                 columns = GridCells.Fixed(2),
                 modifier = modifier
             ) {
-                items(itemList.data.size) { index ->
+                itemsIndexed(itemList.data) { _, item ->
                     MenuItem(
                         selectedItem = selectedItem,
-                        itemList = itemList.data,
-                        index = index,
-                        viewModel = viewModel
+                        item = item,
+                        viewModel = viewModel,
                     )
                 }
             }
