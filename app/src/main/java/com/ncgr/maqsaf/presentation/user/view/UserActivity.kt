@@ -39,7 +39,7 @@ class UserActivity : AppCompatActivity() {
         modifier: Modifier = Modifier,
     ) {
         val itemList by viewModel.itemList.collectAsState(listOf())
-        val zoneColor by viewModel.zoneColor.collectAsState("")
+        val zoneColor by viewModel.selectedZoneColor.collectAsState("")
         val selectedItem by viewModel.selectedItem.collectAsState("")
 
         Scaffold(
