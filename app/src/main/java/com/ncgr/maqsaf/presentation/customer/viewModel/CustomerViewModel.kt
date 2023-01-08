@@ -18,8 +18,8 @@ class CustomerViewModel @Inject constructor(
     private val getItemsUseCase: GetItemsUseCase
 ) : ViewModel() {
 
-    private val _items = MutableStateFlow(listOf<Item>())
-    val items = _items.asStateFlow()
+    private val _itemList = MutableStateFlow(listOf<Item>())
+    val itemList = _itemList.asStateFlow()
 
     init {
         getItems()
@@ -34,7 +34,7 @@ class CustomerViewModel @Inject constructor(
                 }
                 is Resource.Success -> {
                     Log.d("TEST", resource.data.size.toString())
-                    _items.value = resource.data
+                    _itemList.value = resource.data
                 }
                 is Resource.Error -> {
                     Log.d("TEST", resource.apiError.toString())

@@ -8,9 +8,6 @@ import retrofit2.http.Headers
 
 interface ItemApi {
 
-    @Headers(
-        "apikey:${SupabaseConstants.API_KEY}",
-    )
     @GET("Item?select=*")
     suspend fun getItems() : Response<List<ItemDto>>
 }
