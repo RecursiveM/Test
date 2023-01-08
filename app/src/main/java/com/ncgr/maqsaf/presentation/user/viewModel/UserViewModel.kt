@@ -1,4 +1,4 @@
-package com.ncgr.maqsaf.presentation.customer.viewModel
+package com.ncgr.maqsaf.presentation.user.viewModel
 
 import android.util.Log
 import androidx.compose.ui.graphics.Color
@@ -7,27 +7,27 @@ import androidx.lifecycle.viewModelScope
 import com.ncgr.maqsaf.domain.menu.model.Item
 import com.ncgr.maqsaf.domain.menu.usecase.GetItemsUseCase
 import com.ncgr.maqsaf.presentation.common.utils.Resource
-import com.ncgr.maqsaf.ui.theme.blue
-import com.ncgr.maqsaf.ui.theme.green
-import com.ncgr.maqsaf.ui.theme.red
-import com.ncgr.maqsaf.ui.theme.yellow
+import com.ncgr.maqsaf.ui.theme.Blue
+import com.ncgr.maqsaf.ui.theme.Green
+import com.ncgr.maqsaf.ui.theme.Red
+import com.ncgr.maqsaf.ui.theme.Yellow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CustomerViewModel @Inject constructor(
+class UserViewModel @Inject constructor(
     private val getItemsUseCase: GetItemsUseCase
 ) : ViewModel() {
 
-    private val _itemList = MutableStateFlow(listOf<Item>())
-    val itemList = _itemList.asStateFlow()
+    private val _itemList = MutableSharedFlow<List<Item>>()
+    val itemList = _itemList.asSharedFlow()
 
-    private val _zoneColor = MutableStateFlow("Blue")
-    val zoneColor = _zoneColor.asStateFlow()
+    private val _zoneColor = MutableSharedFlow<String>()
+    val zoneColor = _zoneColor.asSharedFlow()
 
-    private val _selectedItem = MutableSharedFlow<String?>()
+    private val _selectedItem = MutableSharedFlow<String>()
     val selectedItem = _selectedItem.asSharedFlow()
 
     init {
@@ -43,7 +43,7 @@ class CustomerViewModel @Inject constructor(
                 }
                 is Resource.Success -> {
                     Log.d("TEST", resource.data.size.toString())
-                    _itemList.value = resource.data
+                    _itemList.emit(resource.data)
                 }
                 is Resource.Error -> {
                     Log.d("TEST", resource.apiError.toString())
@@ -54,27 +54,29 @@ class CustomerViewModel @Inject constructor(
 
 
     fun changeZoneColor(color: Color) {
-        if (color == blue) {
-            _zoneColor.value = "Blue"
-            return
-        }
+        viewModelScope.launch {
+            if (color == Blue) {
+                _zoneColor.emit("Blue")
+                return@launch
+            }
 
-        if (color == green) {
-            _zoneColor.value = "Green"
-            return
-        }
+            if (color == Green) {
+                _zoneColor.emit("Green")
+                return@launch
+            }
 
-        if (color == yellow) {
-            _zoneColor.value = "Yellow"
-            return
-        }
+            if (color == Yellow) {
+                _zoneColor.emit("Yellow")
+                return@launch
+            }
 
-        if (color == red) {
-            _zoneColor.value = "Red"
-            return
-        }
+            if (color == Red) {
+                _zoneColor.emit("Red")
+                return@launch
+            }
 
-        _zoneColor.value = ""
+            _zoneColor.emit("")
+        }
     }
 
     fun changeItem(item: String) {
