@@ -40,7 +40,7 @@ class CustomerActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MAQSAFTheme {
-                CustomerScreen(customerViewModel = viewModel)
+                CustomerScreen()
             }
         }
     }
@@ -48,9 +48,10 @@ class CustomerActivity : AppCompatActivity() {
     @Composable
     fun CustomerScreen(
         modifier: Modifier = Modifier,
-        customerViewModel: CustomerViewModel
     ) {
-        val itemList by customerViewModel.itemList.collectAsState()
+        val itemList by viewModel.itemList.collectAsState()
+        val zoneColor by viewModel.zoneColor.collectAsState()
+        val selectedItem by viewModel.zoneColor.collectAsState()
 
         Scaffold(
             backgroundColor = screenBackgroundColor,
@@ -127,28 +128,40 @@ class CustomerActivity : AppCompatActivity() {
                                     .width(80.dp)
                                     .height(50.dp)
                                     .background(blue)
-                                    .clickable { }
+                                    .border(BorderStroke(if (zoneColor == "Blue")3.dp else 0.dp, Color.Black))
+                                    .clickable {
+                                        viewModel.changeZoneColor(blue)
+                                    }
                             )
                             Box(
                                 modifier = Modifier
                                     .width(80.dp)
                                     .height(50.dp)
                                     .background(green)
-                                    .clickable { }
+                                    .border(BorderStroke(if (zoneColor == "Green") 3.dp else 0.dp, Color.Black))
+                                    .clickable {
+                                        viewModel.changeZoneColor(green)
+                                    }
                             )
                             Box(
                                 modifier = Modifier
                                     .width(80.dp)
                                     .height(50.dp)
                                     .background(yellow)
-                                    .clickable { }
+                                    .border(BorderStroke(if (zoneColor == "Yellow")3.dp else 0.dp, Color.Black))
+                                    .clickable {
+                                        viewModel.changeZoneColor(yellow)
+                                    }
                             )
                             Box(
                                 modifier = Modifier
                                     .width(80.dp)
                                     .height(50.dp)
                                     .background(red)
-                                    .clickable { }
+                                    .border(BorderStroke(if (zoneColor == "Red")3.dp else 0.dp, Color.Black))
+                                    .clickable {
+                                        viewModel.changeZoneColor(red)
+                                    }
                             )
                         }
 
@@ -169,23 +182,25 @@ class CustomerActivity : AppCompatActivity() {
                                 .weight(1f)
                         ) {
                             items(itemList.size) { index ->
-                                Box(contentAlignment = Alignment.Center) {
-
-                                    Box(contentAlignment = Alignment.Center,
+                                Box(contentAlignment = Alignment.Center,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .height(250.dp)
+                                        .padding(10.dp)
+                                        .clip(RoundedCornerShape(20))
+                                        .clickable { }
+                                ) {
+                                    AsyncImage(
+                                        model = itemList[index].imageUrl,
+                                        contentDescription = itemList[index].type,
+                                        contentScale = ContentScale.Inside,
                                         modifier = Modifier
-                                            .fillMaxWidth()
-                                            .height(250.dp)
-                                            .padding(10.dp)
-                                            .clip(RoundedCornerShape(20))
-                                            .clickable { }
-                                    ) {
-                                        AsyncImage(
-                                            model = itemList[index].imageUrl,
-                                            contentDescription = itemList[index].type,
-                                            contentScale = ContentScale.Crop,
-                                            modifier = Modifier.fillMaxSize()
-                                        )
-                                    }
+                                            .fillMaxSize()
+                                            //.border(BorderStroke(if (selectedItem == itemList[index].type)3.dp else 0.dp, Color.Black))
+                                            //.clickable {
+                                            //    viewModel.changeItem(itemList[index].type)
+                                            //}
+                                    )
                                 }
                             }
                         }
