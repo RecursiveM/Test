@@ -17,13 +17,15 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ncgr.maqsaf.presentation.details.view.OrderDetailsActivity
 import com.ncgr.maqsaf.ui.theme.Green
 import com.ncgr.maqsaf.ui.theme.OrderNow
 
 
 @Composable
 fun OrderNowButton(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navigateToOrderDetailsActivity: ()-> Unit,
 ) {
     Box(
         modifier = modifier
@@ -35,7 +37,9 @@ fun OrderNowButton(
             modifier = Modifier
                 .fillMaxSize()
                 .background(Green)
-                .clickable {}
+                .clickable {
+                    navigateToOrderDetailsActivity()
+                }
                 .border(BorderStroke(2.dp, Color.Black))
         ) {
             Text(

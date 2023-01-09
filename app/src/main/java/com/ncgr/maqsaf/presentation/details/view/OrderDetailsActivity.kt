@@ -1,6 +1,5 @@
-package com.ncgr.maqsaf.presentation.home.view
+package com.ncgr.maqsaf.presentation.details.view
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -12,44 +11,42 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.ncgr.maqsaf.presentation.common.composable.AppBar
-import com.ncgr.maqsaf.presentation.home.composable.CustomAlertDialog
-import com.ncgr.maqsaf.presentation.home.composable.HomeBody
-import com.ncgr.maqsaf.presentation.home.viewModel.HomeViewModel
-import com.ncgr.maqsaf.presentation.serviceProvider.view.ServiceProviderActivity
+import com.ncgr.maqsaf.presentation.details.composable.OrderDetailsBody
+import com.ncgr.maqsaf.presentation.details.viewModel.OrderDetailsViewModel
 import com.ncgr.maqsaf.presentation.user.view.UserActivity
 import com.ncgr.maqsaf.ui.theme.MAQSAFTheme
 import com.ncgr.maqsaf.ui.theme.ScreenBackgroundColor
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeActivity : AppCompatActivity() {
+class OrderDetailsActivity : AppCompatActivity() {
 
-    private val viewModel: HomeViewModel by viewModels()
+    private val viewModel: OrderDetailsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            MAQSAFTheme {
-                val openDialog = viewModel.openDialog.collectAsState()
-                if (openDialog.value) CustomAlertDialog(viewModel = viewModel) { navigateToServiceProviderActivity() }
+            viewModel.changeZoneColor(intent.getStringExtra("Zone Color")!!)
 
-                HomeScreen()
+            MAQSAFTheme {
+                OrderDetailsScreen()
             }
         }
     }
 
     @Composable
-    private fun HomeScreen(
+    fun OrderDetailsScreen(
         modifier: Modifier = Modifier,
     ) {
         Scaffold(
             backgroundColor = ScreenBackgroundColor,
             scaffoldState = rememberScaffoldState(),
-            modifier = modifier.fillMaxSize()
+            modifier = modifier
+                .fillMaxSize()
         ) { paddingValues ->
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
@@ -58,20 +55,11 @@ class HomeActivity : AppCompatActivity() {
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
+                //Custom TopBar
                 AppBar()
-                HomeBody(
-                    viewModel = viewModel,
-                    navigateToUserActivity = { navigateToUserActivity() })
+
+                OrderDetailsBody(viewModel = viewModel)
             }
         }
     }
-
-    private fun navigateToUserActivity() {
-        startActivity(Intent(this, UserActivity::class.java))
-    }
-
-    private fun navigateToServiceProviderActivity() {
-        startActivity(Intent(this, ServiceProviderActivity::class.java))
-    }
-
 }
