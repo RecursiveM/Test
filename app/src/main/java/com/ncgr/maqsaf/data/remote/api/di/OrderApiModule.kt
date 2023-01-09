@@ -1,6 +1,6 @@
 package com.ncgr.maqsaf.data.remote.api.di
 
-import com.ncgr.maqsaf.data.remote.api.ItemApi
+import com.ncgr.maqsaf.data.remote.api.OrderApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -10,15 +10,15 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object ItemApiModule {
+object OrderApiModule {
 
     @Singleton
     @Provides
-    fun provideItemApi(
+    fun provideOrderApi(
         retrofitSupabaseClient: Retrofit.Builder
-    ): ItemApi {
+    ): OrderApi {
         return retrofitSupabaseClient
             .build()
-            .create(ItemApi::class.java)
+            .create(OrderApi::class.java)
     }
 }

@@ -27,10 +27,10 @@ fun CustomAlertDialog(
     viewModel: HomeViewModel,
     navigateToServiceProviderActivity: () -> Unit
 ) {
-    var passwordText by remember { mutableStateOf("") }
-    val openPasswordError = remember { mutableStateOf(false) }
+    val passwordText = viewModel.passwordText.collectAsState()
+    val openPasswordError = viewModel.openPasswordError.collectAsState()
 
-    if (openPasswordError.value) WrongPasswordDialog(openPasswordError)
+    if (openPasswordError.value) WrongPasswordDialog(viewModel)
 
     AlertDialog(
         onDismissRequest = {
@@ -50,12 +50,12 @@ fun CustomAlertDialog(
         text = {
             var passwordVisible by rememberSaveable { mutableStateOf(false) }
 
-            Column() {
+            Column {
                 TextField(
-                    value = passwordText,
+                    value = passwordText.value,
                     label = { Text("Password") },
                     placeholder = { Text("Your Password") },
-                    onValueChange = { passwordText = it },
+                    onValueChange = { viewModel.setPasswordText(it) },
                     visualTransformation = if (passwordVisible) VisualTransformation.None else PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     trailingIcon = {
@@ -99,12 +99,11 @@ fun CustomAlertDialog(
                         .clip(RoundedCornerShape(20.dp))
                         .background(Green)
                         .clickable {
-                            if (passwordText == "123456") {
+                            if (passwordText.value == "123456") {
                                 viewModel.closeDialog()
                                 navigateToServiceProviderActivity()
-                            }
-                            else {
-                                openPasswordError.value = true
+                            } else {
+                                viewModel.openPasswordErrorDialog()
                             }
                         }
                         .padding(10.dp)
@@ -118,11 +117,11 @@ fun CustomAlertDialog(
 
 @Composable
 fun WrongPasswordDialog(
-    openPasswordError: MutableState<Boolean>
-){
+    viewModel: HomeViewModel,
+) {
     AlertDialog(
         onDismissRequest = {
-            openPasswordError.value = false
+            viewModel.closePasswordErrorDialog()
         },
         text = {
             Column(

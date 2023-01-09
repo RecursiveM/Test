@@ -1,5 +1,6 @@
 package com.ncgr.maqsaf.presentation.user.view
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -15,13 +16,14 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.ncgr.maqsaf.presentation.common.composable.AppBar
 import com.ncgr.maqsaf.presentation.common.utils.Resource
+import com.ncgr.maqsaf.presentation.details.view.OrderDetailsActivity
 import com.ncgr.maqsaf.presentation.user.composable.OrderNowButton
 import com.ncgr.maqsaf.presentation.user.composable.UserScreenBody
 import com.ncgr.maqsaf.presentation.user.viewModel.UserViewModel
-import com.ncgr.maqsaf.ui.theme.MAQSAFTheme
-import com.ncgr.maqsaf.ui.theme.ScreenBackgroundColor
+import com.ncgr.maqsaf.ui.theme.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -72,8 +74,21 @@ class UserActivity : AppCompatActivity() {
                 )
 
                 //Order Now Button
-                OrderNowButton()
+                OrderNowButton(navigateToOrderDetailsActivity = {
+                    navigateToOrderDetailsActivity(
+                        selectedZoneColor,
+                        selectedItem
+                    )
+                })
             }
         }
+    }
+
+    private fun navigateToOrderDetailsActivity(selectedZoneColor: String, selectedItem: String) {
+        if (selectedZoneColor == "" || selectedItem == "") return
+
+        val intent = Intent(this, OrderDetailsActivity::class.java)
+        intent.putExtra("Zone Color", selectedZoneColor)
+        startActivity(intent)
     }
 }
