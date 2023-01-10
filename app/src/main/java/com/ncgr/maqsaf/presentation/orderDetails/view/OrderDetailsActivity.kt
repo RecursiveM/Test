@@ -1,4 +1,4 @@
-package com.ncgr.maqsaf.presentation.details.view
+package com.ncgr.maqsaf.presentation.orderDetails.view
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
@@ -13,11 +13,9 @@ import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import com.ncgr.maqsaf.presentation.common.composable.AppBar
-import com.ncgr.maqsaf.presentation.details.composable.OrderDetailsBody
-import com.ncgr.maqsaf.presentation.details.viewModel.OrderDetailsViewModel
-import com.ncgr.maqsaf.presentation.user.view.UserActivity
+import com.ncgr.maqsaf.presentation.orderDetails.composable.OrderDetailsBody
+import com.ncgr.maqsaf.presentation.orderDetails.viewModel.OrderDetailsViewModel
 import com.ncgr.maqsaf.ui.theme.MAQSAFTheme
 import com.ncgr.maqsaf.ui.theme.ScreenBackgroundColor
 import dagger.hilt.android.AndroidEntryPoint

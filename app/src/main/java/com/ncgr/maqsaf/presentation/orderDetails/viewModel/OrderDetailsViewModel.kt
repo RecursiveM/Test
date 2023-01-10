@@ -1,13 +1,11 @@
-package com.ncgr.maqsaf.presentation.details.viewModel
+package com.ncgr.maqsaf.presentation.orderDetails.viewModel
 
 import android.util.Log
-import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ncgr.maqsaf.domain.order.model.Order
 import com.ncgr.maqsaf.domain.order.usecase.GetMyOrderUseCase
 import com.ncgr.maqsaf.presentation.common.utils.Resource
-import com.ncgr.maqsaf.ui.theme.Red
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject
