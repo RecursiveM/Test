@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -78,34 +79,18 @@ fun OrderWidget(
                     contentAlignment = Alignment.Center,
                     modifier = Modifier
                         .height(50.dp)
-                        .width(80.dp)
+                        .width(100.dp)
                         .clip(RoundedCornerShape(10))
                         .background(Color.White)
                         .clickable {  }
+                        .padding(10.dp)
                 ) {
                     Text(
-                        text = "Reject",
+                        text = "Finished",
                         style = TextStyle(
-                            color = Color.Red,
+                            color = Green,
                             fontSize = 20.sp,
-                            shadow = Shadow(Color.Black, blurRadius = 2f)
-                        ),
-                    )
-                }
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier
-                        .height(50.dp)
-                        .width(80.dp)
-                        .clip(RoundedCornerShape(10))
-                        .background(Color.White)
-                        .clickable {  }
-                ) {
-                    Text(
-                        text = "Accept",
-                        style = TextStyle(
-                            color = Color.Green,
-                            fontSize = 20.sp,
+                            fontWeight = FontWeight.Bold,
                             shadow = Shadow(Color.Black, blurRadius = 2f)
                         ),
                     )
