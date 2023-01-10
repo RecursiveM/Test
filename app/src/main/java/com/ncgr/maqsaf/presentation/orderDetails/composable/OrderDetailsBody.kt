@@ -1,4 +1,4 @@
-package com.ncgr.maqsaf.presentation.details.composable
+package com.ncgr.maqsaf.presentation.orderDetails.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -14,8 +14,7 @@ import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ncgr.maqsaf.domain.order.model.Order
-import com.ncgr.maqsaf.presentation.details.viewModel.OrderDetailsViewModel
+import com.ncgr.maqsaf.presentation.orderDetails.viewModel.OrderDetailsViewModel
 import com.ncgr.maqsaf.ui.theme.Blue
 import com.ncgr.maqsaf.ui.theme.Green
 import com.ncgr.maqsaf.ui.theme.Red
@@ -48,7 +47,8 @@ fun OrderDetailsBody(
                 )
         ) {
             Text(
-                viewModel.randomNumber.toString(), style = TextStyle(
+                viewModel.randomNumber.toString(),
+                style = TextStyle(
                     color = Color.White, fontSize = 120.sp, shadow = Shadow(Color.Black, blurRadius = 10f)
                 )
             )

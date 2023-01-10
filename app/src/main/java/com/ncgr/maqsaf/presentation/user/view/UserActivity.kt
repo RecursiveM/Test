@@ -16,10 +16,9 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import com.ncgr.maqsaf.presentation.common.composable.AppBar
 import com.ncgr.maqsaf.presentation.common.utils.Resource
-import com.ncgr.maqsaf.presentation.details.view.OrderDetailsActivity
+import com.ncgr.maqsaf.presentation.orderDetails.view.OrderDetailsActivity
 import com.ncgr.maqsaf.presentation.user.composable.OrderNowButton
 import com.ncgr.maqsaf.presentation.user.composable.UserScreenBody
 import com.ncgr.maqsaf.presentation.user.viewModel.UserViewModel
