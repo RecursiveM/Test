@@ -6,4 +6,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface OrderRepository {
     fun getMyOrder(uid: String): Flow<Resource<List<Order>>>
+    fun sendOrder(selectedItem:String,selectedZoneColor:String): Flow<Resource<Order>>
 }

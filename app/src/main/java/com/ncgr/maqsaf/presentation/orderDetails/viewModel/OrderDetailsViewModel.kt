@@ -18,28 +18,18 @@ class OrderDetailsViewModel @Inject constructor(
     private val _myOrder = MutableSharedFlow<Order>()
     val myOrder = _myOrder.asSharedFlow()
 
-    //Fake Data
-    val randomNumber = listOf(0,1,2,3,4,5,6,7,8,9,10,222,555).random()
+    private val _orderNumber = MutableStateFlow(0)
+    val orderNumber = _orderNumber.asStateFlow()
+
     private val _zoneColor = MutableStateFlow("blue")
     val zoneColor = _zoneColor.asStateFlow()
+
     fun changeZoneColor(color: String){
         _zoneColor.value = color
     }
 
-    private fun getMyOrder() {
-        getMyOrderUseCase("f4541678-5467-46f0-a7a1-2b2a503379c9").onEach { resource ->
-            when (resource) {
-                is Resource.Loading -> {
-                    Log.d("TEST", "Loading Order Details")
-                }
-                is Resource.Success -> {
-                    _myOrder.emit(resource.data[0])
-                }
-                is Resource.Error -> {
-                    Log.d("TEST", resource.apiError.errorMessage)
-                }
-            }
-        }.launchIn(viewModelScope)
+    fun changeOrderNumber(num: Int){
+        _orderNumber.value = num
     }
 
 }

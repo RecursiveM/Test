@@ -1,5 +1,6 @@
 package com.ncgr.maqsaf.domain.order.di
 
+import com.ncgr.maqsaf.data.remote.api.ItemApi
 import com.ncgr.maqsaf.data.remote.api.OrderApi
 import com.ncgr.maqsaf.data.repository.OrderRepositoryImp
 import com.ncgr.maqsaf.domain.order.repository.OrderRepository
@@ -16,8 +17,9 @@ object OrderRepositoryModule {
     @Singleton
     @Provides
     fun provideOrderRepository(
-        orderApi: OrderApi
+        orderApi: OrderApi,
+        itemApi: ItemApi
     ): OrderRepository {
-        return OrderRepositoryImp(orderApi)
+        return OrderRepositoryImp(orderApi,itemApi)
     }
 }

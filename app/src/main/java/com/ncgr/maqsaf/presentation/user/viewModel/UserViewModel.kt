@@ -1,11 +1,14 @@
 package com.ncgr.maqsaf.presentation.user.viewModel
 
+import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ncgr.maqsaf.data.model.ApiError
 import com.ncgr.maqsaf.domain.menu.model.Item
 import com.ncgr.maqsaf.domain.menu.usecase.GetItemsUseCase
+import com.ncgr.maqsaf.domain.order.model.Order
+import com.ncgr.maqsaf.domain.order.usecase.SendOrderUseCase
 import com.ncgr.maqsaf.presentation.common.utils.Resource
 import com.ncgr.maqsaf.ui.theme.Blue
 import com.ncgr.maqsaf.ui.theme.Green
@@ -19,7 +22,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
-    private val getItemsUseCase: GetItemsUseCase
+    private val getItemsUseCase: GetItemsUseCase,
+    private val sendOrderUseCase: SendOrderUseCase
 ) : ViewModel() {
 
     private val _itemList = MutableSharedFlow<Resource<List<Item>>>()
@@ -45,6 +49,9 @@ class UserViewModel @Inject constructor(
 
     private val _navigateToOrderDetails = MutableStateFlow(false)
     val navigateToOrderDetails = _navigateToOrderDetails.asStateFlow()
+
+    private val _orderDetails = MutableSharedFlow<Order>()
+    val orderDetails = _orderDetails.asSharedFlow()
 
     init {
         getItemList()
@@ -73,13 +80,25 @@ class UserViewModel @Inject constructor(
             return
         }
 
-        viewModelScope.launch {
-            delay(2000L)
-            _orderStatus.value = Resource.Success("تم إرسال طلبك")
-            delay(2000L)
-            closeOrderDialog()
-            _navigateToOrderDetails.value = true
-        }
+        sendOrderUseCase(selectedItem = _selectedItem.value, selectedZoneColor = _selectedZoneColor.value)
+            .onEach { resource ->
+            when (resource){
+                is Resource.Loading ->{
+                    _orderStatus.value = Resource.Loading()
+                }
+                is Resource.Success -> {
+                    _orderStatus.value = Resource.Success("تم إرسال طلبك")
+                    _orderDetails.emit(resource.data)
+                    delay(2000L)
+                    _navigateToOrderDetails.value = true
+                    closeOrderDialog()
+                }
+                is Resource.Error -> {
+                    _orderStatus.value = Resource.Error(resource.apiError)
+                }
+            }
+
+        }.launchIn(viewModelScope)
     }
 
     private fun checkIfOrderIsReady(): Boolean {

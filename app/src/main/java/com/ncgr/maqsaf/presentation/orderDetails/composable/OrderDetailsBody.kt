@@ -6,6 +6,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -25,7 +26,8 @@ fun OrderDetailsBody(
     modifier: Modifier = Modifier,
     viewModel: OrderDetailsViewModel,
 ) {
-    val zoneColor = viewModel.zoneColor.collectAsState()
+    val zoneColor by viewModel.zoneColor.collectAsState()
+    val orderNumber by viewModel.orderNumber.collectAsState()
 
     Column(
         verticalArrangement = Arrangement.Center,
@@ -38,7 +40,7 @@ fun OrderDetailsBody(
                 .clip(CircleShape)
                 .size(300.dp)
                 .background(
-                    when(zoneColor.value){
+                    when(zoneColor){
                         "Yellow" -> Yellow
                         "Blue" -> Blue
                         "Green" -> Green
@@ -47,7 +49,7 @@ fun OrderDetailsBody(
                 )
         ) {
             Text(
-                viewModel.randomNumber.toString(),
+                (orderNumber % 1000).toString(),
                 style = TextStyle(
                     color = Color.White, fontSize = 120.sp, shadow = Shadow(Color.Black, blurRadius = 10f)
                 )

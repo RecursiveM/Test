@@ -85,28 +85,54 @@ fun OrderDialog(
         }
 
         is Resource.Error -> {
-            AlertDialog(
-                onDismissRequest = {
-                    viewModel.closeOrderDialog()
-                },
-                title = {
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(text = "حدث خطأ")
-                    }
-                },
-                text = {
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Text(text = "${zoneColorSelectionError ?: ""}\n${itemSelectionError ?: ""}")
-                    }
-                },
-                buttons = {}
-            )
+            if (orderStatus.apiError.errorMessage == "Error sending order"){
+                AlertDialog(
+                    onDismissRequest = {
+                        viewModel.closeOrderDialog()
+                    },
+                    title = {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(text = "حدث خطأ")
+                        }
+                    },
+                    text = {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(text = "${zoneColorSelectionError ?: ""}\n${itemSelectionError ?: ""}")
+                        }
+                    },
+                    buttons = {}
+                )
+            }
+            else{
+                AlertDialog(
+                    onDismissRequest = {
+                        viewModel.closeOrderDialog()
+                    },
+                    title = {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(text = "حدث خطأ")
+                        }
+                    },
+                    text = {
+                        Box(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Text(text = orderStatus.apiError.errorMessage)
+                        }
+                    },
+                    buttons = {}
+                )
+            }
         }
     }
 }

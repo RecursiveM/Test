@@ -16,6 +16,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.ncgr.maqsaf.domain.order.model.Order
 import com.ncgr.maqsaf.presentation.common.composable.AppBar
 import com.ncgr.maqsaf.presentation.common.utils.Resource
 import com.ncgr.maqsaf.presentation.orderDetails.view.OrderDetailsActivity
@@ -53,8 +54,9 @@ class UserActivity : AppCompatActivity() {
         val orderStatus by viewModel.orderStatus.collectAsState()
         val showOrderDialog by viewModel.showOrderDialog.collectAsState()
         val navigateToOrderDetailsActivity by viewModel.navigateToOrderDetails.collectAsState()
+        val orderDetails by viewModel.orderDetails.collectAsState(Order("",0,"",false))
 
-        if (navigateToOrderDetailsActivity) navigateToOrderDetailsActivity(selectedItem,selectedZoneColor)
+        if (navigateToOrderDetailsActivity) navigateToOrderDetailsActivity(orderDetails = orderDetails)
 
         Scaffold(
             backgroundColor = ScreenBackgroundColor,
@@ -96,11 +98,10 @@ class UserActivity : AppCompatActivity() {
         }
     }
 
-    private fun navigateToOrderDetailsActivity(selectedZoneColor: String, selectedItem: String) {
-        if (selectedZoneColor == "" || selectedItem == "") return
-
+    private fun navigateToOrderDetailsActivity(orderDetails: Order) {
         val intent = Intent(this, OrderDetailsActivity::class.java)
-        intent.putExtra("Zone Color", selectedZoneColor)
+        intent.putExtra("Zone Color", orderDetails.zoneColor)
+        intent.putExtra("Order Number", orderDetails.orderNumber)
         startActivity(intent)
         finish()
     }
