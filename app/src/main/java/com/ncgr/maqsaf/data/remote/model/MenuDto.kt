@@ -1,9 +1,14 @@
 package com.ncgr.maqsaf.data.remote.model
 
 import com.google.gson.annotations.SerializedName
-import com.ncgr.maqsaf.domain.menu.model.Order
 
-data class OrderDto(
+data class HaveItem(
+
+	@field:SerializedName("Item")
+	val item: Item
+)
+
+data class MenuDtoItem(
 
 	@field:SerializedName("zone_color")
 	val zoneColor: String,
@@ -11,21 +16,27 @@ data class OrderDto(
 	@field:SerializedName("order_number")
 	val orderNumber: Int,
 
+	@field:SerializedName("have")
+	val have: List<HaveItem>,
+
 	@field:SerializedName("accepted")
-	val accepted: Boolean?,
+	val accepted: Any,
 
 	@field:SerializedName("created_at")
 	val createdAt: String,
 
 	@field:SerializedName("id")
 	val id: String
-){
-	fun toOrder(): Order {
-		return Order(
-			id = id,
-			zoneColor = zoneColor,
-			orderNumber = orderNumber,
-			accepted = accepted,
-		)
-	}
-}
+)
+
+data class Item(
+
+	@field:SerializedName("item_image")
+	val itemImage: String,
+
+	@field:SerializedName("id")
+	val id: String,
+
+	@field:SerializedName("type")
+	val type: String
+)

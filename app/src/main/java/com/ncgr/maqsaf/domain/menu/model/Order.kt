@@ -1,4 +1,4 @@
-package com.ncgr.maqsaf.domain.order.model
+package com.ncgr.maqsaf.domain.menu.model
 
 data class Order(
     val id : String,

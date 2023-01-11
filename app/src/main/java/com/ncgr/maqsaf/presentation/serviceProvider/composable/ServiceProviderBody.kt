@@ -15,7 +15,7 @@ import com.ncgr.maqsaf.presentation.serviceProvider.viewModel.ServiceProviderVie
 @Composable
 fun ServiceProviderBody(
     modifier: Modifier = Modifier,
-    viewModel: ServiceProviderViewModel = ServiceProviderViewModel(),
+    viewModel: ServiceProviderViewModel,
 ) {
 
     Box(
