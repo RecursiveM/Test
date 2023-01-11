@@ -1,9 +1,9 @@
-package com.ncgr.maqsaf.domain.order.di
+package com.ncgr.maqsaf.domain.menu.di
 
 import com.ncgr.maqsaf.data.remote.api.ItemApi
 import com.ncgr.maqsaf.data.remote.api.OrderApi
 import com.ncgr.maqsaf.data.repository.OrderRepositoryImp
-import com.ncgr.maqsaf.domain.order.repository.OrderRepository
+import com.ncgr.maqsaf.domain.menu.repository.OrderRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

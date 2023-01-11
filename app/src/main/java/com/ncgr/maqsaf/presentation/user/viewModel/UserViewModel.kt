@@ -1,14 +1,13 @@
 package com.ncgr.maqsaf.presentation.user.viewModel
 
-import android.util.Log
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ncgr.maqsaf.data.model.ApiError
 import com.ncgr.maqsaf.domain.menu.model.Item
 import com.ncgr.maqsaf.domain.menu.usecase.GetItemsUseCase
-import com.ncgr.maqsaf.domain.order.model.Order
-import com.ncgr.maqsaf.domain.order.usecase.SendOrderUseCase
+import com.ncgr.maqsaf.domain.menu.model.Order
+import com.ncgr.maqsaf.domain.menu.usecase.SendOrderUseCase
 import com.ncgr.maqsaf.presentation.common.utils.Resource
 import com.ncgr.maqsaf.ui.theme.Blue
 import com.ncgr.maqsaf.ui.theme.Green

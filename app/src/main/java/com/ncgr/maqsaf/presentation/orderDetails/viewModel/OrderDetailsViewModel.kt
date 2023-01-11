@@ -1,11 +1,8 @@
 package com.ncgr.maqsaf.presentation.orderDetails.viewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import com.ncgr.maqsaf.domain.order.model.Order
-import com.ncgr.maqsaf.domain.order.usecase.GetMyOrderUseCase
-import com.ncgr.maqsaf.presentation.common.utils.Resource
+import com.ncgr.maqsaf.domain.menu.model.Order
+import com.ncgr.maqsaf.domain.menu.usecase.GetMyOrderUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import javax.inject.Inject

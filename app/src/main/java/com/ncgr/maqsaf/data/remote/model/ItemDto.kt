@@ -16,10 +16,10 @@ data class ItemDto(
 )
 
 {
-	fun toItem(): Item{
+	fun toItem(): Item {
 		return Item(
 			id = id,
-            type = type,
+			type = type,
 			imageUrl = imageUrl
 		)
 	}
