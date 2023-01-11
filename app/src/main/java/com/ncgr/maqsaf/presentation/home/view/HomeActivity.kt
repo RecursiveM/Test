@@ -68,10 +68,12 @@ class HomeActivity : AppCompatActivity() {
 
     private fun navigateToUserActivity() {
         startActivity(Intent(this, UserActivity::class.java))
+        finish()
     }
 
     private fun navigateToServiceProviderActivity() {
         startActivity(Intent(this, ServiceProviderActivity::class.java))
+        finish()
     }
 
 }

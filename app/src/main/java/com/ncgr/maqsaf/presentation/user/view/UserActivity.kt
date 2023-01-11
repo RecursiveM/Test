@@ -19,10 +19,12 @@ import androidx.compose.ui.Modifier
 import com.ncgr.maqsaf.presentation.common.composable.AppBar
 import com.ncgr.maqsaf.presentation.common.utils.Resource
 import com.ncgr.maqsaf.presentation.orderDetails.view.OrderDetailsActivity
+import com.ncgr.maqsaf.presentation.user.composable.OrderDialog
 import com.ncgr.maqsaf.presentation.user.composable.OrderNowButton
 import com.ncgr.maqsaf.presentation.user.composable.UserScreenBody
 import com.ncgr.maqsaf.presentation.user.viewModel.UserViewModel
-import com.ncgr.maqsaf.ui.theme.*
+import com.ncgr.maqsaf.ui.theme.MAQSAFTheme
+import com.ncgr.maqsaf.ui.theme.ScreenBackgroundColor
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -44,8 +46,15 @@ class UserActivity : AppCompatActivity() {
         modifier: Modifier = Modifier,
     ) {
         val itemList by viewModel.itemList.collectAsState(Resource.Loading())
-        val selectedZoneColor by viewModel.selectedZoneColor.collectAsState("")
-        val selectedItem by viewModel.selectedItem.collectAsState("")
+        val selectedZoneColor by viewModel.selectedZoneColor.collectAsState()
+        val selectedItem by viewModel.selectedItem.collectAsState()
+        val itemSelectionError by viewModel.itemSelectionError.collectAsState()
+        val zoneColorSelectionError by viewModel.zoneColorSelectionError.collectAsState()
+        val orderStatus by viewModel.orderStatus.collectAsState()
+        val showOrderDialog by viewModel.showOrderDialog.collectAsState()
+        val navigateToOrderDetailsActivity by viewModel.navigateToOrderDetails.collectAsState()
+
+        if (navigateToOrderDetailsActivity) navigateToOrderDetailsActivity(selectedItem,selectedZoneColor)
 
         Scaffold(
             backgroundColor = ScreenBackgroundColor,
@@ -53,6 +62,15 @@ class UserActivity : AppCompatActivity() {
             modifier = modifier
                 .fillMaxSize()
         ) { paddingValues ->
+
+            OrderDialog(
+                viewModel = viewModel,
+                zoneColorSelectionError = zoneColorSelectionError,
+                itemSelectionError = itemSelectionError,
+                orderStatus = orderStatus,
+                showOrderDialog = showOrderDialog
+                )
+
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.CenterHorizontally,
@@ -73,12 +91,7 @@ class UserActivity : AppCompatActivity() {
                 )
 
                 //Order Now Button
-                OrderNowButton(navigateToOrderDetailsActivity = {
-                    navigateToOrderDetailsActivity(
-                        selectedZoneColor,
-                        selectedItem
-                    )
-                })
+                OrderNowButton(viewModel = viewModel)
             }
         }
     }
@@ -89,5 +102,6 @@ class UserActivity : AppCompatActivity() {
         val intent = Intent(this, OrderDetailsActivity::class.java)
         intent.putExtra("Zone Color", selectedZoneColor)
         startActivity(intent)
+        finish()
     }
 }
