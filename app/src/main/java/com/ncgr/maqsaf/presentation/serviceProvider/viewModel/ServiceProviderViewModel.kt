@@ -62,4 +62,8 @@ class ServiceProviderViewModel @Inject constructor(
             }
         }.launchIn(viewModelScope)
     }
+
+    fun refreshOrders() {
+       getAllOrders()
+    }
 }
