@@ -30,7 +30,13 @@ fun ServiceProviderBody(
                 .padding(horizontal = 20.dp)
         ) {
             Spacer(modifier = Modifier.height(3.dp))
-            Text(text = "Orders", style = TextStyle(fontSize = 30.sp))
+            Row(horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "Orders", style = TextStyle(fontSize = 30.sp))
+                RefreshButton(viewModel = viewModel, modifier = Modifier.width(50.dp))
+            }
             Spacer(modifier = Modifier.height(3.dp))
             Divider(color = Color.Gray, thickness = 3.dp)
 
