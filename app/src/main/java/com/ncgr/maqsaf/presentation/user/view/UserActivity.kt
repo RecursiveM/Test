@@ -2,6 +2,7 @@ package com.ncgr.maqsaf.presentation.user.view
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.KeyEvent
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -16,9 +17,10 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.ncgr.maqsaf.domain.menu.model.Order
+import com.ncgr.maqsaf.domain.order.model.Order
 import com.ncgr.maqsaf.presentation.common.composable.AppBar
 import com.ncgr.maqsaf.presentation.common.utils.Resource
+import com.ncgr.maqsaf.presentation.home.view.HomeActivity
 import com.ncgr.maqsaf.presentation.orderDetails.view.OrderDetailsActivity
 import com.ncgr.maqsaf.presentation.user.composable.OrderDialog
 import com.ncgr.maqsaf.presentation.user.composable.OrderNowButton
@@ -54,9 +56,11 @@ class UserActivity : AppCompatActivity() {
         val orderStatus by viewModel.orderStatus.collectAsState()
         val showOrderDialog by viewModel.showOrderDialog.collectAsState()
         val navigateToOrderDetailsActivity by viewModel.navigateToOrderDetails.collectAsState()
+        val navigateBackToHome by viewModel.navigateBackToHome.collectAsState()
         val orderDetails by viewModel.orderDetails.collectAsState(Order("",0,"",false))
 
         if (navigateToOrderDetailsActivity) navigateToOrderDetailsActivity(orderDetails = orderDetails)
+        if (navigateBackToHome) navigateBackToHome()
 
         Scaffold(
             backgroundColor = ScreenBackgroundColor,
@@ -81,7 +85,7 @@ class UserActivity : AppCompatActivity() {
                     .padding(paddingValues)
             ) {
                 //Custom TopBar
-                AppBar()
+                AppBar(withSignOutButton = true, signOutFunction = {viewModel.signOut()})
 
                 //Body
                 UserScreenBody(
@@ -94,6 +98,8 @@ class UserActivity : AppCompatActivity() {
 
                 //Order Now Button
                 OrderNowButton(viewModel = viewModel)
+
+
             }
         }
     }
@@ -103,6 +109,19 @@ class UserActivity : AppCompatActivity() {
         intent.putExtra("Zone Color", orderDetails.zoneColor)
         intent.putExtra("Order Number", orderDetails.orderNumber)
         startActivity(intent)
-        finish()
+        finishAffinity()
+    }
+
+    private fun navigateBackToHome() {
+        val intent = Intent(this, HomeActivity::class.java)
+        startActivity(intent)
+        finishAffinity()
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (keyCode == KeyEvent.KEYCODE_BACK){
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
     }
 }

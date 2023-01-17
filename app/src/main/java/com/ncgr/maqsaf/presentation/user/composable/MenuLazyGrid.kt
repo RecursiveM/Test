@@ -14,7 +14,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.ncgr.maqsaf.domain.menu.model.Item
+import com.ncgr.maqsaf.domain.order.model.Item
 import com.ncgr.maqsaf.presentation.common.utils.Resource
 import com.ncgr.maqsaf.presentation.user.viewModel.UserViewModel
 import com.ncgr.maqsaf.ui.theme.Blue

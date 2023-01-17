@@ -20,7 +20,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ncgr.maqsaf.R
-import com.ncgr.maqsaf.data.remote.model.MenuDtoItem
+import com.ncgr.maqsaf.data.remote.model.OrderListItemDto
 import com.ncgr.maqsaf.presentation.common.utils.Resource
 import com.ncgr.maqsaf.presentation.serviceProvider.viewModel.ServiceProviderViewModel
 import com.ncgr.maqsaf.ui.theme.Blue
@@ -46,7 +46,7 @@ fun OrderLazyColumn(
             ) {
                 try {
                     val successOrderListWithNoItems =
-                        orderList as Resource.Success<List<MenuDtoItem>>
+                        orderList as Resource.Success<List<OrderListItemDto>>
                     item {
                         if (successOrderListWithNoItems.data.isEmpty()) {
                             Column(
@@ -68,8 +68,8 @@ fun OrderLazyColumn(
                             }
                         }
                     }
-                    val successOrderList = orderList as Resource.Success<List<MenuDtoItem>>
-                    itemsIndexed(successOrderList.data) { index, res ->
+                    val successOrderList = orderList as Resource.Success<List<OrderListItemDto>>
+                    itemsIndexed(successOrderList.data) { _, res ->
                         OrderWidget(
                             orderUid = res.id,
                             orderNumber = res.orderNumber,
@@ -89,7 +89,7 @@ fun OrderLazyColumn(
                 modifier = modifier.padding(20.dp)
             ) {
                 Text(
-                    text = (orderList as Resource.Error<List<MenuDtoItem>>).apiError.errorMessage,
+                    text = (orderList as Resource.Error<List<OrderListItemDto>>).apiError.errorMessage,
                     style = TextStyle(fontSize = 15.sp, fontWeight = FontWeight.Bold)
                 )
             }
