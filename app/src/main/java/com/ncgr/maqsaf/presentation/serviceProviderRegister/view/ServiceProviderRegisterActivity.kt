@@ -21,7 +21,6 @@ import com.ncgr.maqsaf.presentation.serviceProvider.view.ServiceProviderActivity
 import com.ncgr.maqsaf.presentation.serviceProviderRegister.composable.RegisterDialog
 import com.ncgr.maqsaf.presentation.serviceProviderRegister.composable.RegisterScreenBody
 import com.ncgr.maqsaf.presentation.serviceProviderRegister.viewModel.ServiceProviderRegisterViewModel
-import com.ncgr.maqsaf.presentation.user.view.UserActivity
 import com.ncgr.maqsaf.ui.theme.MAQSAFTheme
 import com.ncgr.maqsaf.ui.theme.ScreenBackgroundColor
 import dagger.hilt.android.AndroidEntryPoint
@@ -44,7 +43,7 @@ class ServiceProviderRegisterActivity : AppCompatActivity() {
     fun RegisterScreen(
         modifier: Modifier = Modifier,
     ) {
-        val navigater by viewModel.navigateToHomeActivity.collectAsState()
+        val navigater by viewModel.navigateToServiceProviderActivity.collectAsState()
         if (navigater) navigateToServiceProviderActivity()
 
         RegisterDialog(viewModel = viewModel)

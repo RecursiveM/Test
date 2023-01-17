@@ -17,10 +17,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.ncgr.maqsaf.presentation.common.composable.AppBar
-import com.ncgr.maqsaf.presentation.serviceProviderRegister.composable.RegisterDialog
-import com.ncgr.maqsaf.presentation.serviceProviderRegister.composable.RegisterScreenBody
-import com.ncgr.maqsaf.presentation.serviceProviderRegister.viewModel.ServiceProviderRegisterViewModel
 import com.ncgr.maqsaf.presentation.user.view.UserActivity
+import com.ncgr.maqsaf.presentation.userRegister.composable.UserRegisterDialog
+import com.ncgr.maqsaf.presentation.userRegister.composable.UserRegisterScreenBody
+import com.ncgr.maqsaf.presentation.userRegister.viewModel.UserRegisterViewModel
 import com.ncgr.maqsaf.ui.theme.MAQSAFTheme
 import com.ncgr.maqsaf.ui.theme.ScreenBackgroundColor
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,7 +28,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @AndroidEntryPoint
 class UserRegisterActivity : AppCompatActivity() {
 
-    private val viewModel: ServiceProviderRegisterViewModel by viewModels()
+    private val viewModel: UserRegisterViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,10 +43,10 @@ class UserRegisterActivity : AppCompatActivity() {
     fun RegisterScreen(
         modifier: Modifier = Modifier,
     ) {
-        val navigater by viewModel.navigateToHomeActivity.collectAsState()
+        val navigater by viewModel.navigateToUserActivity.collectAsState()
         if (navigater) navigateToUserActivity()
 
-        RegisterDialog(viewModel = viewModel)
+        UserRegisterDialog(viewModel = viewModel)
 
         Scaffold(
             backgroundColor = ScreenBackgroundColor,
@@ -65,7 +65,7 @@ class UserRegisterActivity : AppCompatActivity() {
                 AppBar()
 
                 //Body
-                RegisterScreenBody(viewModel = viewModel)
+                UserRegisterScreenBody(viewModel = viewModel)
             }
         }
     }

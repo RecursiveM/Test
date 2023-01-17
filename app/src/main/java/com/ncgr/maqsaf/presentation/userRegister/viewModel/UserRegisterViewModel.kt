@@ -42,8 +42,8 @@ class UserRegisterViewModel @Inject constructor(
     private val _openRegisterDialog = MutableStateFlow(false)
     val openRegisterDialog = _openRegisterDialog.asStateFlow()
 
-    private val _navigateToHomeActivity = MutableStateFlow(false)
-    val navigateToHomeActivity = _navigateToHomeActivity.asStateFlow()
+    private val _navigateToUserActivity = MutableStateFlow(false)
+    val navigateToUserActivity = _navigateToUserActivity.asStateFlow()
 
     fun setUsername(text: String) {
         _username.value = text
@@ -93,7 +93,7 @@ class UserRegisterViewModel @Inject constructor(
                     saveUserUseCase(token = resource.token).launchIn(viewModelScope)
                     _registerStatus.value = Resource.Success("تم التسجيل بنجاح")
                     delay(2000L)
-                    _navigateToHomeActivity.value = true
+                    _navigateToUserActivity.value = true
                 }
 
                 is Resource.Error -> {
