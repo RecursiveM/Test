@@ -19,11 +19,12 @@ import androidx.compose.ui.unit.sp
 import com.ncgr.maqsaf.R
 import com.ncgr.maqsaf.presentation.common.utils.Resource
 import com.ncgr.maqsaf.presentation.serviceProviderRegister.viewModel.ServiceProviderRegisterViewModel
+import com.ncgr.maqsaf.presentation.userRegister.viewModel.UserRegisterViewModel
 import com.ncgr.maqsaf.ui.theme.Blue
 
 @Composable
-fun RegisterDialog(
-    viewModel: ServiceProviderRegisterViewModel,
+fun UserRegisterDialog(
+    viewModel: UserRegisterViewModel,
 ) {
     val registerStatus = viewModel.registerStatus.collectAsState().value
     val openDialog by viewModel.openRegisterDialog.collectAsState()

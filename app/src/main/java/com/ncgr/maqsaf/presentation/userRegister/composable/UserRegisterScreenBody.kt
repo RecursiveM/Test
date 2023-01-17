@@ -25,12 +25,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ncgr.maqsaf.R
 import com.ncgr.maqsaf.presentation.serviceProviderRegister.viewModel.ServiceProviderRegisterViewModel
+import com.ncgr.maqsaf.presentation.userRegister.viewModel.UserRegisterViewModel
 import com.ncgr.maqsaf.ui.theme.Blue
 
 @Composable
-fun RegisterScreenBody(
+fun UserRegisterScreenBody(
     modifier: Modifier = Modifier,
-    viewModel: ServiceProviderRegisterViewModel,
+    viewModel: UserRegisterViewModel,
 ) {
     val username by viewModel.username.collectAsState()
     val phoneNumber by viewModel.phoneNumber.collectAsState()

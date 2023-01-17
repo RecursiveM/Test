@@ -6,7 +6,6 @@ import androidx.lifecycle.viewModelScope
 import com.ncgr.maqsaf.data.model.ApiError
 import com.ncgr.maqsaf.domain.auth.model.UserToken
 import com.ncgr.maqsaf.domain.auth.usecase.AddServiceProviderUseCase
-import com.ncgr.maqsaf.domain.auth.usecase.AddUserUseCase
 import com.ncgr.maqsaf.domain.auth.usecase.RegisterUseCase
 import com.ncgr.maqsaf.domain.auth.usecase.SaveUserUseCase
 import com.ncgr.maqsaf.presentation.common.utils.Resource
@@ -44,7 +43,7 @@ class ServiceProviderRegisterViewModel @Inject constructor(
     val openRegisterDialog = _openRegisterDialog.asStateFlow()
 
     private val _navigateToHomeActivity = MutableStateFlow(false)
-    val navigateToHomeActivity = _navigateToHomeActivity.asStateFlow()
+    val navigateToServiceProviderActivity = _navigateToHomeActivity.asStateFlow()
 
     fun setUsername(text: String) {
         _username.value = text

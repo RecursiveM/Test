@@ -24,6 +24,8 @@ import com.ncgr.maqsaf.presentation.serviceProviderRegister.view.ServiceProvider
 import com.ncgr.maqsaf.presentation.user.view.UserActivity
 import com.ncgr.maqsaf.presentation.userLogin.composable.LoginDialog
 import com.ncgr.maqsaf.presentation.userLogin.composable.LoginScreenBody
+import com.ncgr.maqsaf.presentation.userRegister.view.UserRegisterActivity
+import com.ncgr.maqsaf.presentation.userRegister.viewModel.UserRegisterViewModel
 import com.ncgr.maqsaf.ui.theme.MAQSAFTheme
 import com.ncgr.maqsaf.ui.theme.ScreenBackgroundColor
 import dagger.hilt.android.AndroidEntryPoint
@@ -79,6 +81,6 @@ class UserLoginActivity : AppCompatActivity() {
     }
 
     private fun navigateToRegisterActivity() {
-        startActivity(Intent(this, ServiceProviderRegisterActivity::class.java))
+        startActivity(Intent(this, UserRegisterActivity::class.java))
     }
 }
