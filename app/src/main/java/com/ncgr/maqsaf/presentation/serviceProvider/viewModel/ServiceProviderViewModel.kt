@@ -1,11 +1,10 @@
 package com.ncgr.maqsaf.presentation.serviceProvider.viewModel
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.ncgr.maqsaf.data.remote.model.MenuDtoItem
-import com.ncgr.maqsaf.domain.menu.usecase.DeleteOrderUseCase
-import com.ncgr.maqsaf.domain.menu.usecase.GetAllOrdersUseCase
+import com.ncgr.maqsaf.data.remote.model.OrderListItemDto
+import com.ncgr.maqsaf.domain.order.usecase.DeleteOrderUseCase
+import com.ncgr.maqsaf.domain.order.usecase.GetAllOrdersUseCase
 import com.ncgr.maqsaf.presentation.common.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,17 +19,17 @@ class ServiceProviderViewModel @Inject constructor(
     private val deleteOrderUseCase: DeleteOrderUseCase
 ) : ViewModel() {
 
-    private val _orderList = MutableStateFlow<Resource<List<MenuDtoItem>>>(Resource.Loading())
+    private val _orderList = MutableStateFlow<Resource<List<OrderListItemDto>>>(Resource.Loading())
     val orderList = _orderList.asStateFlow()
 
     private val _finishingOrder = MutableStateFlow(false)
     val finishingOrder = _finishingOrder.asStateFlow()
 
     init {
-        getAllOrders()
+        getOrderList()
     }
 
-    private fun getAllOrders() {
+    private fun getOrderList() {
         getAllOrdersUseCase().onEach { resource ->
             when (resource) {
                 is Resource.Loading -> {
@@ -54,7 +53,7 @@ class ServiceProviderViewModel @Inject constructor(
                 }
                 is Resource.Success -> {
                     _finishingOrder.value = false
-                    getAllOrders()
+                    getOrderList()
                 }
                 is Resource.Error -> {
                     _finishingOrder.value = false
@@ -64,6 +63,6 @@ class ServiceProviderViewModel @Inject constructor(
     }
 
     fun refreshOrders() {
-       getAllOrders()
+       getOrderList()
     }
 }

@@ -4,10 +4,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ncgr.maqsaf.data.model.ApiError
-import com.ncgr.maqsaf.domain.menu.model.Item
-import com.ncgr.maqsaf.domain.menu.usecase.GetItemsUseCase
-import com.ncgr.maqsaf.domain.menu.model.Order
-import com.ncgr.maqsaf.domain.menu.usecase.SendOrderUseCase
+import com.ncgr.maqsaf.domain.auth.usecase.DeleteSavedUserUseCase
+import com.ncgr.maqsaf.domain.auth.usecase.GetUserPreferenceUseCase
+import com.ncgr.maqsaf.domain.auth.usecase.SignOutUseCase
+import com.ncgr.maqsaf.domain.order.model.Item
+import com.ncgr.maqsaf.domain.order.usecase.GetItemsUseCase
+import com.ncgr.maqsaf.domain.order.model.Order
+import com.ncgr.maqsaf.domain.order.usecase.AddOrderUseCase
 import com.ncgr.maqsaf.presentation.common.utils.Resource
 import com.ncgr.maqsaf.ui.theme.Blue
 import com.ncgr.maqsaf.ui.theme.Green
@@ -22,7 +25,10 @@ import javax.inject.Inject
 @HiltViewModel
 class UserViewModel @Inject constructor(
     private val getItemsUseCase: GetItemsUseCase,
-    private val sendOrderUseCase: SendOrderUseCase
+    private val addOrderUseCase: AddOrderUseCase,
+    private val getUserPreferenceUseCase: GetUserPreferenceUseCase,
+    private val signOutUseCase: SignOutUseCase,
+    private val deleteSavedUserUseCase: DeleteSavedUserUseCase,
 ) : ViewModel() {
 
     private val _itemList = MutableSharedFlow<Resource<List<Item>>>()
@@ -49,11 +55,62 @@ class UserViewModel @Inject constructor(
     private val _navigateToOrderDetails = MutableStateFlow(false)
     val navigateToOrderDetails = _navigateToOrderDetails.asStateFlow()
 
+    private val _navigateBackToHome = MutableStateFlow(false)
+    val navigateBackToHome = _navigateBackToHome.asStateFlow()
+
     private val _orderDetails = MutableSharedFlow<Order>()
     val orderDetails = _orderDetails.asSharedFlow()
 
+    lateinit var userToken: String
+
     init {
         getItemList()
+        getUserToken()
+    }
+
+    private fun getUserToken(){
+        getUserPreferenceUseCase().onEach { resource ->
+            when (resource){
+                is Resource.Success -> {
+                    userToken = resource.data.token
+                }
+                else -> {
+
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    fun signOut(){
+        signOutUseCase(userToken).onEach { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+
+                }
+                is Resource.Success -> {
+                    deleteSavedUser()
+                }
+                is Resource.Error -> {
+
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    private fun deleteSavedUser(){
+        deleteSavedUserUseCase().onEach {resource ->
+            when (resource) {
+                is Resource.Loading -> {
+
+                }
+                is Resource.Success -> {
+                    _navigateBackToHome.value = true
+                }
+                is Resource.Error -> {
+
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun getItemList() {
@@ -72,14 +129,14 @@ class UserViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun sendMyOrder() {
+    fun addMyOrder() {
         showOrderDialog()
         if (!checkIfOrderIsReady()) {
             _orderStatus.value = Resource.Error(ApiError(0,"Error sending order"))
             return
         }
 
-        sendOrderUseCase(selectedItem = _selectedItem.value, selectedZoneColor = _selectedZoneColor.value)
+        addOrderUseCase(selectedItem = _selectedItem.value, selectedZoneColor = _selectedZoneColor.value)
             .onEach { resource ->
             when (resource){
                 is Resource.Loading ->{

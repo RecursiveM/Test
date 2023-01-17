@@ -1,7 +1,7 @@
 package com.ncgr.maqsaf.data.remote.model
 
 import com.google.gson.annotations.SerializedName
-import com.ncgr.maqsaf.domain.menu.model.Order
+import com.ncgr.maqsaf.domain.order.model.Order
 
 data class OrderDto(
 

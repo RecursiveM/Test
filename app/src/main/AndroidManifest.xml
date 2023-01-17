@@ -16,6 +16,24 @@
         android:theme="@style/Theme.MAQSAF"
         tools:targetApi="31">
         <activity
+            android:name=".presentation.register.view.RegisterActivity"
+            android:exported="false"
+            android:label="@string/title_activity_register"
+            android:theme="@style/Theme.MAQSAF.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".presentation.login.view.LoginActivity"
+            android:exported="false"
+            android:label="@string/title_activity_login"
+            android:theme="@style/Theme.MAQSAF">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
             android:name=".presentation.orderDetails.view.OrderDetailsActivity"
             android:exported="false">
             <meta-data

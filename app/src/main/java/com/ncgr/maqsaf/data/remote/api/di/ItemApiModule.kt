@@ -1,6 +1,6 @@
 package com.ncgr.maqsaf.data.remote.api.di
 
-import com.ncgr.maqsaf.data.remote.api.ItemApi
+import com.ncgr.maqsaf.data.remote.api.item.ItemApi
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

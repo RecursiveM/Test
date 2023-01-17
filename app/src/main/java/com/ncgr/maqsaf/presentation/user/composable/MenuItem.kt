@@ -15,7 +15,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
-import com.ncgr.maqsaf.domain.menu.model.Item
+import com.ncgr.maqsaf.domain.order.model.Item
 import com.ncgr.maqsaf.presentation.user.viewModel.UserViewModel
 
 @Composable

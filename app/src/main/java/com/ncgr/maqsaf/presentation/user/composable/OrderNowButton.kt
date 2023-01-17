@@ -38,7 +38,7 @@ fun OrderNowButton(
                 .fillMaxSize()
                 .background(Green)
                 .clickable {
-                    viewModel.sendMyOrder()
+                    viewModel.addMyOrder()
                 }
                 .border(BorderStroke(2.dp, Color.Black))
         ) {
