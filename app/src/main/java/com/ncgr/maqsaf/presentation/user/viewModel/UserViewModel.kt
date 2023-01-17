@@ -61,7 +61,7 @@ class UserViewModel @Inject constructor(
     private val _orderDetails = MutableSharedFlow<Order>()
     val orderDetails = _orderDetails.asSharedFlow()
 
-    lateinit var userToken: String
+    private lateinit var userToken: String
 
     init {
         getItemList()

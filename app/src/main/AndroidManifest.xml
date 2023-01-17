@@ -16,7 +16,7 @@
         android:theme="@style/Theme.MAQSAF"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.register.view.RegisterActivity"
+            android:name=".presentation.serviceProviderRegister.view.ServiceProviderRegisterActivity"
             android:exported="false"
             android:label="@string/title_activity_register"
             android:theme="@style/Theme.MAQSAF.NoActionBar">
@@ -25,7 +25,25 @@
                 android:value="" />
         </activity>
         <activity
-            android:name=".presentation.login.view.LoginActivity"
+            android:name=".presentation.serviceProviderLogin.view.ServiceProviderLoginActivity"
+            android:exported="false"
+            android:label="@string/title_activity_register"
+            android:theme="@style/Theme.MAQSAF.NoActionBar">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".presentation.userLogin.view.UserLoginActivity"
+            android:exported="false"
+            android:label="@string/title_activity_login"
+            android:theme="@style/Theme.MAQSAF">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
+        <activity
+            android:name=".presentation.userRegister.view.UserRegisterActivity"
             android:exported="false"
             android:label="@string/title_activity_login"
             android:theme="@style/Theme.MAQSAF">

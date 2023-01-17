@@ -55,11 +55,12 @@ class UserActivity : AppCompatActivity() {
         val zoneColorSelectionError by viewModel.zoneColorSelectionError.collectAsState()
         val orderStatus by viewModel.orderStatus.collectAsState()
         val showOrderDialog by viewModel.showOrderDialog.collectAsState()
-        val navigateToOrderDetailsActivity by viewModel.navigateToOrderDetails.collectAsState()
-        val navigateBackToHome by viewModel.navigateBackToHome.collectAsState()
         val orderDetails by viewModel.orderDetails.collectAsState(Order("",0,"",false))
 
+        val navigateToOrderDetailsActivity by viewModel.navigateToOrderDetails.collectAsState()
         if (navigateToOrderDetailsActivity) navigateToOrderDetailsActivity(orderDetails = orderDetails)
+
+        val navigateBackToHome by viewModel.navigateBackToHome.collectAsState()
         if (navigateBackToHome) navigateBackToHome()
 
         Scaffold(

@@ -1,4 +1,4 @@
-package com.ncgr.maqsaf.presentation.register.composable
+package com.ncgr.maqsaf.presentation.userLogin.composable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -18,22 +18,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ncgr.maqsaf.R
 import com.ncgr.maqsaf.presentation.common.utils.Resource
-import com.ncgr.maqsaf.presentation.register.viewModel.RegisterViewModel
+import com.ncgr.maqsaf.presentation.userLogin.viewModel.UserLoginViewModel
 import com.ncgr.maqsaf.ui.theme.Blue
 
 @Composable
-fun RegisterDialog(
-    viewModel: RegisterViewModel,
+fun LoginDialog(
+    viewModel: UserLoginViewModel,
 ) {
-    val registerStatus = viewModel.registerStatus.collectAsState().value
-    val openDialog by viewModel.openRegisterDialog.collectAsState()
-    val usernameError by viewModel.usernameError.collectAsState()
+    val loginStatus = viewModel.loginStatus.collectAsState().value
+    val openDialog by viewModel.openLoginDialog.collectAsState()
     val phoneNumberError by viewModel.phoneNumberError.collectAsState()
     val passwordTextError by viewModel.passwordTextError.collectAsState()
 
     if (!openDialog) return
 
-    when (registerStatus) {
+    when (loginStatus) {
         is Resource.Loading -> {
             AlertDialog(
                 onDismissRequest = {
@@ -71,7 +70,7 @@ fun RegisterDialog(
                         modifier = Modifier.fillMaxWidth(),
                         contentAlignment = Alignment.Center
                     ) {
-                        Text(text = "نجح التسجيل")
+                        Text(text = "نجح تسجيل الدخول")
                     }
                 },
                 text = {
@@ -80,7 +79,7 @@ fun RegisterDialog(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = registerStatus.data,
+                            text = loginStatus.data,
                             fontSize = 20.sp,
                             modifier = Modifier.fillMaxWidth(),
                             textAlign = TextAlign.Center
@@ -91,7 +90,7 @@ fun RegisterDialog(
             )
         }
         is Resource.Error -> {
-            if (registerStatus.apiError.errorMessage == "Error form submission") {
+            if (loginStatus.apiError.errorMessage == "Error form submission") {
                 AlertDialog(
                     onDismissRequest = {
                         viewModel.closeRegisterDialog()
@@ -115,7 +114,7 @@ fun RegisterDialog(
                             modifier = Modifier.fillMaxWidth(),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(text = "${usernameError ?: ""}\n${phoneNumberError ?: ""}\n${passwordTextError ?: ""}", textAlign = TextAlign.End)
+                            Text(text = "${phoneNumberError ?: ""}\n${passwordTextError ?: ""}", textAlign = TextAlign.End)
                         }
                     },
                     buttons = {}
@@ -144,7 +143,7 @@ fun RegisterDialog(
                             modifier = Modifier.fillMaxWidth(),
                             contentAlignment = Alignment.Center
                         ) {
-                            Text(text = registerStatus.apiError.errorMessage)
+                            Text(text = loginStatus.apiError.errorMessage)
                         }
                     },
                     buttons = {}
