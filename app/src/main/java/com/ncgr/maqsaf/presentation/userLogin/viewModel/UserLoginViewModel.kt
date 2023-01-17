@@ -1,4 +1,4 @@
-package com.ncgr.maqsaf.presentation.login.viewModel
+package com.ncgr.maqsaf.presentation.userLogin.viewModel
 
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @HiltViewModel
-class LoginViewModel @Inject constructor(
+class UserLoginViewModel @Inject constructor(
     private val saveUserUseCase: SaveUserUseCase,
     private val loginUseCase: LoginUseCase,
 ) : ViewModel() {

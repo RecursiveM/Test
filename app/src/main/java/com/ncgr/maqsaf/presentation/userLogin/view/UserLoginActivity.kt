@@ -1,4 +1,4 @@
-package com.ncgr.maqsaf.presentation.login.view
+package com.ncgr.maqsaf.presentation.userLogin.view
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -17,19 +17,21 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.ncgr.maqsaf.presentation.common.composable.AppBar
-import com.ncgr.maqsaf.presentation.login.composable.LoginDialog
-import com.ncgr.maqsaf.presentation.login.viewModel.LoginViewModel
-import com.ncgr.maqsaf.presentation.login.composable.LoginScreenBody
-import com.ncgr.maqsaf.presentation.register.view.RegisterActivity
+import com.ncgr.maqsaf.presentation.serviceProviderLogin.composable.ServiceProviderLoginDialog
+import com.ncgr.maqsaf.presentation.userLogin.viewModel.UserLoginViewModel
+import com.ncgr.maqsaf.presentation.serviceProviderLogin.composable.ServiceProviderLoginScreenBody
+import com.ncgr.maqsaf.presentation.serviceProviderRegister.view.ServiceProviderRegisterActivity
 import com.ncgr.maqsaf.presentation.user.view.UserActivity
+import com.ncgr.maqsaf.presentation.userLogin.composable.LoginDialog
+import com.ncgr.maqsaf.presentation.userLogin.composable.LoginScreenBody
 import com.ncgr.maqsaf.ui.theme.MAQSAFTheme
 import com.ncgr.maqsaf.ui.theme.ScreenBackgroundColor
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class LoginActivity : AppCompatActivity() {
+class UserLoginActivity : AppCompatActivity() {
 
-    private val viewModel: LoginViewModel by viewModels()
+    private val viewModel: UserLoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,6 +79,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun navigateToRegisterActivity() {
-        startActivity(Intent(this, RegisterActivity::class.java))
+        startActivity(Intent(this, ServiceProviderRegisterActivity::class.java))
     }
 }

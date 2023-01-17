@@ -47,4 +47,37 @@ class UserRepositoryImp(
             emit(Resource.Error(ApiError(0, "Something went wrong")))
         }
     }
+    override fun addServiceProvider(uid: String, username: String): Flow<Resource<Boolean>> = flow {
+        emit(Resource.Loading())
+        try {
+            val response = userApi.addUser(AddUser(uid, username,isProvider = true))
+            Log.d("TEST", response.toString())
+            if (response.isSuccessful) {
+                emit(Resource.Success(true))
+            } else {
+                emit(
+                    Resource.Error(
+                        ApiError(
+                            response.code(),
+                            response.message(),
+                        )
+                    )
+                )
+            }
+        } catch (e: HttpException) {
+            emit(Resource.Error(ApiError(e.code(), e.toString())))
+        } catch (e: IOException) {
+            emit(
+                Resource.Error(
+                    ApiError(
+                        e.hashCode(),
+                        "Please check your internet connection and try again"
+                    )
+                )
+            )
+        } catch (e: Exception) {
+            emit(Resource.Error(ApiError(0, "Something went wrong")))
+        }
+    }
+
 }

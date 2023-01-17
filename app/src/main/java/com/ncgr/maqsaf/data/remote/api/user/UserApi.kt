@@ -6,7 +6,6 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface UserApi {
-
     @POST("rest/v1/User")
     suspend fun addUser(@Body body: AddUser): Response<Void>
 }

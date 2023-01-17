@@ -1,4 +1,4 @@
-package com.ncgr.maqsaf.presentation.login.composable
+package com.ncgr.maqsaf.presentation.userLogin.composable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,13 +24,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ncgr.maqsaf.R
-import com.ncgr.maqsaf.presentation.login.viewModel.LoginViewModel
+import com.ncgr.maqsaf.presentation.userLogin.viewModel.UserLoginViewModel
 import com.ncgr.maqsaf.ui.theme.Blue
 
 @Composable
 fun LoginScreenBody(
     modifier: Modifier = Modifier,
-    viewModel: LoginViewModel,
+    viewModel: UserLoginViewModel,
     navigateToRegisterActivity : () -> Unit,
 ) {
     val phoneNumber by viewModel.phoneNumber.collectAsState()

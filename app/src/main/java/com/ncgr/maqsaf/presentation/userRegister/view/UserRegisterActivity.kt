@@ -1,4 +1,4 @@
-package com.ncgr.maqsaf.presentation.register.view
+package com.ncgr.maqsaf.presentation.userRegister.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -17,19 +17,18 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.ncgr.maqsaf.presentation.common.composable.AppBar
-import com.ncgr.maqsaf.presentation.home.view.HomeActivity
-import com.ncgr.maqsaf.presentation.register.composable.RegisterDialog
-import com.ncgr.maqsaf.presentation.register.composable.RegisterScreenBody
-import com.ncgr.maqsaf.presentation.register.viewModel.RegisterViewModel
+import com.ncgr.maqsaf.presentation.serviceProviderRegister.composable.RegisterDialog
+import com.ncgr.maqsaf.presentation.serviceProviderRegister.composable.RegisterScreenBody
+import com.ncgr.maqsaf.presentation.serviceProviderRegister.viewModel.ServiceProviderRegisterViewModel
 import com.ncgr.maqsaf.presentation.user.view.UserActivity
 import com.ncgr.maqsaf.ui.theme.MAQSAFTheme
 import com.ncgr.maqsaf.ui.theme.ScreenBackgroundColor
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class RegisterActivity : AppCompatActivity() {
+class UserRegisterActivity : AppCompatActivity() {
 
-    private val viewModel: RegisterViewModel by viewModels()
+    private val viewModel: ServiceProviderRegisterViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

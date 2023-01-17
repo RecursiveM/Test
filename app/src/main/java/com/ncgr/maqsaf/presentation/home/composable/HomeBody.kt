@@ -18,7 +18,8 @@ import com.ncgr.maqsaf.ui.theme.HomeWelcome
 fun HomeBody(
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel,
-    navigateToUserActivity: () -> Unit,
+    navigateToUserLoginActivity: () -> Unit,
+    navigateToServiceProviderLoginActivity: () -> Unit,
 ) {
     Box(
         modifier = modifier.fillMaxSize()
@@ -43,7 +44,7 @@ fun HomeBody(
                     .padding(20.dp)
             ) {
                 NavigationButton(title = ContinueAsUser,
-                    onClick = { navigateToUserActivity() })
+                    onClick = { navigateToUserLoginActivity() })
             }
             Box(
                 modifier = Modifier
@@ -52,7 +53,7 @@ fun HomeBody(
                     .padding(20.dp)
             ) {
                 NavigationButton(title = ContinueAsServiceProvider,
-                    onClick = { viewModel.openDialog() })
+                    onClick = {navigateToServiceProviderLoginActivity()})
             }
 
         }

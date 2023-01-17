@@ -3,6 +3,9 @@ package com.ncgr.maqsaf.presentation.serviceProvider.viewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ncgr.maqsaf.data.remote.model.OrderListItemDto
+import com.ncgr.maqsaf.domain.auth.usecase.DeleteSavedUserUseCase
+import com.ncgr.maqsaf.domain.auth.usecase.GetUserPreferenceUseCase
+import com.ncgr.maqsaf.domain.auth.usecase.SignOutUseCase
 import com.ncgr.maqsaf.domain.order.usecase.DeleteOrderUseCase
 import com.ncgr.maqsaf.domain.order.usecase.GetAllOrdersUseCase
 import com.ncgr.maqsaf.presentation.common.utils.Resource
@@ -16,7 +19,10 @@ import javax.inject.Inject
 @HiltViewModel
 class ServiceProviderViewModel @Inject constructor(
     private val getAllOrdersUseCase: GetAllOrdersUseCase,
-    private val deleteOrderUseCase: DeleteOrderUseCase
+    private val deleteOrderUseCase: DeleteOrderUseCase,
+    private val signOutUseCase: SignOutUseCase,
+    private val deleteSavedUserUseCase: DeleteSavedUserUseCase,
+    private val getUserPreferenceUseCase: GetUserPreferenceUseCase,
 ) : ViewModel() {
 
     private val _orderList = MutableStateFlow<Resource<List<OrderListItemDto>>>(Resource.Loading())
@@ -25,8 +31,59 @@ class ServiceProviderViewModel @Inject constructor(
     private val _finishingOrder = MutableStateFlow(false)
     val finishingOrder = _finishingOrder.asStateFlow()
 
+    private val _navigateBackToHome = MutableStateFlow(false)
+    val navigateBackToHome = _navigateBackToHome.asStateFlow()
+
+    private lateinit var userToken: String
+
     init {
         getOrderList()
+        getUserToken()
+    }
+
+    private fun getUserToken(){
+        getUserPreferenceUseCase().onEach { resource ->
+            when (resource){
+                is Resource.Success -> {
+                    userToken = resource.data.token
+                }
+                else -> {
+
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    fun signOut(){
+        signOutUseCase(userToken).onEach { resource ->
+            when (resource) {
+                is Resource.Loading -> {
+
+                }
+                is Resource.Success -> {
+                    deleteSavedUser()
+                }
+                is Resource.Error -> {
+
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+    private fun deleteSavedUser(){
+        deleteSavedUserUseCase().onEach {resource ->
+            when (resource) {
+                is Resource.Loading -> {
+
+                }
+                is Resource.Success -> {
+                    _navigateBackToHome.value = true
+                }
+                is Resource.Error -> {
+
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     private fun getOrderList() {

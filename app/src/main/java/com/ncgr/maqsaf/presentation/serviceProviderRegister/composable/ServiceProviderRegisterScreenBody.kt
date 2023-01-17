@@ -1,4 +1,4 @@
-package com.ncgr.maqsaf.presentation.register.composable
+package com.ncgr.maqsaf.presentation.serviceProviderRegister.composable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -24,13 +24,13 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ncgr.maqsaf.R
-import com.ncgr.maqsaf.presentation.register.viewModel.RegisterViewModel
+import com.ncgr.maqsaf.presentation.serviceProviderRegister.viewModel.ServiceProviderRegisterViewModel
 import com.ncgr.maqsaf.ui.theme.Blue
 
 @Composable
 fun RegisterScreenBody(
     modifier: Modifier = Modifier,
-    viewModel: RegisterViewModel,
+    viewModel: ServiceProviderRegisterViewModel,
 ) {
     val username by viewModel.username.collectAsState()
     val phoneNumber by viewModel.phoneNumber.collectAsState()

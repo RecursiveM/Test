@@ -12,16 +12,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.ncgr.maqsaf.presentation.common.composable.AppBar
-import com.ncgr.maqsaf.presentation.home.composable.CustomAlertDialog
 import com.ncgr.maqsaf.presentation.home.composable.HomeBody
 import com.ncgr.maqsaf.presentation.home.viewModel.HomeViewModel
-import com.ncgr.maqsaf.presentation.login.view.LoginActivity
-import com.ncgr.maqsaf.presentation.register.view.RegisterActivity
-import com.ncgr.maqsaf.presentation.serviceProvider.view.ServiceProviderActivity
+import com.ncgr.maqsaf.presentation.userLogin.view.UserLoginActivity
+import com.ncgr.maqsaf.presentation.serviceProviderLogin.view.ServiceProviderLoginActivity
 import com.ncgr.maqsaf.ui.theme.MAQSAFTheme
 import com.ncgr.maqsaf.ui.theme.ScreenBackgroundColor
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,9 +32,6 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MAQSAFTheme {
-                val openDialog = viewModel.openDialog.collectAsState()
-                if (openDialog.value) CustomAlertDialog(viewModel = viewModel) { navigateToServiceProviderActivity() }
-
                 HomeScreen()
             }
         }
@@ -62,17 +56,19 @@ class HomeActivity : AppCompatActivity() {
                 AppBar()
                 HomeBody(
                     viewModel = viewModel,
-                    navigateToUserActivity = { navigateToLoginActivity() })
+                    navigateToUserLoginActivity = { navigateToLoginActivity() },
+                navigateToServiceProviderLoginActivity = {navigateToServiceProviderLoginActivity()},
+                )
             }
         }
     }
 
     private fun navigateToLoginActivity() {
-        startActivity(Intent(this, LoginActivity::class.java))
+        startActivity(Intent(this, UserLoginActivity::class.java))
     }
 
-    private fun navigateToServiceProviderActivity() {
-        startActivity(Intent(this, ServiceProviderActivity::class.java))
+    private fun navigateToServiceProviderLoginActivity() {
+        startActivity(Intent(this, ServiceProviderLoginActivity::class.java))
     }
 
 }

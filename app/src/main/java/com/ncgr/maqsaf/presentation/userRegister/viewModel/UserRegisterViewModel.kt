@@ -1,4 +1,4 @@
-package com.ncgr.maqsaf.presentation.register.viewModel
+package com.ncgr.maqsaf.presentation.userRegister.viewModel
 
 import android.util.Patterns
 import androidx.lifecycle.ViewModel
@@ -15,7 +15,7 @@ import kotlinx.coroutines.flow.*
 import javax.inject.Inject
 
 @HiltViewModel
-class RegisterViewModel @Inject constructor(
+class UserRegisterViewModel @Inject constructor(
     private val registerUseCase: RegisterUseCase,
     private val addUserUseCase: AddUserUseCase,
     private val saveUserUseCase: SaveUserUseCase,
