@@ -90,7 +90,7 @@ class UserRegisterViewModel @Inject constructor(
                 }
 
                 is Resource.Success -> {
-                    saveUserUseCase(token = resource.token).launchIn(viewModelScope)
+                    saveUserUseCase(token = resource.token, uid = resource.user.id).launchIn(viewModelScope)
                     _registerStatus.value = Resource.Success("تم التسجيل بنجاح")
                     delay(2000L)
                     _navigateToUserActivity.value = true
@@ -118,10 +118,8 @@ class UserRegisterViewModel @Inject constructor(
             openRegisterDialog()
             isValid = false
         }
-        if (_phoneNumber.value.isNullOrEmpty() || !Patterns.PHONE.matcher(_phoneNumber.value!!)
-                .matches()
-        ) {
-            _phoneNumberError.value = "الرجاء كتابة رقم جوال صحيح"
+        if (_phoneNumber.value.isNullOrEmpty() || _phoneNumber.value!!.length != 6) {
+            _phoneNumberError.value = "الرجاء كتابة الرقم الوظيفي بشكل صحيح ويتكون من 6 ارقام"
             openRegisterDialog()
             isValid = false
 

@@ -5,7 +5,7 @@ import com.ncgr.maqsaf.presentation.common.utils.Resource
 import kotlinx.coroutines.flow.Flow
 
 interface SharedPreferenceRepository {
-    fun saveUser(token: String): Flow<Resource<Boolean>>
+    fun saveUser(token: String,uid:String,selectedZoneColor:String): Flow<Resource<Boolean>>
     fun deleteSavedUser(): Flow<Resource<Boolean>>
-    fun getUserPreference(): Flow<Resource<UserPreference>>
+    fun getSavedUser(): Flow<Resource<UserPreference>>
 }

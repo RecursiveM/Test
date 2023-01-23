@@ -42,8 +42,7 @@ fun ServiceProviderBody(
 
             OrderLazyColumn(
                 modifier = Modifier
-                    .weight(1f)
-                    .wrapContentSize(),
+                    .weight(1f),
                 viewModel = viewModel
             )
         }

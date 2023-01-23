@@ -6,10 +6,11 @@ import com.ncgr.maqsaf.data.remote.api.order.body.AddOrder
 import com.ncgr.maqsaf.data.model.ApiError
 import com.ncgr.maqsaf.data.remote.api.item.ItemApi
 import com.ncgr.maqsaf.data.remote.api.order.OrderApi
+import com.ncgr.maqsaf.data.remote.api.order.body.ChangeOrderState
 import com.ncgr.maqsaf.data.remote.model.OrderListItemDto
-import com.ncgr.maqsaf.data.utils.ItemIdsConstants
 import com.ncgr.maqsaf.domain.order.model.Order
 import com.ncgr.maqsaf.domain.order.repository.OrderRepository
+import com.ncgr.maqsaf.domain.order.utils.OrderState
 import com.ncgr.maqsaf.presentation.common.utils.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -50,7 +51,13 @@ class OrderRepositoryImp(
     override fun getMyOrder(uid: String): Flow<Resource<List<Order>>> = flow {
         emit(Resource.Loading())
         try {
-            TODO("Will be Updated When We have account")
+            val response = orderApi.getMyOrder("eq.$uid")
+            if (response.isSuccessful) {
+                val orderList = response.body()!!.map { it.toOrder() }
+                emit(Resource.Success(orderList))
+            }else{
+                emit(Resource.Error(ApiError(response.code(), response.message())))
+            }
         } catch (e: HttpException) {
             emit(Resource.Error(ApiError(e.code(), e.message())))
         } catch (e: IOException) {
@@ -68,28 +75,30 @@ class OrderRepositoryImp(
     }
 
     override fun addOrder(
-        selectedItem: String,
-        selectedZoneColor: String
+        selectedItems: List<AddItem>,
+        selectedZoneColor: String,
+        uid: String,
     ): Flow<Resource<Order>> = flow {
         emit(Resource.Loading())
         try {
-            val orderResponse = orderApi.addOrder(AddOrder(selectedZoneColor))
+            val orderResponse = orderApi.addOrder(AddOrder(selectedZoneColor,uid))
             Log.d("TEST", orderResponse.toString())
             if (orderResponse.isSuccessful) {
-                val orderId = orderApi.getMyOrder()
+                val orderId = orderApi.getMyOrder("eq.$uid")
                 Log.d("TEST", orderId.toString())
                 if (orderId.isSuccessful) {
-                    val itemResponse = itemApi.addItem(
-                        AddItem(
+                    for (item in selectedItems){
+                        val forAddingItem = AddItem(
                             orderId.body()!![0].id,
-                            when (selectedItem) {
-                                "tea" -> ItemIdsConstants.TEA
-                                "water" -> ItemIdsConstants.WATER
-                                else -> ItemIdsConstants.COFFEE
-                            }
+                           item.item_id,
+                            item.type,
+                            item.withMilk,
+                            item.sugar_amount,
                         )
-                    )
-                    Log.d("TEST", itemResponse.toString())
+                        Log.d("TEST", selectedItems.toString())
+                        val itemResponse = itemApi.addItem(forAddingItem)
+                        Log.d("TEST", itemResponse.toString())
+                    }
                     emit(Resource.Success(orderId.body()!![0].toOrder()))
                 }
 
@@ -110,10 +119,13 @@ class OrderRepositoryImp(
         }
     }
 
-    override fun finishOrder(orderUid: String): Flow<Resource<Boolean>> = flow {
+    override fun changeOrderState(orderUid: String, orderState: OrderState): Flow<Resource<Boolean>> = flow {
         emit(Resource.Loading())
         try {
-            val response = orderApi.deleteOrder("eq.$orderUid")
+            val response = orderApi.changeOrderState(
+                "eq.$orderUid",
+                ChangeOrderState(orderState.name)
+            )
             if (response.isSuccessful)
                 emit(Resource.Success(true))
         } catch (e: HttpException) {

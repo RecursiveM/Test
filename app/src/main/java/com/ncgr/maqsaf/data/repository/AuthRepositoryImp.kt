@@ -27,14 +27,24 @@ class AuthRepositoryImp(
                 val userToken = response.body()!!.toUserToken()
                 emit(Resource.Success(userToken))
             } else {
-                emit(
-                    Resource.Error(
-                        ApiError(
-                            response.code(),
-                            "تاكد من اضافة رمز المنطقة للرقم"
+                if (response.code() == 400)
+                    emit(
+                        Resource.Error(
+                            ApiError(
+                                response.code(),
+                                "Account already registered"
+                            )
                         )
                     )
-                )
+                else if (response.code() == 422)
+                    emit(
+                        Resource.Error(
+                            ApiError(
+                                response.code(),
+                                "Please make sure your employee ID is valid"
+                            )
+                        )
+                    )
             }
         } catch (e: HttpException) {
             emit(Resource.Error(ApiError(e.code(), e.toString())))
@@ -52,41 +62,42 @@ class AuthRepositoryImp(
         }
     }
 
-    override fun loginWithPhoneNumber(phone: String, password: String): Flow<Resource<UserToken>> = flow {
-        emit(Resource.Loading())
-        try {
-            val response = authApi.loginWithPhoneNumber(AuthWithPhoneNumber(phone, password))
-            Log.d("TEST", response.toString())
-            if (response.isSuccessful) {
-                val userToken = response.body()!!.toUserToken()
-                emit(Resource.Success(userToken))
-            } else {
+    override fun loginWithPhoneNumber(phone: String, password: String): Flow<Resource<UserToken>> =
+        flow {
+            emit(Resource.Loading())
+            try {
+                val response = authApi.loginWithPhoneNumber(AuthWithPhoneNumber(phone, password))
+                Log.d("TEST", response.toString())
+                if (response.isSuccessful) {
+                    val userToken = response.body()!!.toUserToken()
+                    emit(Resource.Success(userToken))
+                } else {
+                    emit(
+                        Resource.Error(
+                            ApiError(
+                                response.code(),
+                                "Username or password is invalid"
+                            )
+                        )
+                    )
+                }
+            } catch (e: HttpException) {
+                emit(Resource.Error(ApiError(e.code(), e.toString())))
+            } catch (e: IOException) {
                 emit(
                     Resource.Error(
                         ApiError(
-                            response.code(),
-                            "تاكد من اضافة رمز المنطقة للرقم"
+                            e.hashCode(),
+                            "Please check your internet connection and try again"
                         )
                     )
                 )
+            } catch (e: Exception) {
+                emit(Resource.Error(ApiError(0, "Something went wrong")))
             }
-        } catch (e: HttpException) {
-            emit(Resource.Error(ApiError(e.code(), e.toString())))
-        } catch (e: IOException) {
-            emit(
-                Resource.Error(
-                    ApiError(
-                        e.hashCode(),
-                        "Please check your internet connection and try again"
-                    )
-                )
-            )
-        } catch (e: Exception) {
-            emit(Resource.Error(ApiError(0, "Something went wrong")))
         }
-    }
 
-    override fun signOut(token:String): Flow<Resource<Boolean>> = flow {
+    override fun signOut(token: String): Flow<Resource<Boolean>> = flow {
         emit(Resource.Loading())
         try {
             val response = authApi.signOut("Bearer $token")

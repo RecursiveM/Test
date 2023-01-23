@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ncgr.maqsaf.data.model.ApiError
 import com.ncgr.maqsaf.domain.auth.model.UserToken
+import com.ncgr.maqsaf.domain.auth.usecase.GetUserUseCase
 import com.ncgr.maqsaf.domain.auth.usecase.LoginUseCase
 import com.ncgr.maqsaf.domain.auth.usecase.SaveUserUseCase
 import com.ncgr.maqsaf.presentation.common.utils.Resource
@@ -17,6 +18,7 @@ import javax.inject.Inject
 class ServiceProviderLoginViewModel @Inject constructor(
     private val saveUserUseCase: SaveUserUseCase,
     private val loginUseCase: LoginUseCase,
+    private val getUserUseCase: GetUserUseCase,
 ) : ViewModel() {
 
     private val _phoneNumber = MutableStateFlow<String?>(null)
@@ -58,7 +60,7 @@ class ServiceProviderLoginViewModel @Inject constructor(
                 }
 
                 is Resource.Success -> {
-                    saveUserWhenSuccess(resource.data)
+                    checkUserRole(resource.data)
                 }
 
                 is Resource.Error -> {
@@ -70,16 +72,41 @@ class ServiceProviderLoginViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun saveUserWhenSuccess(resource: UserToken) {
-
-        saveUserUseCase(token = resource.token).onEach {
+    private fun checkUserRole(resource: UserToken) {
+        getUserUseCase(resource.user.id).onEach {
             when (it) {
                 is Resource.Loading -> {
 
                 }
 
                 is Resource.Success -> {
-                    _loginStatus.value = Resource.Success("تم تسجيل الدخول")
+                    if (!it.data.isProvider) {
+                        _loginStatus.value = Resource.Error(ApiError(0,"This account is not a service provider, please go to user login page to continue\nالحساب مسجل كمستخدم قم بالتسجيل كمستخدم"))
+                        _openLoginDialog.value = true
+                    } else {
+                        saveUserWhenSuccess(resource = resource)
+                    }
+                }
+
+                is Resource.Error -> {
+                    _loginStatus.value = Resource.Error(it.apiError)
+                    _openLoginDialog.value = true
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
+
+    private fun saveUserWhenSuccess(resource: UserToken) {
+
+        saveUserUseCase(token = resource.token, uid = resource.user.id).onEach {
+            when (it) {
+                is Resource.Loading -> {
+
+                }
+
+                is Resource.Success -> {
+                    _loginStatus.value = Resource.Success("Signed in successfully")
                     delay(2000L)
                     _navigateToUserActivity.value = true
                 }
@@ -100,16 +127,13 @@ class ServiceProviderLoginViewModel @Inject constructor(
         _phoneNumberError.value = null
         _passwordTextError.value = null
 
-        if (_phoneNumber.value.isNullOrEmpty() || !Patterns.PHONE.matcher(_phoneNumber.value!!)
-                .matches()
-        ) {
-            _phoneNumberError.value = "الرجاء كتابة رقم جوال صحيح"
+        if (_phoneNumber.value.isNullOrEmpty() || _phoneNumber.value!!.length != 6) {
+            _phoneNumberError.value = "Your employee ID must be 6 characters"
             openLoginDialog()
             isValid = false
-
         }
         if (_passwordText.value.isNullOrEmpty() || _passwordText.value!!.length <= 5) {
-            _passwordTextError.value = "يجب ان تكون كلمه المرور 6 حقول فاكثر"
+            _passwordTextError.value = "Your password must be at least 6 characters"
             openLoginDialog()
             isValid = false
         }

@@ -28,9 +28,6 @@ class OrderDetailsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            viewModel.changeZoneColor(intent.getStringExtra("Zone Color")!!)
-            viewModel.changeOrderNumber(intent.getIntExtra("Order Number", 0))
-
             MAQSAFTheme {
                 OrderDetailsScreen()
             }

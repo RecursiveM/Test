@@ -1,16 +1,19 @@
 package com.ncgr.maqsaf.presentation.user.viewModel
 
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ncgr.maqsaf.data.model.ApiError
+import com.ncgr.maqsaf.data.remote.api.item.body.AddItem
 import com.ncgr.maqsaf.domain.auth.usecase.DeleteSavedUserUseCase
-import com.ncgr.maqsaf.domain.auth.usecase.GetUserPreferenceUseCase
+import com.ncgr.maqsaf.domain.auth.usecase.GetSavedUserUseCase
+import com.ncgr.maqsaf.domain.auth.usecase.SaveUserUseCase
 import com.ncgr.maqsaf.domain.auth.usecase.SignOutUseCase
 import com.ncgr.maqsaf.domain.order.model.Item
-import com.ncgr.maqsaf.domain.order.usecase.GetItemsUseCase
 import com.ncgr.maqsaf.domain.order.model.Order
 import com.ncgr.maqsaf.domain.order.usecase.AddOrderUseCase
+import com.ncgr.maqsaf.domain.order.usecase.GetItemsUseCase
 import com.ncgr.maqsaf.presentation.common.utils.Resource
 import com.ncgr.maqsaf.ui.theme.Blue
 import com.ncgr.maqsaf.ui.theme.Green
@@ -26,9 +29,10 @@ import javax.inject.Inject
 class UserViewModel @Inject constructor(
     private val getItemsUseCase: GetItemsUseCase,
     private val addOrderUseCase: AddOrderUseCase,
-    private val getUserPreferenceUseCase: GetUserPreferenceUseCase,
+    private val getSavedUserUseCase: GetSavedUserUseCase,
     private val signOutUseCase: SignOutUseCase,
     private val deleteSavedUserUseCase: DeleteSavedUserUseCase,
+    private val saveUserUseCase: SaveUserUseCase,
 ) : ViewModel() {
 
     private val _itemList = MutableSharedFlow<Resource<List<Item>>>()
@@ -37,8 +41,8 @@ class UserViewModel @Inject constructor(
     private val _selectedZoneColor = MutableStateFlow("")
     val selectedZoneColor = _selectedZoneColor.asStateFlow()
 
-    private val _selectedItem = MutableStateFlow("")
-    val selectedItem = _selectedItem.asStateFlow()
+    private val _selectedItems = MutableStateFlow<SnapshotStateList<AddItem>>(SnapshotStateList())
+    val selectedItems: StateFlow<SnapshotStateList<AddItem>> = _selectedItems.asStateFlow()
 
     private val _itemSelectionError = MutableStateFlow<String?>(null)
     val itemSelectionError = _itemSelectionError.asStateFlow()
@@ -61,18 +65,39 @@ class UserViewModel @Inject constructor(
     private val _orderDetails = MutableSharedFlow<Order>()
     val orderDetails = _orderDetails.asSharedFlow()
 
+    private val _openItemDetails = MutableStateFlow(false)
+    val openItemDetails = _openItemDetails.asStateFlow()
+
+    private val _itemDetails = MutableStateFlow("")
+    val itemDetails = _itemDetails.asStateFlow()
+
+    private val _drinkType = MutableStateFlow("")
+    val drinkType = _drinkType.asStateFlow()
+
+    private val _withMilk = MutableStateFlow(false)
+    val withMilk = _withMilk.asStateFlow()
+
+    private val _sugarAmount = MutableStateFlow(0)
+    val sugarAmount = _sugarAmount.asStateFlow()
+
+    private val _showItemDetailsDialogError = MutableStateFlow(false)
+    val showItemDetailsDialogError = _showItemDetailsDialogError.asStateFlow()
+
     private lateinit var userToken: String
+    private lateinit var userId: String
 
     init {
         getItemList()
         getUserToken()
     }
 
-    private fun getUserToken(){
-        getUserPreferenceUseCase().onEach { resource ->
-            when (resource){
+    private fun getUserToken() {
+        getSavedUserUseCase().onEach { resource ->
+            when (resource) {
                 is Resource.Success -> {
                     userToken = resource.data.token
+                    userId = resource.data.uid
+                    _selectedZoneColor.value = resource.data.ZoneColor
                 }
                 else -> {
 
@@ -81,29 +106,32 @@ class UserViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun signOut(){
+    fun signOut() {
         signOutUseCase(userToken).onEach { resource ->
             when (resource) {
                 is Resource.Loading -> {
-
+                    _showOrderDialog.value = true
                 }
                 is Resource.Success -> {
                     deleteSavedUser()
                 }
                 is Resource.Error -> {
-
+                    _orderStatus.value = Resource.Error(ApiError(0, "تاكد من اتصالك بالإنترنت"))
                 }
             }
         }.launchIn(viewModelScope)
     }
 
-    private fun deleteSavedUser(){
-        deleteSavedUserUseCase().onEach {resource ->
+    private fun deleteSavedUser() {
+        deleteSavedUserUseCase().onEach { resource ->
             when (resource) {
                 is Resource.Loading -> {
 
                 }
                 is Resource.Success -> {
+                    _orderStatus.value = Resource.Success("تم تسجيل الخروج بنجاح")
+                    delay(2000L)
+                    _showOrderDialog.value = false
                     _navigateBackToHome.value = true
                 }
                 is Resource.Error -> {
@@ -132,29 +160,36 @@ class UserViewModel @Inject constructor(
     fun addMyOrder() {
         showOrderDialog()
         if (!checkIfOrderIsReady()) {
-            _orderStatus.value = Resource.Error(ApiError(0,"Error sending order"))
+            _orderStatus.value = Resource.Error(ApiError(0, "Error sending order"))
             return
         }
 
-        addOrderUseCase(selectedItem = _selectedItem.value, selectedZoneColor = _selectedZoneColor.value)
+        addOrderUseCase(
+            selectedItems = _selectedItems.value,
+            selectedZoneColor = _selectedZoneColor.value,
+            userId = userId,
+        )
             .onEach { resource ->
-            when (resource){
-                is Resource.Loading ->{
-                    _orderStatus.value = Resource.Loading()
+                when (resource) {
+                    is Resource.Loading -> {
+                        _orderStatus.value = Resource.Loading()
+                    }
+                    is Resource.Success -> {
+                        _orderStatus.value = Resource.Success("تم إرسال طلبك")
+                        _orderDetails.emit(resource.data)
+                        delay(2000L)
+                        saveUserUseCase(userToken, userId, _selectedZoneColor.value).launchIn(
+                            viewModelScope
+                        )
+                        _navigateToOrderDetails.value = true
+                        closeOrderDialog()
+                    }
+                    is Resource.Error -> {
+                        _orderStatus.value = Resource.Error(resource.apiError)
+                    }
                 }
-                is Resource.Success -> {
-                    _orderStatus.value = Resource.Success("تم إرسال طلبك")
-                    _orderDetails.emit(resource.data)
-                    delay(2000L)
-                    _navigateToOrderDetails.value = true
-                    closeOrderDialog()
-                }
-                is Resource.Error -> {
-                    _orderStatus.value = Resource.Error(resource.apiError)
-                }
-            }
 
-        }.launchIn(viewModelScope)
+            }.launchIn(viewModelScope)
     }
 
     private fun checkIfOrderIsReady(): Boolean {
@@ -166,7 +201,7 @@ class UserViewModel @Inject constructor(
             _zoneColorSelectionError.value = "الرجاء اختيار لون مكانك"
             ready = false
         }
-        if (_selectedItem.value == "") {
+        if (_selectedItems.value.isEmpty()) {
             _itemSelectionError.value = "الرجاء اختيار طلبك"
             ready = false
         }
@@ -174,12 +209,13 @@ class UserViewModel @Inject constructor(
         return ready
     }
 
-    fun closeOrderDialog(){
+    fun closeOrderDialog() {
         _orderStatus.value = Resource.Loading()
         _showOrderDialog.value = false
+        _showItemDetailsDialogError.value = false
     }
 
-    private fun showOrderDialog(){
+    private fun showOrderDialog() {
         _orderStatus.value = Resource.Loading()
         _showOrderDialog.value = true
     }
@@ -210,9 +246,77 @@ class UserViewModel @Inject constructor(
         }
     }
 
-    fun changeItem(item: String) {
+    fun addItem(item: AddItem) {
+        if (_selectedItems.value.size == 2) {
+            _showItemDetailsDialogError.value = true
+            return
+        }
+        _selectedItems.value.add(item)
+        closeItemDetails()
+    }
+
+    fun openItemDetails(item: String) {
+
+        //reset selected
+        _drinkType.value = ""
+        _withMilk.value = false
+        _sugarAmount.value = 0
+
+        when (item) {
+            "coffee" -> {
+                _itemDetails.value = "coffee"
+                _openItemDetails.value = true
+            }
+            "tea" -> {
+                _itemDetails.value = "tea"
+                _openItemDetails.value = true
+            }
+            "water"
+            -> {
+                _itemDetails.value = "water"
+                _openItemDetails.value = true
+            }
+        }
+    }
+
+    fun closeItemDetails() {
+        _openItemDetails.value = false
+    }
+
+    fun checkIfItemSelected(item: Item): MutableStateFlow<Int> {
+        val selected = MutableStateFlow(0)
+        for (itemInList in _selectedItems.value) {
+            if (item.type == itemInList.type) selected.value++
+            if (itemInList.type == "نعناع" && item.type == "tea") selected.value++
+            if (itemInList.type == "حبق" && item.type == "tea") selected.value++
+            if (itemInList.type == "شاهي" && item.type == "tea") selected.value++
+            if (itemInList.type == "نسكافيه" && item.type == "coffee") selected.value++
+            if (itemInList.type == "امريكية" && item.type == "coffee") selected.value++
+            if (itemInList.type == "قهوة" && item.type == "coffee") selected.value++
+            if (itemInList.type == "ماء" && item.type == "water") selected.value++
+        }
+        return selected
+    }
+
+    fun deleteSelectedItem(item: AddItem) {
+        _selectedItems.value.remove(item)
+    }
+
+    fun changeWithMilk() {
         viewModelScope.launch {
-            _selectedItem.emit(item)
+            _withMilk.value = !_withMilk.value
+        }
+    }
+
+    fun changeSugarAmount(amount: Int) {
+        viewModelScope.launch {
+            _sugarAmount.value = amount
+        }
+    }
+
+    fun changeType(type: String) {
+        viewModelScope.launch {
+            _drinkType.value = type
         }
     }
 }

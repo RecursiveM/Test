@@ -4,6 +4,18 @@ import com.google.gson.annotations.SerializedName
 
 data class HaveItem(
 
+	@field:SerializedName("id")
+	val id: String,
+
+	@field:SerializedName("withMilk")
+	val withMilk: Boolean,
+
+	@field:SerializedName("type")
+	val type: String,
+
+	@field:SerializedName("sugar_amount")
+	val sugarAmount: Int,
+
 	@field:SerializedName("Item")
 	val item: Item
 )
@@ -19,8 +31,8 @@ data class OrderListItemDto(
 	@field:SerializedName("have")
 	val have: List<HaveItem>,
 
-	@field:SerializedName("accepted")
-	val accepted: Any,
+	@field:SerializedName("order_state")
+	val orderState: String,
 
 	@field:SerializedName("created_at")
 	val createdAt: String,
