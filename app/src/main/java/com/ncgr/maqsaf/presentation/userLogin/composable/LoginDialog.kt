@@ -66,10 +66,16 @@ fun LoginDialog(
                 onDismissRequest = {
                 },
                 title = {
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxSize()
                     ) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_baseline_cloud_done_24),
+                            contentDescription = "Success",
+                        )
+                        Spacer(modifier = Modifier.width(5.dp))
                         Text(text = "نجح تسجيل الدخول")
                     }
                 },

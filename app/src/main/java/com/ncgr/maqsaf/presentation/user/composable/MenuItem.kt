@@ -5,7 +5,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -15,16 +18,19 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
+import com.ncgr.maqsaf.data.remote.api.item.body.AddItem
 import com.ncgr.maqsaf.domain.order.model.Item
 import com.ncgr.maqsaf.presentation.user.viewModel.UserViewModel
 
 @Composable
 fun MenuItem(
     modifier: Modifier = Modifier,
-    selectedItem: String,
+    selectedItems: List<AddItem>,
     item: Item,
     viewModel: UserViewModel
 ) {
+    val selected by viewModel.checkIfItemSelected(item = item).collectAsState()
+
     Box(contentAlignment = Alignment.Center,
         modifier = modifier
             .fillMaxWidth()
@@ -32,7 +38,7 @@ fun MenuItem(
             .padding(10.dp)
             .clip(RoundedCornerShape(20))
             .border(
-                if (selectedItem == item.type)
+                if (selected != 0)
                     BorderStroke(
                         3.dp,
                         Color.Black
@@ -45,7 +51,7 @@ fun MenuItem(
                 shape = RoundedCornerShape(20)
             )
             .clickable {
-                viewModel.changeItem(item.type)
+                viewModel.openItemDetails(item.type)
             }
     ) {
         AsyncImage(
@@ -57,5 +63,9 @@ fun MenuItem(
                 .fillMaxSize()
         )
 
+        Box(contentAlignment = Alignment.BottomCenter,
+            modifier = Modifier.fillMaxSize()) {
+            Text(text = "العدد $selected")
+        }
     }
 }

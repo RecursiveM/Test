@@ -60,9 +60,9 @@ fun ServiceProviderLoginScreenBody(
 
         TextField(
             value = phoneNumber ?: "",
-            label = { Text("Phone Number") },
-            placeholder = { Text("Your Phone Number") },
-            onValueChange = { if (it.length <= 12) viewModel.setPhoneNumber(it) },
+            label = { Text("Employee ID") },
+            placeholder = { Text("Your Employee ID") },
+            onValueChange = { if (it.length <= 6) viewModel.setPhoneNumber(it) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             )
@@ -89,7 +89,7 @@ fun ServiceProviderLoginScreenBody(
                     viewModel.login()
                 }
                 .padding(10.dp)) {
-            Text(text = "تسجيل الدخول", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Color.White))
+            Text(text = "Sign In", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Color.White))
         }
 
         Spacer(modifier = Modifier.height(20.dp))
@@ -102,7 +102,7 @@ fun ServiceProviderLoginScreenBody(
                    navigateToRegisterActivity()
                 }
                 .padding(10.dp)) {
-            Text(text = "تسجيل كجديد", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Color.White))
+            Text(text = "Register", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Color.White))
         }
     }
 }

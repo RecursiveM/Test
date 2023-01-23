@@ -61,8 +61,8 @@ fun UserRegisterScreenBody(
 
         TextField(
             value = username ?: "",
-            label = { Text("Username") },
-            placeholder = { Text("Your Username") },
+            label = { Text("اسم المستخدم") },
+            placeholder = { Text("اسم المستخدم") },
             onValueChange = { viewModel.setUsername(it) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
@@ -72,9 +72,9 @@ fun UserRegisterScreenBody(
 
         TextField(
             value = phoneNumber ?: "",
-            label = { Text("Phone Number") },
-            placeholder = { Text("Your Phone Number") },
-            onValueChange = { if (it.length <= 12) viewModel.setPhoneNumber(it) },
+            label = { Text("رقمك الوظيفي") },
+            placeholder = { Text("رقمك الوظيفي") },
+            onValueChange = { if (it.length <= 6) viewModel.setPhoneNumber(it) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             )
@@ -83,8 +83,8 @@ fun UserRegisterScreenBody(
 
         TextField(
             value = passwordText ?: "",
-            label = { Text("Password") },
-            placeholder = { Text("Your Password") },
+            label = { Text("كلمة المرور") },
+            placeholder = { Text("كلمة المرور") },
             onValueChange = { viewModel.setPasswordText(it) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),

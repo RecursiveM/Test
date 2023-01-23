@@ -13,6 +13,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDirection
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -43,7 +44,7 @@ fun NavigationButton(
                 style = TextStyle(
                     textDirection = TextDirection.Rtl,
                     fontSize = 30.sp,
-
+                    textAlign = TextAlign.Center
                     ),
 
                 )

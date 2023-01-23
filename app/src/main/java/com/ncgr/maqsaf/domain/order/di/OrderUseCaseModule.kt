@@ -1,7 +1,7 @@
 package com.ncgr.maqsaf.domain.order.di
 
 import com.ncgr.maqsaf.domain.order.repository.OrderRepository
-import com.ncgr.maqsaf.domain.order.usecase.DeleteOrderUseCase
+import com.ncgr.maqsaf.domain.order.usecase.ChangeOrderStateUseCase
 import com.ncgr.maqsaf.domain.order.usecase.GetMyOrderUseCase
 import com.ncgr.maqsaf.domain.order.usecase.AddOrderUseCase
 import com.ncgr.maqsaf.domain.order.usecase.GetAllOrdersUseCase
@@ -35,8 +35,8 @@ object OrderUseCaseModule {
     @Provides
     fun provideDeleteOrderUseCase(
         orderRepository: OrderRepository
-    ): DeleteOrderUseCase {
-        return DeleteOrderUseCase(orderRepository)
+    ): ChangeOrderStateUseCase {
+        return ChangeOrderStateUseCase(orderRepository)
     }
 
     @Singleton

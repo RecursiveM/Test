@@ -1,19 +1,16 @@
 package com.ncgr.maqsaf.data.repository
 
-import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
-import android.util.Log
 import com.ncgr.maqsaf.MyApplication
 import com.ncgr.maqsaf.domain.auth.model.UserPreference
 import com.ncgr.maqsaf.domain.auth.repository.SharedPreferenceRepository
 import com.ncgr.maqsaf.presentation.common.utils.Resource
-import dagger.hilt.android.internal.Contexts.getApplication
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 
 class SharedPreferenceRepositoryImp : SharedPreferenceRepository {
-    override fun saveUser(token: String): Flow<Resource<Boolean>> =
+    override fun saveUser(token: String, uid:String,selectedZoneColor:String): Flow<Resource<Boolean>> =
         flow {
             emit(Resource.Loading())
 
@@ -23,8 +20,8 @@ class SharedPreferenceRepositoryImp : SharedPreferenceRepository {
 
             editor.apply {
                 this.putString("Token", token)
-                this.putString("Uid", token)
-                this.putString("Username", token)
+                this.putString("Uid", uid)
+                if (selectedZoneColor != "") this.putString("ZoneColor", selectedZoneColor)
             }.apply()
 
             emit(Resource.Success(true))
@@ -45,7 +42,7 @@ class SharedPreferenceRepositoryImp : SharedPreferenceRepository {
             emit(Resource.Success(true))
         }
 
-    override fun getUserPreference(): Flow<Resource<UserPreference>> =
+    override fun getSavedUser(): Flow<Resource<UserPreference>> =
         flow {
             emit(Resource.Loading())
 
@@ -55,6 +52,8 @@ class SharedPreferenceRepositoryImp : SharedPreferenceRepository {
 
             val userPrefs = UserPreference(
                 allPrefs["Token"].toString(),
+                allPrefs["Uid"].toString(),
+                allPrefs["ZoneColor"].toString(),
             )
 
             emit(Resource.Success(userPrefs))

@@ -71,9 +71,9 @@ fun RegisterScreenBody(
 
         TextField(
             value = phoneNumber ?: "",
-            label = { Text("Phone Number") },
-            placeholder = { Text("Your Phone Number") },
-            onValueChange = { if (it.length <= 12) viewModel.setPhoneNumber(it) },
+            label = { Text("Employee ID") },
+            placeholder = { Text("Your Employee ID") },
+            onValueChange = { if (it.length <= 6) viewModel.setPhoneNumber(it) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             )
@@ -100,7 +100,7 @@ fun RegisterScreenBody(
                     viewModel.register()
                 }
                 .padding(10.dp)) {
-            Text(text = "تسجيل كجديد", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Color.White))
+            Text(text = "Register", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Color.White))
         }
     }
 }

@@ -43,7 +43,7 @@ fun ServiceProviderLoginDialog(
                         contentAlignment = Alignment.Center
                     ) {
                         Text(
-                            text = "جاري الانتظار",
+                            text = "Waiting for registration...",
                             modifier = Modifier.fillMaxWidth(),
                             style = TextStyle(textDirection = TextDirection.Rtl),
                             textAlign = TextAlign.Center
@@ -66,11 +66,17 @@ fun ServiceProviderLoginDialog(
                 onDismissRequest = {
                 },
                 title = {
-                    Box(
-                        modifier = Modifier.fillMaxWidth(),
-                        contentAlignment = Alignment.Center
+                    Row(
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxSize()
                     ) {
-                        Text(text = "نجح تسجيل الدخول")
+                        Image(
+                            painter = painterResource(id = R.drawable.ic_baseline_cloud_done_24),
+                            contentDescription = "Success",
+                        )
+                        Spacer(modifier = Modifier.width(5.dp))
+                        Text(text = "Signed in Successfully")
                     }
                 },
                 text = {
@@ -106,7 +112,7 @@ fun ServiceProviderLoginDialog(
                                 contentDescription = "Something went wrong",
                             )
                             Spacer(modifier = Modifier.width(5.dp))
-                            Text(text = "حدث خطأ")
+                            Text(text = "Error Occurred",)
                         }
                     },
                     text = {
@@ -135,7 +141,7 @@ fun ServiceProviderLoginDialog(
                                 contentDescription = "Something went wrong",
                             )
                             Spacer(modifier = Modifier.width(5.dp))
-                            Text(text = "حدث خطأ")
+                            Text(text = "Error Occurred")
                         }
                     },
                     text = {

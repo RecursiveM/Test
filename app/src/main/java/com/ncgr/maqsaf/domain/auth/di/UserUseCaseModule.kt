@@ -8,6 +8,7 @@ import com.ncgr.maqsaf.domain.auth.repository.AuthRepository
 import com.ncgr.maqsaf.domain.auth.repository.UserRepository
 import com.ncgr.maqsaf.domain.auth.usecase.AddServiceProviderUseCase
 import com.ncgr.maqsaf.domain.auth.usecase.AddUserUseCase
+import com.ncgr.maqsaf.domain.auth.usecase.GetUserUseCase
 import com.ncgr.maqsaf.domain.auth.usecase.RegisterUseCase
 import com.ncgr.maqsaf.domain.order.repository.ItemRepository
 import dagger.Module
@@ -35,5 +36,13 @@ object UserUseCaseModule {
         userRepository: UserRepository
     ): AddServiceProviderUseCase {
         return AddServiceProviderUseCase(userRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideGetUserUseCase(
+        userRepository: UserRepository
+    ): GetUserUseCase {
+        return GetUserUseCase(userRepository)
     }
 }

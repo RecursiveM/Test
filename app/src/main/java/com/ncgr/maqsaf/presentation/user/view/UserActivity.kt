@@ -6,10 +6,7 @@ import android.view.KeyEvent
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
@@ -22,6 +19,7 @@ import com.ncgr.maqsaf.presentation.common.composable.AppBar
 import com.ncgr.maqsaf.presentation.common.utils.Resource
 import com.ncgr.maqsaf.presentation.home.view.HomeActivity
 import com.ncgr.maqsaf.presentation.orderDetails.view.OrderDetailsActivity
+import com.ncgr.maqsaf.presentation.user.composable.ItemDetailsDialog
 import com.ncgr.maqsaf.presentation.user.composable.OrderDialog
 import com.ncgr.maqsaf.presentation.user.composable.OrderNowButton
 import com.ncgr.maqsaf.presentation.user.composable.UserScreenBody
@@ -50,15 +48,15 @@ class UserActivity : AppCompatActivity() {
     ) {
         val itemList by viewModel.itemList.collectAsState(Resource.Loading())
         val selectedZoneColor by viewModel.selectedZoneColor.collectAsState()
-        val selectedItem by viewModel.selectedItem.collectAsState()
+        val selectedItem by viewModel.selectedItems.collectAsState()
         val itemSelectionError by viewModel.itemSelectionError.collectAsState()
         val zoneColorSelectionError by viewModel.zoneColorSelectionError.collectAsState()
         val orderStatus by viewModel.orderStatus.collectAsState()
         val showOrderDialog by viewModel.showOrderDialog.collectAsState()
-        val orderDetails by viewModel.orderDetails.collectAsState(Order("",0,"",false))
+        val orderDetails by viewModel.orderDetails.collectAsState(Order("", 0, "",""))
 
         val navigateToOrderDetailsActivity by viewModel.navigateToOrderDetails.collectAsState()
-        if (navigateToOrderDetailsActivity) navigateToOrderDetailsActivity(orderDetails = orderDetails)
+        if (navigateToOrderDetailsActivity) navigateToOrderDetailsActivity()
 
         val navigateBackToHome by viewModel.navigateBackToHome.collectAsState()
         if (navigateBackToHome) navigateBackToHome()
@@ -76,7 +74,7 @@ class UserActivity : AppCompatActivity() {
                 itemSelectionError = itemSelectionError,
                 orderStatus = orderStatus,
                 showOrderDialog = showOrderDialog
-                )
+            )
 
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
@@ -86,7 +84,7 @@ class UserActivity : AppCompatActivity() {
                     .padding(paddingValues)
             ) {
                 //Custom TopBar
-                AppBar(withSignOutButton = true, signOutFunction = {viewModel.signOut()})
+                AppBar(withSignOutButton = true, signOutFunction = { viewModel.signOut() })
 
                 //Body
                 UserScreenBody(
@@ -99,16 +97,16 @@ class UserActivity : AppCompatActivity() {
 
                 //Order Now Button
                 OrderNowButton(viewModel = viewModel)
-
-
             }
         }
+
+        val openItemDetails by viewModel.openItemDetails.collectAsState()
+        if (openItemDetails) ItemDetailsDialog(viewModel = viewModel)
+
     }
 
-    private fun navigateToOrderDetailsActivity(orderDetails: Order) {
+    private fun navigateToOrderDetailsActivity() {
         val intent = Intent(this, OrderDetailsActivity::class.java)
-        intent.putExtra("Zone Color", orderDetails.zoneColor)
-        intent.putExtra("Order Number", orderDetails.orderNumber)
         startActivity(intent)
         finishAffinity()
     }
@@ -120,7 +118,7 @@ class UserActivity : AppCompatActivity() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (keyCode == KeyEvent.KEYCODE_BACK){
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
             return true
         }
         return super.onKeyDown(keyCode, event)

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ncgr.maqsaf.data.model.ApiError
 import com.ncgr.maqsaf.domain.auth.model.UserToken
+import com.ncgr.maqsaf.domain.auth.usecase.GetUserUseCase
 import com.ncgr.maqsaf.domain.auth.usecase.LoginUseCase
 import com.ncgr.maqsaf.domain.auth.usecase.SaveUserUseCase
 import com.ncgr.maqsaf.presentation.common.utils.Resource
@@ -17,6 +18,7 @@ import javax.inject.Inject
 class UserLoginViewModel @Inject constructor(
     private val saveUserUseCase: SaveUserUseCase,
     private val loginUseCase: LoginUseCase,
+    private val getUserUseCase: GetUserUseCase,
 ) : ViewModel() {
 
     private val _phoneNumber = MutableStateFlow<String?>(null)
@@ -58,7 +60,7 @@ class UserLoginViewModel @Inject constructor(
                 }
 
                 is Resource.Success -> {
-                    saveUserWhenSuccess(resource.data)
+                    checkUserRole(resource.data)
                 }
 
                 is Resource.Error -> {
@@ -70,9 +72,33 @@ class UserLoginViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    private fun checkUserRole(resource: UserToken) {
+        getUserUseCase(resource.user.id).onEach {
+            when (it) {
+                is Resource.Loading -> {
+
+                }
+
+                is Resource.Success -> {
+                    if (it.data.isProvider) {
+                        _loginStatus.value = Resource.Error(ApiError(0,"الحساب مسجل كموفر خدمة قم بالتسجيل كموفر خدمة\nThis account is a service provider, please go to service provider login page to continue"))
+                        _openLoginDialog.value = true
+                    } else {
+                        saveUserWhenSuccess(resource = resource)
+                    }
+                }
+
+                is Resource.Error -> {
+                    _loginStatus.value = Resource.Error(it.apiError)
+                    _openLoginDialog.value = true
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
+
     private fun saveUserWhenSuccess(resource: UserToken) {
 
-        saveUserUseCase(token = resource.token).onEach {
+        saveUserUseCase(token = resource.token, uid = resource.user.id).onEach {
             when (it) {
                 is Resource.Loading -> {
 
@@ -100,10 +126,8 @@ class UserLoginViewModel @Inject constructor(
         _phoneNumberError.value = null
         _passwordTextError.value = null
 
-        if (_phoneNumber.value.isNullOrEmpty() || !Patterns.PHONE.matcher(_phoneNumber.value!!)
-                .matches()
-        ) {
-            _phoneNumberError.value = "الرجاء كتابة رقم جوال صحيح"
+        if (_phoneNumber.value.isNullOrEmpty() || _phoneNumber.value!!.length != 6) {
+            _phoneNumberError.value = "الرجاء كتابة الرقم الوظيفي بشكل صحيح ويتكون من 6 ارقام"
             openLoginDialog()
             isValid = false
 

@@ -11,11 +11,11 @@ data class OrderDto(
 	@field:SerializedName("order_number")
 	val orderNumber: Int,
 
-	@field:SerializedName("accepted")
-	val accepted: Boolean?,
-
 	@field:SerializedName("created_at")
 	val createdAt: String,
+
+	@field:SerializedName("order_state")
+	val orderState: String,
 
 	@field:SerializedName("id")
 	val id: String
@@ -25,7 +25,7 @@ data class OrderDto(
 			id = id,
 			zoneColor = zoneColor,
 			orderNumber = orderNumber,
-			accepted = accepted,
+			orderState = orderState
 		)
 	}
 }

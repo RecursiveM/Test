@@ -14,6 +14,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.ncgr.maqsaf.data.remote.api.item.body.AddItem
 import com.ncgr.maqsaf.domain.order.model.Item
 import com.ncgr.maqsaf.presentation.common.utils.Resource
 import com.ncgr.maqsaf.presentation.user.viewModel.UserViewModel
@@ -21,44 +22,22 @@ import com.ncgr.maqsaf.ui.theme.Blue
 
 @Composable
 fun MenuLazyGrid(
-    modifier: Modifier =Modifier,
-    itemList: Resource<List<Item>>,
-    selectedItem: String,
+    modifier: Modifier = Modifier,
+    itemList: List<Item>,
+    selectedItems: List<AddItem>,
     viewModel: UserViewModel,
 ) {
-    when (itemList) {
-        is Resource.Loading -> {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = modifier
-            ) {
-                CircularProgressIndicator(color = Blue)
-            }
-        }
-        is Resource.Success -> {
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                modifier = modifier
-            ) {
-                itemsIndexed(itemList.data) { _, item ->
-                    MenuItem(
-                        selectedItem = selectedItem,
-                        item = item,
-                        viewModel = viewModel,
-                    )
-                }
-            }
-        }
-        is Resource.Error -> {
-            Box(
-                contentAlignment = Alignment.Center,
-                modifier = modifier.padding(20.dp)
-            ) {
-                Text(
-                    text = itemList.apiError.errorMessage,
-                    style = TextStyle(fontSize = 15.sp, fontWeight = FontWeight.Bold)
-                )
-            }
+    LazyVerticalGrid(
+        columns = GridCells.Fixed(2),
+        modifier = modifier
+    ) {
+        itemsIndexed(itemList) { _, item ->
+            MenuItem(
+                selectedItems = selectedItems,
+                item = item,
+                viewModel = viewModel,
+            )
         }
     }
+
 }

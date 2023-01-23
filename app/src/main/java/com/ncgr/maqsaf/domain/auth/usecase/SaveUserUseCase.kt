@@ -9,7 +9,7 @@ class SaveUserUseCase(
     private val sharedPreferenceRepository: SharedPreferenceRepository
 ) {
 
-    operator fun invoke(token:String): Flow<Resource<Boolean>> {
-        return sharedPreferenceRepository.saveUser(token = token)
+    operator fun invoke(token:String,uid:String,selectedZoneColor: String = ""): Flow<Resource<Boolean>> {
+        return sharedPreferenceRepository.saveUser(token = token, uid = uid, selectedZoneColor = selectedZoneColor)
     }
 }

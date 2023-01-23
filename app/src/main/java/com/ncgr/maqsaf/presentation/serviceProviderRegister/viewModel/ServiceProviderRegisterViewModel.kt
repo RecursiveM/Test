@@ -1,6 +1,5 @@
 package com.ncgr.maqsaf.presentation.serviceProviderRegister.viewModel
 
-import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ncgr.maqsaf.data.model.ApiError
@@ -82,7 +81,7 @@ class ServiceProviderRegisterViewModel @Inject constructor(
     }
 
     private fun addUserWhenSuccess(resource: UserToken) {
-        
+
         addServiceProviderUseCase(resource.user.id, _username.value!!).onEach {
             when (it) {
                 is Resource.Loading -> {
@@ -90,8 +89,8 @@ class ServiceProviderRegisterViewModel @Inject constructor(
                 }
 
                 is Resource.Success -> {
-                    saveUserUseCase(token = resource.token).launchIn(viewModelScope)
-                    _registerStatus.value = Resource.Success("تم التسجيل بنجاح")
+                    saveUserUseCase(token = resource.token, uid = resource.user.id).launchIn(viewModelScope)
+                    _registerStatus.value = Resource.Success("Registered successfully")
                     delay(2000L)
                     _navigateToHomeActivity.value = true
                 }
@@ -113,21 +112,17 @@ class ServiceProviderRegisterViewModel @Inject constructor(
         _usernameError.value = null
 
         if (_username.value.isNullOrEmpty()) {
-
-            _usernameError.value = "الرجاء كتابة اسم المستخدم"
+            _usernameError.value = "Please enter your username"
             openRegisterDialog()
             isValid = false
         }
-        if (_phoneNumber.value.isNullOrEmpty() || !Patterns.PHONE.matcher(_phoneNumber.value!!)
-                .matches()
-        ) {
-            _phoneNumberError.value = "الرجاء كتابة رقم جوال صحيح"
+        if (_phoneNumber.value.isNullOrEmpty() || _phoneNumber.value!!.length != 6) {
+            _phoneNumberError.value = "Your employee ID must be 6 characters"
             openRegisterDialog()
             isValid = false
-
         }
         if (_passwordText.value.isNullOrEmpty() || _passwordText.value!!.length <= 5) {
-            _passwordTextError.value = "يجب ان تكون كلمه المرور 6 حقول فاكثر"
+            _passwordTextError.value = "Your password must be at least 6 characters"
             openRegisterDialog()
             isValid = false
         }
