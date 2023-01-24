@@ -13,6 +13,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.ncgr.maqsaf.presentation.common.composable.AppBar
@@ -42,6 +44,9 @@ class OrderDetailsActivity : AppCompatActivity() {
     fun OrderDetailsScreen(
         modifier: Modifier = Modifier,
     ) {
+        val navigateToUserActivity by viewModel.navigateToUserActivity.collectAsState()
+        if (navigateToUserActivity) navigateBackToUserActivity()
+
         Scaffold(
             backgroundColor = ScreenBackgroundColor,
             scaffoldState = rememberScaffoldState(),
@@ -68,6 +73,7 @@ class OrderDetailsActivity : AppCompatActivity() {
         startActivity(intent)
         finishAffinity()
     }
+
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {

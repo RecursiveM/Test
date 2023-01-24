@@ -20,6 +20,9 @@ class OrderDetailsViewModel @Inject constructor(
     private val _myOrders = MutableStateFlow<Resource<List<Order>>>(Resource.Loading())
     val myOrders = _myOrders.asStateFlow()
 
+    private val _navigateToUserActivity = MutableStateFlow(false)
+    val navigateToUserActivity = _navigateToUserActivity.asStateFlow()
+
     private lateinit var userToken: String
     private lateinit var userId: String
 
@@ -57,5 +60,9 @@ class OrderDetailsViewModel @Inject constructor(
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    fun navToUserActivity(){
+        _navigateToUserActivity.value = true
     }
 }
