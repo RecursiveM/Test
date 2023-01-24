@@ -5,6 +5,7 @@ import com.ncgr.maqsaf.data.remote.api.item.ItemApi
 import com.ncgr.maqsaf.data.repository.AuthRepositoryImp
 import com.ncgr.maqsaf.data.repository.ItemRepositoryImp
 import com.ncgr.maqsaf.domain.auth.repository.AuthRepository
+import com.ncgr.maqsaf.domain.auth.usecase.CheckUserByTokenUseCase
 import com.ncgr.maqsaf.domain.auth.usecase.LoginUseCase
 import com.ncgr.maqsaf.domain.auth.usecase.RegisterUseCase
 import com.ncgr.maqsaf.domain.auth.usecase.SignOutUseCase
@@ -42,5 +43,13 @@ object AuthUseCaseModule {
         authRepository: AuthRepository
     ): LoginUseCase {
         return LoginUseCase(authRepository)
+    }
+
+    @Singleton
+    @Provides
+    fun provideCheckUserByTokenUseCase(
+        authRepository: AuthRepository
+    ): CheckUserByTokenUseCase {
+        return CheckUserByTokenUseCase(authRepository)
     }
 }

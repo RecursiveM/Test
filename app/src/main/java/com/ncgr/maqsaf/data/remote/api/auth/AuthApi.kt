@@ -4,6 +4,7 @@ import com.ncgr.maqsaf.data.remote.api.auth.body.AuthWithPhoneNumber
 import com.ncgr.maqsaf.data.remote.model.UserTokenDto
 import retrofit2.Response
 import retrofit2.http.Body
+import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
 
@@ -16,4 +17,7 @@ interface AuthApi {
 
     @POST("auth/v1/logout")
     suspend fun signOut(@Header("Authorization") token:String): Response<Void>
+
+    @GET("auth/v1/user")
+    suspend fun checkUserByToken(@Header("Authorization") token:String): Response<Void>
 }

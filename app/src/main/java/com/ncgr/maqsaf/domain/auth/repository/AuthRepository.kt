@@ -8,4 +8,5 @@ interface AuthRepository {
     fun registerWithPhoneNumber(phone: String, password: String): Flow<Resource<UserToken>>
     fun loginWithPhoneNumber(phone: String, password: String): Flow<Resource<UserToken>>
     fun signOut(token: String): Flow<Resource<Boolean>>
+    fun checkUserByToken(token: String): Flow<Resource<Boolean>>
 }
