@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.ncgr.maqsaf.presentation.common.composable.AppBar
 import com.ncgr.maqsaf.presentation.home.view.HomeActivity
+import com.ncgr.maqsaf.presentation.tickets.view.TicketsActivity
 import com.ncgr.maqsaf.presentation.serviceProvider.composable.OrderDetailsDialog
 import com.ncgr.maqsaf.presentation.serviceProvider.composable.ServiceProviderBody
 import com.ncgr.maqsaf.presentation.serviceProvider.composable.SignOutDialog
@@ -71,7 +72,11 @@ class ServiceProviderActivity : AppCompatActivity() {
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                AppBar(withSignOutButton = true, signOutFunction = { viewModel.signOut() })
+                AppBar(
+                    withSignOutButton = true,
+                    signOutFunction = { viewModel.signOut() },
+                    reportsButtonFunction = { navigateToReportsActivity() }
+                )
 
                 ServiceProviderBody(viewModel = viewModel)
             }
@@ -86,5 +91,9 @@ class ServiceProviderActivity : AppCompatActivity() {
         val intent = Intent(this, HomeActivity::class.java)
         startActivity(intent)
         finishAffinity()
+    }
+    private fun navigateToReportsActivity() {
+        val intent = Intent(this, TicketsActivity::class.java)
+        startActivity(intent)
     }
 }

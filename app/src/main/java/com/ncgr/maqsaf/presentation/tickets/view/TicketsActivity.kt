@@ -1,4 +1,4 @@
-package com.ncgr.maqsaf.presentation.userLogin.view
+package com.ncgr.maqsaf.presentation.tickets.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,47 +12,35 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.ncgr.maqsaf.presentation.common.composable.AppBar
-import com.ncgr.maqsaf.presentation.orderDetails.view.OrderDetailsActivity
-import com.ncgr.maqsaf.presentation.user.view.UserActivity
-import com.ncgr.maqsaf.presentation.userLogin.composable.LoginDialog
-import com.ncgr.maqsaf.presentation.userLogin.composable.LoginScreenBody
-import com.ncgr.maqsaf.presentation.userLogin.viewModel.UserLoginViewModel
-import com.ncgr.maqsaf.presentation.userRegister.view.UserRegisterActivity
+import com.ncgr.maqsaf.presentation.tickets.addingTicket.view.AddTicketActivity
+import com.ncgr.maqsaf.presentation.tickets.composable.ReportsBodyComposable
+import com.ncgr.maqsaf.presentation.tickets.viewModel.TicketsViewModel
 import com.ncgr.maqsaf.ui.theme.MAQSAFTheme
 import com.ncgr.maqsaf.ui.theme.ScreenBackgroundColor
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class UserLoginActivity : AppCompatActivity() {
+class TicketsActivity : AppCompatActivity() {
 
-    private val viewModel: UserLoginViewModel by viewModels()
+    private val viewModel: TicketsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MAQSAFTheme {
-                LoginScreen()
+                ReportsScreen(viewModel = viewModel)
             }
         }
     }
 
     @Composable
-    fun LoginScreen(
+    fun ReportsScreen(
         modifier: Modifier = Modifier,
+        viewModel: TicketsViewModel
     ) {
-        val navigater by viewModel.navigateToUserActivity.collectAsState()
-        if (navigater) navigateToUserActivity()
-
-        val navigateToOrder by viewModel.navigateToOrderDetailsActivity.collectAsState()
-        if (navigateToOrder) navigateToOrderDetailsActivity()
-
-        LoginDialog(viewModel = viewModel)
-
         Scaffold(
             backgroundColor = ScreenBackgroundColor,
             scaffoldState = rememberScaffoldState(),
@@ -69,25 +57,13 @@ class UserLoginActivity : AppCompatActivity() {
                 //Custom TopBar
                 AppBar()
 
-                //Body
-                LoginScreenBody(
-                    viewModel = viewModel,
-                    navigateToRegisterActivity = { navigateToRegisterActivity() })
+                ReportsBodyComposable(viewModel = viewModel, navigateToAddTicket = {navigateToAddTicket()})
             }
         }
     }
 
-    private fun navigateToUserActivity() {
-        startActivity(Intent(this, UserActivity::class.java))
-        finishAffinity()
-    }
-
-    private fun navigateToOrderDetailsActivity() {
-        startActivity(Intent(this, OrderDetailsActivity::class.java))
-        finishAffinity()
-    }
-
-    private fun navigateToRegisterActivity() {
-        startActivity(Intent(this, UserRegisterActivity::class.java))
+    private fun navigateToAddTicket(){
+        intent = Intent(this, AddTicketActivity::class.java)
+        startActivity(intent)
     }
 }
