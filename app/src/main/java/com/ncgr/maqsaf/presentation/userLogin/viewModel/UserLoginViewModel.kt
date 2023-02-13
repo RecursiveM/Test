@@ -1,6 +1,5 @@
 package com.ncgr.maqsaf.presentation.userLogin.viewModel
 
-import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ncgr.maqsaf.data.model.ApiError
@@ -8,10 +7,14 @@ import com.ncgr.maqsaf.domain.auth.model.UserToken
 import com.ncgr.maqsaf.domain.auth.usecase.GetUserUseCase
 import com.ncgr.maqsaf.domain.auth.usecase.LoginUseCase
 import com.ncgr.maqsaf.domain.auth.usecase.SaveUserUseCase
+import com.ncgr.maqsaf.domain.order.usecase.GetMyOrderUseCase
 import com.ncgr.maqsaf.presentation.common.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
@@ -19,6 +22,7 @@ class UserLoginViewModel @Inject constructor(
     private val saveUserUseCase: SaveUserUseCase,
     private val loginUseCase: LoginUseCase,
     private val getUserUseCase: GetUserUseCase,
+    private val getMyOrderUseCase: GetMyOrderUseCase
 ) : ViewModel() {
 
     private val _phoneNumber = MutableStateFlow<String?>(null)
@@ -36,6 +40,9 @@ class UserLoginViewModel @Inject constructor(
 
     private val _openLoginDialog = MutableStateFlow(false)
     val openLoginDialog = _openLoginDialog.asStateFlow()
+
+    private val _navigateToOrderDetailsActivity = MutableStateFlow(false)
+    val navigateToOrderDetailsActivity = _navigateToOrderDetailsActivity.asStateFlow()
 
     private val _navigateToUserActivity = MutableStateFlow(false)
     val navigateToUserActivity = _navigateToUserActivity.asStateFlow()
@@ -81,7 +88,12 @@ class UserLoginViewModel @Inject constructor(
 
                 is Resource.Success -> {
                     if (it.data.isProvider) {
-                        _loginStatus.value = Resource.Error(ApiError(0,"الحساب مسجل كموفر خدمة قم بالتسجيل كموفر خدمة\nThis account is a service provider, please go to service provider login page to continue"))
+                        _loginStatus.value = Resource.Error(
+                            ApiError(
+                                0,
+                                "الحساب مسجل كموفر خدمة قم بالتسجيل كموفر خدمة\nThis account is a service provider, please go to service provider login page to continue"
+                            )
+                        )
                         _openLoginDialog.value = true
                     } else {
                         saveUserWhenSuccess(resource = resource)
@@ -97,7 +109,6 @@ class UserLoginViewModel @Inject constructor(
     }
 
     private fun saveUserWhenSuccess(resource: UserToken) {
-
         saveUserUseCase(token = resource.token, uid = resource.user.id).onEach {
             when (it) {
                 is Resource.Loading -> {
@@ -105,9 +116,7 @@ class UserLoginViewModel @Inject constructor(
                 }
 
                 is Resource.Success -> {
-                    _loginStatus.value = Resource.Success("تم تسجيل الدخول")
-                    delay(2000L)
-                    _navigateToUserActivity.value = true
+                    checkIfUserHasPendingOrder(resource.user.id)
                 }
 
                 is Resource.Error -> {
@@ -119,6 +128,33 @@ class UserLoginViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    private fun checkIfUserHasPendingOrder(uid: String) {
+        getMyOrderUseCase(uid).onEach { resource ->
+            when (resource) {
+                is Resource.Success -> {
+                    if (resource.data.isNotEmpty()) {
+                        if (resource.data[0].orderState == "Pending") {
+                            _loginStatus.value = Resource.Success("تم تسجيل الدخول")
+                            delay(2000L)
+                            _navigateToOrderDetailsActivity.value = true
+                        } else {
+                            _loginStatus.value = Resource.Success("تم تسجيل الدخول")
+                            delay(2000L)
+                            _navigateToUserActivity.value = true
+                        }
+                    } else {
+                        _navigateToUserActivity.value = true
+                    }
+                }
+                is Resource.Loading -> {
+
+                }
+                is Resource.Error -> {
+                    _navigateToUserActivity.value = true
+                }
+            }
+        }.launchIn(viewModelScope)
+    }
 
     private fun checkValidity(): Boolean {
         var isValid = true

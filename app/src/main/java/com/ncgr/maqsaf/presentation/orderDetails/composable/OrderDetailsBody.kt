@@ -95,7 +95,7 @@ fun OrderDetailsBody(
 
                 Box(contentAlignment = Alignment.Center,
                     modifier = Modifier
-                        .padding(horizontal =  20.dp)
+                        .padding(horizontal = 20.dp)
                         .width(50.dp)
                         .height(50.dp)
                         .background(Color.Gray)
@@ -106,6 +106,26 @@ fun OrderDetailsBody(
                         .padding(10.dp)
                 ){
                     Image(painter = painterResource(id = R.drawable.ic_baseline_refresh_24), contentDescription = "", modifier = Modifier.fillMaxSize())
+                }
+
+                if (myOrders.data.first().orderState != "Pending") {
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Box(contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .padding(horizontal = 20.dp)
+                            .width(80.dp)
+                            .height(50.dp)
+                            .background(Color.Red)
+                            .border(BorderStroke(2.dp, color = Color.Black))
+                            .clickable {
+                                viewModel.navToUserActivity()
+                            }
+                            .padding(10.dp)
+                    ){
+                        Text(text = "رجوع", style = TextStyle(color = Color.White, fontSize = 20.sp, fontWeight = FontWeight.Bold))
+
+                    }
                 }
             }
             is Resource.Error -> {

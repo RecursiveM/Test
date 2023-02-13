@@ -19,6 +19,7 @@ import com.ncgr.maqsaf.presentation.common.composable.AppBar
 import com.ncgr.maqsaf.presentation.common.utils.Resource
 import com.ncgr.maqsaf.presentation.home.view.HomeActivity
 import com.ncgr.maqsaf.presentation.orderDetails.view.OrderDetailsActivity
+import com.ncgr.maqsaf.presentation.tickets.view.TicketsActivity
 import com.ncgr.maqsaf.presentation.user.composable.ItemDetailsDialog
 import com.ncgr.maqsaf.presentation.user.composable.OrderDialog
 import com.ncgr.maqsaf.presentation.user.composable.OrderNowButton
@@ -84,7 +85,11 @@ class UserActivity : AppCompatActivity() {
                     .padding(paddingValues)
             ) {
                 //Custom TopBar
-                AppBar(withSignOutButton = true, signOutFunction = { viewModel.signOut() })
+                AppBar(
+                    withSignOutButton = true,
+                    signOutFunction = { viewModel.signOut() },
+                    reportsButtonFunction = { navigateToReportsActivity() }
+                )
 
                 //Body
                 UserScreenBody(
@@ -116,6 +121,11 @@ class UserActivity : AppCompatActivity() {
         startActivity(intent)
         finishAffinity()
     }
+    private fun navigateToReportsActivity() {
+        val intent = Intent(this, TicketsActivity::class.java)
+        startActivity(intent)
+    }
+
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (keyCode == KeyEvent.KEYCODE_BACK) {

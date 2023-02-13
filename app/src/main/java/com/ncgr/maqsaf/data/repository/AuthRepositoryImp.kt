@@ -129,4 +129,30 @@ class AuthRepositoryImp(
             emit(Resource.Error(ApiError(0, "Something went wrong")))
         }
     }
+
+    override fun checkUserByToken(token: String): Flow<Resource<Boolean>> = flow {
+        emit(Resource.Loading())
+        try {
+            val response = authApi.checkUserByToken(token = "Bearer $token")
+            Log.d("TEST", response.toString())
+            if (response.isSuccessful) {
+                emit(Resource.Success(true))
+            } else {
+                emit(Resource.Error(ApiError(0, "Something went wrong")))
+            }
+        } catch (e: HttpException) {
+            emit(Resource.Error(ApiError(e.code(), e.toString())))
+        } catch (e: IOException) {
+            emit(
+                Resource.Error(
+                    ApiError(
+                        e.hashCode(),
+                        "Please check your internet connection and try again"
+                    )
+                )
+            )
+        } catch (e: Exception) {
+            emit(Resource.Error(ApiError(0, "Something went wrong")))
+        }
+    }
 }

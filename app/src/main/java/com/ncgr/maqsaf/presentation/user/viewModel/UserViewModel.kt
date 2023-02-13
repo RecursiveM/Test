@@ -1,5 +1,6 @@
 package com.ncgr.maqsaf.presentation.user.viewModel
 
+import android.util.Log
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
@@ -88,10 +89,10 @@ class UserViewModel @Inject constructor(
 
     init {
         getItemList()
-        getUserToken()
+        getSavedUserToken()
     }
 
-    private fun getUserToken() {
+    private fun getSavedUserToken() {
         getSavedUserUseCase().onEach { resource ->
             when (resource) {
                 is Resource.Success -> {

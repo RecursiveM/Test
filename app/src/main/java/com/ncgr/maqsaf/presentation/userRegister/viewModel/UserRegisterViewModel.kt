@@ -1,6 +1,5 @@
 package com.ncgr.maqsaf.presentation.userRegister.viewModel
 
-import android.util.Patterns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.ncgr.maqsaf.data.model.ApiError
@@ -11,7 +10,10 @@ import com.ncgr.maqsaf.domain.auth.usecase.SaveUserUseCase
 import com.ncgr.maqsaf.presentation.common.utils.Resource
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
@@ -82,7 +84,7 @@ class UserRegisterViewModel @Inject constructor(
     }
 
     private fun addUserWhenSuccess(resource: UserToken) {
-        
+
         addUserUseCase(resource.user.id, _username.value!!).onEach {
             when (it) {
                 is Resource.Loading -> {
@@ -90,7 +92,9 @@ class UserRegisterViewModel @Inject constructor(
                 }
 
                 is Resource.Success -> {
-                    saveUserUseCase(token = resource.token, uid = resource.user.id).launchIn(viewModelScope)
+                    saveUserUseCase(token = resource.token, uid = resource.user.id).launchIn(
+                        viewModelScope
+                    )
                     _registerStatus.value = Resource.Success("تم التسجيل بنجاح")
                     delay(2000L)
                     _navigateToUserActivity.value = true

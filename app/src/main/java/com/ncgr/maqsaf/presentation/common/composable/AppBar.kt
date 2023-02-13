@@ -10,22 +10,24 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ncgr.maqsaf.R
 import com.ncgr.maqsaf.ui.theme.Red
 import com.ncgr.maqsaf.ui.theme.ToolbarColor
+import com.ncgr.maqsaf.ui.theme.Yellow
 
 @Composable
 fun AppBar(
     modifier: Modifier = Modifier,
     withSignOutButton: Boolean = false,
-    signOutFunction: () -> Unit = fun() {}
+    signOutFunction: () -> Unit = fun() {},
+    reportsButtonFunction: () -> Unit = fun() {}
 ) {
     Box(
         modifier = modifier
@@ -34,7 +36,7 @@ fun AppBar(
             .background(ToolbarColor)
     ) {
         Row(
-            horizontalArrangement = Arrangement.End,
+            horizontalArrangement = if (withSignOutButton) Arrangement.SpaceBetween else Arrangement.End,
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 .fillMaxSize()
@@ -43,8 +45,8 @@ fun AppBar(
             if (withSignOutButton)
                 Box(
                     contentAlignment = Alignment.CenterStart,
-                    modifier = Modifier.weight(1f)
-                ) {
+
+                    ) {
                     Box(
                         contentAlignment = Alignment.Center,
                         modifier = Modifier
@@ -60,8 +62,30 @@ fun AppBar(
                         Image(
                             painter = painterResource(id = R.drawable.baseline_exit_to_app_24),
                             contentDescription = "Sign out",
-                            modifier = Modifier.fillMaxSize()
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .rotate(180f)
                         )
+                    }
+                }
+
+            if (withSignOutButton)
+                Box(
+                    contentAlignment = Alignment.Center,
+                ) {
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .width(50.dp)
+                            .height(50.dp)
+                            .clip(RoundedCornerShape(10))
+                            .background(Yellow)
+                            .clickable {
+                                reportsButtonFunction()
+                            }
+                            .padding(2.dp)
+                    ) {
+                        Text(text = "!", style = TextStyle(fontSize = 25.sp, color = Color.White))
                     }
                 }
 

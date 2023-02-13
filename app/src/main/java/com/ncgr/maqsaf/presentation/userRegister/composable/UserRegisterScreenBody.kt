@@ -24,7 +24,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ncgr.maqsaf.R
-import com.ncgr.maqsaf.presentation.serviceProviderRegister.viewModel.ServiceProviderRegisterViewModel
 import com.ncgr.maqsaf.presentation.userRegister.viewModel.UserRegisterViewModel
 import com.ncgr.maqsaf.ui.theme.Blue
 
@@ -66,7 +65,7 @@ fun UserRegisterScreenBody(
             onValueChange = { viewModel.setUsername(it) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-            )
+        )
 
         Spacer(modifier = Modifier.height(20.dp))
 
@@ -77,7 +76,7 @@ fun UserRegisterScreenBody(
             onValueChange = { if (it.length <= 6) viewModel.setPhoneNumber(it) },
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            )
+        )
 
         Spacer(modifier = Modifier.height(20.dp))
 
@@ -89,7 +88,7 @@ fun UserRegisterScreenBody(
             singleLine = true,
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
             visualTransformation = PasswordVisualTransformation()
-            )
+        )
 
         Spacer(modifier = Modifier.height(40.dp))
 
@@ -101,7 +100,14 @@ fun UserRegisterScreenBody(
                     viewModel.register()
                 }
                 .padding(10.dp)) {
-            Text(text = "تسجيل كجديد", style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp, color = Color.White))
+            Text(
+                text = "تسجيل كجديد",
+                style = TextStyle(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp,
+                    color = Color.White
+                )
+            )
         }
     }
 }
