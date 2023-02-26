@@ -9,9 +9,7 @@ android {
     namespace 'com.ncgr.maqsaf'
     compileSdk 33
     
-    lintOptions {
-    abortOnError false
-    }
+    
 
     defaultConfig {
         applicationId "com.ncgr.maqsaf"
