@@ -5,11 +5,6 @@ pipeline{
         git 'Git'
     }
     stages{
-        stage('Clone'){
-            steps{
-                git branch: 'main', credentialsId: 'Sayhouj-GitHub', url: 'https://github.com/Maqsaf/MAQSAF.git'
-            }
-        }
         stage('Build'){
             steps{
                     // sh './gradlew clean build'
