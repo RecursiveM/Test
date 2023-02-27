@@ -1,0 +1,28 @@
+pipeline{
+    agent any
+    tools{
+        gradle 'GRADLE_LATEST'
+        git 'Git'
+    }
+    stages{
+        stage('Clone'){
+            steps{
+                git branch: 'main', credentialsId: 'Sayhouj-GitHub', url: 'https://github.com/Maqsaf/MAQSAF.git'
+            }
+        }
+        stage('Build'){
+            steps{
+                    // sh './gradlew clean build'
+                
+                    bat './gradlew.bat clean assembleDebug'
+                
+}
+            
+        }
+        stage('Archive'){
+            steps{
+                archiveArtifacts artifacts: '**/*.apk', followSymlinks: false
+            }
+        }
+    }
+}
