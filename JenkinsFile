@@ -8,7 +8,8 @@ pipeline{
         stage('Build'){
             steps{
                 
-                    bat './gradlew.bat clean assembleDebug'
+                    bat './gradlew clean'
+                    bat './gradlew.bat assembleDebug'
                 
 }
             
@@ -16,7 +17,7 @@ pipeline{
         stage('Archive'){
             steps{
                 //archiveArtifacts artifacts: '**/*.apk', followSymlinks: false
-                appCenter apiToken: '2fb11bb98b172276ef9d2bb181cae19c4bc8d4d1',
+                appCenter apiToken: '2fb11bb98b172276ef9d2bb181cae19c4bc8d2d1',
                 ownerName: 'maqsaf.439-gmail.com',
                 appName: 'Android-Test',
                 pathToApp: '**/*.apk',
