@@ -16,7 +16,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.ncgr.maqsaf.presentation.common.composable.AppBar
 import com.ncgr.maqsaf.presentation.serviceProvider.view.ServiceProviderActivity
 import com.ncgr.maqsaf.presentation.serviceProviderRegister.composable.RegisterDialog
 import com.ncgr.maqsaf.presentation.serviceProviderRegister.composable.RegisterScreenBody
@@ -61,8 +60,6 @@ class ServiceProviderRegisterActivity : AppCompatActivity() {
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                //Custom TopBar
-                AppBar()
 
                 //Body
                 RegisterScreenBody(viewModel = viewModel)

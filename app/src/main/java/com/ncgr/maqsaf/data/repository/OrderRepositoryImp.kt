@@ -7,6 +7,7 @@ import com.ncgr.maqsaf.data.model.ApiError
 import com.ncgr.maqsaf.data.remote.api.item.ItemApi
 import com.ncgr.maqsaf.data.remote.api.order.OrderApi
 import com.ncgr.maqsaf.data.remote.api.order.body.ChangeOrderState
+import com.ncgr.maqsaf.data.remote.model.MyOrderDto
 import com.ncgr.maqsaf.data.remote.model.OrderListItemDto
 import com.ncgr.maqsaf.domain.order.model.Order
 import com.ncgr.maqsaf.domain.order.repository.OrderRepository
@@ -48,13 +49,12 @@ class OrderRepositoryImp(
         }
     }
 
-    override fun getMyOrder(uid: String): Flow<Resource<List<Order>>> = flow {
+    override fun getMyOrder(uid: String): Flow<Resource<List<MyOrderDto>>> = flow {
         emit(Resource.Loading())
         try {
             val response = orderApi.getMyOrder("eq.$uid")
             if (response.isSuccessful) {
-                val orderList = response.body()!!.map { it.toOrder() }
-                emit(Resource.Success(orderList))
+                emit(Resource.Success(response.body()!!))
             }else{
                 emit(Resource.Error(ApiError(response.code(), response.message())))
             }

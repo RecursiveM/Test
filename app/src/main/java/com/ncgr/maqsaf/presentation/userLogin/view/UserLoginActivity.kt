@@ -16,7 +16,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.ncgr.maqsaf.presentation.common.composable.AppBar
 import com.ncgr.maqsaf.presentation.orderDetails.view.OrderDetailsActivity
 import com.ncgr.maqsaf.presentation.user.view.UserActivity
 import com.ncgr.maqsaf.presentation.userLogin.composable.LoginDialog
@@ -66,8 +65,6 @@ class UserLoginActivity : AppCompatActivity() {
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                //Custom TopBar
-                AppBar()
 
                 //Body
                 LoginScreenBody(

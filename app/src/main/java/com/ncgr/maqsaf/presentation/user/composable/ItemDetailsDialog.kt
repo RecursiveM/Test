@@ -105,11 +105,11 @@ fun ItemDetailsDialog(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(300.dp)
+                                .height(150.dp)
                         ) {
                             Image(
                                 contentScale = ContentScale.Fit,
-                                painter = painterResource(id = R.drawable.tea_cup_tea_svgrepo_com),
+                                painter = painterResource(id = R.drawable.tea),
                                 contentDescription = "",
                                 modifier = Modifier.fillMaxSize()
                             )
@@ -228,13 +228,13 @@ fun ItemDetailsDialog(
                                         contentScale = ContentScale.Fit,
                                         painter = painterResource(
                                             id = when (orderItem.type) {
-                                                "شاهي" -> R.drawable.tea_cup_tea_svgrepo_com
-                                                "حبق" -> R.drawable.tea_cup_tea_svgrepo_com
-                                                "نعناع" -> R.drawable.tea_cup_tea_svgrepo_com
-                                                "قهوة" -> R.drawable.coffee_cup_coffee_svgrepo_com
-                                                "امريكية" -> R.drawable.coffee_cup_coffee_svgrepo_com
-                                                "نسكافيه" -> R.drawable.coffee_cup_coffee_svgrepo_com
-                                                else -> R.drawable.water_bottle_svgrepo_com
+                                                "شاهي" -> R.drawable.tea
+                                                "حبق" -> R.drawable.tea
+                                                "نعناع" -> R.drawable.tea
+                                                "قهوة" -> R.drawable.coffee
+                                                "امريكية" -> R.drawable.coffee
+                                                "نسكافيه" -> R.drawable.coffee
+                                                else -> R.drawable.water_bottle_free_png_2
                                             }
 
                                         ),
@@ -276,11 +276,11 @@ fun ItemDetailsDialog(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(300.dp)
+                                .height(200.dp)
                         ) {
                             Image(
                                 contentScale = ContentScale.Fit,
-                                painter = painterResource(id = R.drawable.coffee_cup_coffee_svgrepo_com),
+                                painter = painterResource(id = R.drawable.coffee),
                                 contentDescription = "",
                                 modifier = Modifier.fillMaxSize()
                             )
@@ -399,13 +399,13 @@ fun ItemDetailsDialog(
                                         contentScale = ContentScale.Fit,
                                         painter = painterResource(
                                             id = when (orderItem.type) {
-                                                "شاهي" -> R.drawable.tea_cup_tea_svgrepo_com
-                                                "حبق" -> R.drawable.tea_cup_tea_svgrepo_com
-                                                "نعناع" -> R.drawable.tea_cup_tea_svgrepo_com
-                                                "قهوة" -> R.drawable.coffee_cup_coffee_svgrepo_com
-                                                "امريكية" -> R.drawable.coffee_cup_coffee_svgrepo_com
-                                                "نسكافيه" -> R.drawable.coffee_cup_coffee_svgrepo_com
-                                                else -> R.drawable.water_bottle_svgrepo_com
+                                                "شاهي" -> R.drawable.tea
+                                                "حبق" -> R.drawable.tea
+                                                "نعناع" -> R.drawable.tea
+                                                "قهوة" -> R.drawable.coffee
+                                                "امريكية" -> R.drawable.coffee
+                                                "نسكافيه" -> R.drawable.coffee
+                                                else -> R.drawable.water_bottle_free_png_2
                                             }
 
                                         ),
@@ -446,11 +446,11 @@ fun ItemDetailsDialog(
                             contentAlignment = Alignment.Center,
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .height(300.dp)
+                                .height(200.dp)
                         ) {
                             Image(
                                 contentScale = ContentScale.Fit,
-                                painter = painterResource(id = R.drawable.water_bottle_svgrepo_com),
+                                painter = painterResource(id = R.drawable.water_bottle_free_png_2),
                                 contentDescription = "",
                                 modifier = Modifier.fillMaxSize()
                             )
@@ -490,13 +490,13 @@ fun ItemDetailsDialog(
                                         contentScale = ContentScale.Fit,
                                         painter = painterResource(
                                             id = when (orderItem.type) {
-                                                "شاهي" -> R.drawable.tea_cup_tea_svgrepo_com
-                                                "حبق" -> R.drawable.tea_cup_tea_svgrepo_com
-                                                "نعناع" -> R.drawable.tea_cup_tea_svgrepo_com
-                                                "قهوة" -> R.drawable.coffee_cup_coffee_svgrepo_com
-                                                "امريكية" -> R.drawable.coffee_cup_coffee_svgrepo_com
-                                                "نسكافيه" -> R.drawable.coffee_cup_coffee_svgrepo_com
-                                                else -> R.drawable.water_bottle_svgrepo_com
+                                                "شاهي" -> R.drawable.tea
+                                                "حبق" -> R.drawable.tea
+                                                "نعناع" -> R.drawable.tea
+                                                "قهوة" -> R.drawable.coffee
+                                                "امريكية" -> R.drawable.coffee
+                                                "نسكافيه" -> R.drawable.coffee
+                                                else -> R.drawable.water_bottle_free_png_2
                                             }
 
                                         ),
@@ -531,7 +531,7 @@ fun ItemDetailsDialog(
                     Modifier
                         .fillMaxWidth()
                         .height(50.dp)
-                        .background(Green)
+                        .background(Color(0xff183C69))
                         .clickable {
                             when (itemDetails) {
                                 "tea" -> {

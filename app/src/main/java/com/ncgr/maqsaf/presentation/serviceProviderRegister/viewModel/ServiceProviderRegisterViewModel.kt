@@ -116,8 +116,8 @@ class ServiceProviderRegisterViewModel @Inject constructor(
             openRegisterDialog()
             isValid = false
         }
-        if (_phoneNumber.value.isNullOrEmpty() || _phoneNumber.value!!.length != 6) {
-            _phoneNumberError.value = "Your employee ID must be 6 characters"
+        if (_phoneNumber.value.isNullOrEmpty() || _phoneNumber.value!!.length < 5) {
+            _phoneNumberError.value = "Your employee ID must be at least 5 characters"
             openRegisterDialog()
             isValid = false
         }

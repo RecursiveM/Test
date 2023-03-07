@@ -6,7 +6,10 @@ import android.view.KeyEvent
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
@@ -14,17 +17,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.ncgr.maqsaf.domain.order.model.Order
 import com.ncgr.maqsaf.presentation.common.composable.AppBar
-import com.ncgr.maqsaf.presentation.common.utils.Resource
 import com.ncgr.maqsaf.presentation.home.view.HomeActivity
 import com.ncgr.maqsaf.presentation.orderDetails.view.OrderDetailsActivity
-import com.ncgr.maqsaf.presentation.tickets.view.TicketsActivity
 import com.ncgr.maqsaf.presentation.user.composable.ItemDetailsDialog
 import com.ncgr.maqsaf.presentation.user.composable.OrderDialog
 import com.ncgr.maqsaf.presentation.user.composable.OrderNowButton
 import com.ncgr.maqsaf.presentation.user.composable.UserScreenBody
 import com.ncgr.maqsaf.presentation.user.viewModel.UserViewModel
+import com.ncgr.maqsaf.presentation.userTicket.view.UserTicketsActivity
 import com.ncgr.maqsaf.ui.theme.MAQSAFTheme
 import com.ncgr.maqsaf.ui.theme.ScreenBackgroundColor
 import dagger.hilt.android.AndroidEntryPoint
@@ -47,14 +48,12 @@ class UserActivity : AppCompatActivity() {
     fun UserScreen(
         modifier: Modifier = Modifier,
     ) {
-        val itemList by viewModel.itemList.collectAsState(Resource.Loading())
         val selectedZoneColor by viewModel.selectedZoneColor.collectAsState()
         val selectedItem by viewModel.selectedItems.collectAsState()
         val itemSelectionError by viewModel.itemSelectionError.collectAsState()
         val zoneColorSelectionError by viewModel.zoneColorSelectionError.collectAsState()
         val orderStatus by viewModel.orderStatus.collectAsState()
         val showOrderDialog by viewModel.showOrderDialog.collectAsState()
-        val orderDetails by viewModel.orderDetails.collectAsState(Order("", 0, "",""))
 
         val navigateToOrderDetailsActivity by viewModel.navigateToOrderDetails.collectAsState()
         if (navigateToOrderDetailsActivity) navigateToOrderDetailsActivity()
@@ -95,7 +94,6 @@ class UserActivity : AppCompatActivity() {
                 UserScreenBody(
                     modifier = Modifier.weight(1f),
                     selectedZoneColor,
-                    itemList,
                     selectedItem,
                     viewModel
                 )
@@ -121,8 +119,9 @@ class UserActivity : AppCompatActivity() {
         startActivity(intent)
         finishAffinity()
     }
+
     private fun navigateToReportsActivity() {
-        val intent = Intent(this, TicketsActivity::class.java)
+        val intent = Intent(this, UserTicketsActivity::class.java)
         startActivity(intent)
     }
 

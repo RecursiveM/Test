@@ -1,4 +1,4 @@
-package com.ncgr.maqsaf.presentation.tickets.addingTicket.composable
+package com.ncgr.maqsaf.presentation.serviceProviderTicket.addingTicket.composable
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -18,7 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ncgr.maqsaf.R
 import com.ncgr.maqsaf.presentation.common.utils.Resource
-import com.ncgr.maqsaf.presentation.tickets.addingTicket.viewModel.AddTicketsViewModel
+import com.ncgr.maqsaf.presentation.serviceProviderTicket.addingTicket.viewModel.AddTicketsViewModel
 import com.ncgr.maqsaf.ui.theme.Blue
 
 @Composable

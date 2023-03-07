@@ -1,4 +1,4 @@
-package com.ncgr.maqsaf.presentation.tickets.viewModel
+package com.ncgr.maqsaf.presentation.serviceProviderTicket.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -43,7 +43,7 @@ class TicketsViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    private fun getTicketList() {
+    fun getTicketList() {
         getMyTicketsUseCase(userId).onEach { resource ->
             when (resource) {
                 is Resource.Loading -> {

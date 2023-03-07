@@ -36,6 +36,8 @@ class ServiceProviderViewModel @Inject constructor(
 
     private val _orderListItem = MutableStateFlow<OrderListItemDto?>(null)
     val orderListItem = _orderListItem.asStateFlow()
+    private val _orderListItemIndex = MutableStateFlow(0)
+    val orderListItemIndex = _orderListItemIndex.asStateFlow()
 
     private val _signOutStatus = MutableStateFlow<Resource<String>>(Resource.Loading())
     val signOutStatus = _signOutStatus.asStateFlow()
@@ -141,7 +143,8 @@ class ServiceProviderViewModel @Inject constructor(
         _showSignOutDialog.value = false
     }
 
-    fun openOrderDetailsDialog(orderListItem: OrderListItemDto,) {
+    fun openOrderDetailsDialog(orderListItem: OrderListItemDto, index: Int) {
+        _orderListItemIndex.value = index
         _orderListItem.value = orderListItem
         _openOrderDetails.value = true
     }

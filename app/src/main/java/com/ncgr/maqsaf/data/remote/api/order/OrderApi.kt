@@ -2,6 +2,7 @@ package com.ncgr.maqsaf.data.remote.api.order
 
 import com.ncgr.maqsaf.data.remote.api.order.body.AddOrder
 import com.ncgr.maqsaf.data.remote.api.order.body.ChangeOrderState
+import com.ncgr.maqsaf.data.remote.model.MyOrderDto
 import com.ncgr.maqsaf.data.remote.model.OrderDto
 import com.ncgr.maqsaf.data.remote.model.OrderListItemDto
 import retrofit2.Response
@@ -13,8 +14,8 @@ import retrofit2.http.Query
 
 interface OrderApi {
 
-    @GET("rest/v1/Order?select=*&order=order_number.desc&")
-    suspend fun getMyOrder(@Query("user_id") uid:String): Response<List<OrderDto>>
+    @GET("rest/v1/Order?select=*,have(*)&order=order_number.desc&")
+    suspend fun getMyOrder(@Query("user_id") uid:String): Response<List<MyOrderDto>>
 
     @GET("rest/v1/Order?select=*,have(*,Item(*))&order=order_number&order_state=neq.Cancelled&order_state=neq.Finished&order_state=neq.Rejected")
     suspend fun getOrderList(): Response<List<OrderListItemDto>>

@@ -1,4 +1,4 @@
-package com.ncgr.maqsaf.presentation.tickets.view
+package com.ncgr.maqsaf.presentation.serviceProviderTicket.view
 
 import android.content.Intent
 import android.os.Bundle
@@ -15,9 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.ncgr.maqsaf.presentation.common.composable.AppBar
-import com.ncgr.maqsaf.presentation.tickets.addingTicket.view.AddTicketActivity
-import com.ncgr.maqsaf.presentation.tickets.composable.ReportsBodyComposable
-import com.ncgr.maqsaf.presentation.tickets.viewModel.TicketsViewModel
+import com.ncgr.maqsaf.presentation.serviceProviderTicket.addingTicket.view.AddTicketActivity
+import com.ncgr.maqsaf.presentation.serviceProviderTicket.composable.ReportsBodyComposable
+import com.ncgr.maqsaf.presentation.serviceProviderTicket.viewModel.TicketsViewModel
 import com.ncgr.maqsaf.ui.theme.MAQSAFTheme
 import com.ncgr.maqsaf.ui.theme.ScreenBackgroundColor
 import dagger.hilt.android.AndroidEntryPoint
@@ -55,7 +55,9 @@ class TicketsActivity : AppCompatActivity() {
                     .padding(paddingValues)
             ) {
                 //Custom TopBar
-                AppBar()
+                AppBar(refreshIcon = true, reportsButtonFunction = {
+                    viewModel.getTicketList()
+                })
 
                 ReportsBodyComposable(viewModel = viewModel, navigateToAddTicket = {navigateToAddTicket()})
             }
