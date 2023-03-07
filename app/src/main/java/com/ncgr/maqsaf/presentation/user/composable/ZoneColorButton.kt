@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -17,22 +18,26 @@ import com.ncgr.maqsaf.presentation.user.viewModel.UserViewModel
 fun ZoneColorButton(
     color: Color,
     strokeTriggerColor: String,
-    selectedZoneColor : String,
+    selectedZoneColor: String,
     viewModel: UserViewModel
 ) {
-    Box(
-        modifier = Modifier
+    Surface(
+        elevation = 10.dp, modifier = Modifier
             .width(80.dp)
             .height(50.dp)
-            .background(color)
-            .border(
-                BorderStroke(
-                    if (selectedZoneColor == strokeTriggerColor) 3.dp else 0.dp,
-                    Color.Black
+    ) {
+        Box(
+            modifier = Modifier
+                .background(color)
+                .border(
+                    BorderStroke(
+                        if (selectedZoneColor == strokeTriggerColor) 3.dp else 0.dp,
+                        Color.Black
+                    )
                 )
-            )
-            .clickable {
-                viewModel.changeZoneColor(color)
-            }
-    )
+                .clickable {
+                    viewModel.changeZoneColor(color)
+                }
+        )
+    }
 }

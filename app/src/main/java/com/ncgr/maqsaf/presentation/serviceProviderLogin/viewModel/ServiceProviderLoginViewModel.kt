@@ -127,8 +127,8 @@ class ServiceProviderLoginViewModel @Inject constructor(
         _phoneNumberError.value = null
         _passwordTextError.value = null
 
-        if (_phoneNumber.value.isNullOrEmpty() || _phoneNumber.value!!.length != 6) {
-            _phoneNumberError.value = "Your employee ID must be 6 characters"
+        if (_phoneNumber.value.isNullOrEmpty() || _phoneNumber.value!!.length < 5) {
+            _phoneNumberError.value = "Your employee ID must be at least 5 characters"
             openLoginDialog()
             isValid = false
         }

@@ -122,8 +122,8 @@ class UserRegisterViewModel @Inject constructor(
             openRegisterDialog()
             isValid = false
         }
-        if (_phoneNumber.value.isNullOrEmpty() || _phoneNumber.value!!.length != 6) {
-            _phoneNumberError.value = "الرجاء كتابة الرقم الوظيفي بشكل صحيح ويتكون من 6 ارقام"
+        if (_phoneNumber.value.isNullOrEmpty() || _phoneNumber.value!!.length < 5) {
+            _phoneNumberError.value = "الرجاء كتابة الرقم الوظيفي بشكل صحيح ويتكون من 5 او 6 ارقام"
             openRegisterDialog()
             isValid = false
 

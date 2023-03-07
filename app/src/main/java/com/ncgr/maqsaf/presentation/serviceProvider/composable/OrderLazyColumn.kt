@@ -10,6 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -56,6 +58,7 @@ fun OrderLazyColumn(
                             Image(
                                 painter = painterResource(id = R.drawable.ic_baseline_cloud_done_24),
                                 contentDescription = "Done Icon",
+                                colorFilter = ColorFilter.tint(Color(0xff183C69)),
                                 modifier = Modifier
                                     .fillMaxSize()
                                     .padding(20.dp),
@@ -64,10 +67,13 @@ fun OrderLazyColumn(
                         }
                     }
                 }
+                item {
+                    Spacer(modifier = Modifier.height(10.dp))
+                }
                 itemsIndexed(orderList.data) { _, res ->
                     OrderWidget(
                         viewModel = viewModel,
-                        orderListItem = res
+                        orderListItem = res,
                     )
                 }
             }

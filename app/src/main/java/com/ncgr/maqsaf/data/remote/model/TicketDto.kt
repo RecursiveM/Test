@@ -8,6 +8,9 @@ data class TicketDto(
     @field:SerializedName("id")
     val id: String,
 
+    @field:SerializedName("ticket_number")
+    val ticketNumber: Int,
+
     @field:SerializedName("user_id")
     val userId: String,
 
@@ -27,6 +30,7 @@ data class TicketDto(
         id = id,
         description = description,
         priority = priority,
-        respond = respond
+        respond = respond,
+        ticketNumber = ticketNumber
     )
 }

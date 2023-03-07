@@ -1,4 +1,4 @@
-package com.ncgr.maqsaf.presentation.tickets.addingTicket.viewModel
+package com.ncgr.maqsaf.presentation.userTicket.addingTicket.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.onEach
 import javax.inject.Inject
 
 @HiltViewModel
-class AddTicketsViewModel @Inject constructor(
+class UserAddTicketsViewModel @Inject constructor(
     private val getSavedUserUseCase: GetSavedUserUseCase,
     private val addTicketUseCase: AddTicketUseCase,
 ) : ViewModel() {
@@ -31,7 +31,7 @@ class AddTicketsViewModel @Inject constructor(
     private val _descriptionError = MutableStateFlow<String?>(null)
     val descriptionError = _descriptionError.asStateFlow()
 
-    private val _priority = MutableStateFlow<String?>(null)
+    private val _priority = MutableStateFlow("1")
     val priority = _priority.asStateFlow()
     private val _priorityError = MutableStateFlow<String?>(null)
     val priorityError = _priorityError.asStateFlow()
@@ -74,7 +74,7 @@ class AddTicketsViewModel @Inject constructor(
         addTicketUseCase(
             AddTicket(
                 userId,
-                _priority.value!!,
+                _priority.value,
                 _description.value!!
             )
         ).onEach { resource ->
@@ -108,7 +108,7 @@ class AddTicketsViewModel @Inject constructor(
             openAddingTicketDialog()
             isValid = false
         }
-        if (_priority.value.isNullOrEmpty()) {
+        if (_priority.value.isEmpty()) {
             _priorityError.value = "Please enter a priority"
             openAddingTicketDialog()
             isValid = false

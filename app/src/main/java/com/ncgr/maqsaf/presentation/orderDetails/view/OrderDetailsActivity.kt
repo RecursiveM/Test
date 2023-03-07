@@ -61,7 +61,9 @@ class OrderDetailsActivity : AppCompatActivity() {
                     .padding(paddingValues)
             ) {
                 //Custom TopBar
-                AppBar()
+                AppBar(refreshIcon = true, reportsButtonFunction = {
+                    viewModel.getMyOrder()
+                })
 
                 OrderDetailsBody(viewModel = viewModel)
             }

@@ -1,4 +1,4 @@
-package com.ncgr.maqsaf.presentation.tickets.composable
+package com.ncgr.maqsaf.presentation.userTicket.composable
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -13,17 +13,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.ncgr.maqsaf.presentation.common.utils.Resource
-import com.ncgr.maqsaf.presentation.tickets.viewModel.TicketsViewModel
+import com.ncgr.maqsaf.presentation.serviceProviderTicket.composable.TicketItem
+import com.ncgr.maqsaf.presentation.serviceProviderTicket.viewModel.TicketsViewModel
+import com.ncgr.maqsaf.presentation.userTicket.viewModel.UserTicketsViewModel
 import com.ncgr.maqsaf.ui.theme.Blue
-import com.ncgr.maqsaf.ui.theme.Green
 
 @Composable
-fun ReportsBodyComposable(
+fun UserReportsBodyComposable(
     modifier: Modifier = Modifier,
-    viewModel: TicketsViewModel,
+    viewModel: UserTicketsViewModel,
     navigateToAddTicket: () -> Unit
 ) {
     val ticketList = viewModel.ticketList.collectAsState(Resource.Loading()).value
@@ -48,14 +50,14 @@ fun ReportsBodyComposable(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    Text(text = "Tickets", style = TextStyle(fontSize = 30.sp))
+                    Text(text = "التذاكر", style = TextStyle(fontSize = 30.sp))
 
                     LazyColumn(modifier = Modifier.weight(1f)) {
                         itemsIndexed(ticketList.data) { _, item ->
-                            TicketItem(
+                            UserTicketItem(
                                 id = item.id,
                                 description = item.description,
-                                respond = item.respond ?: "No respond Found",
+                                respond = item.respond ?: "لم تتم الإجابة",
                                 priority = item.priority
                             )
                         }
@@ -65,12 +67,16 @@ fun ReportsBodyComposable(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(70.dp)
-                            .background(Green)
+                            .background(Color(0xff183C69))
                             .clickable { navigateToAddTicket() }
                     ) {
                         Text(
-                            text = "Add New Ticket",
-                            style = TextStyle(color = Color.White, fontSize = 20.sp)
+                            text = "إضافة تذكرة جديدة",
+                            style = TextStyle(
+                                color = Color.White,
+                                fontSize = 20.sp,
+                                fontWeight = FontWeight.Bold
+                            )
                         )
                     }
                 }

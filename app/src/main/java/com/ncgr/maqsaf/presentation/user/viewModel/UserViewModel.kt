@@ -1,6 +1,5 @@
 package com.ncgr.maqsaf.presentation.user.viewModel
 
-import android.util.Log
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
@@ -11,11 +10,10 @@ import com.ncgr.maqsaf.domain.auth.usecase.DeleteSavedUserUseCase
 import com.ncgr.maqsaf.domain.auth.usecase.GetSavedUserUseCase
 import com.ncgr.maqsaf.domain.auth.usecase.SaveUserUseCase
 import com.ncgr.maqsaf.domain.auth.usecase.SignOutUseCase
-import com.ncgr.maqsaf.domain.order.model.Item
 import com.ncgr.maqsaf.domain.order.model.Order
 import com.ncgr.maqsaf.domain.order.usecase.AddOrderUseCase
-import com.ncgr.maqsaf.domain.order.usecase.GetItemsUseCase
 import com.ncgr.maqsaf.presentation.common.utils.Resource
+import com.ncgr.maqsaf.presentation.user.composable.ListItem
 import com.ncgr.maqsaf.ui.theme.Blue
 import com.ncgr.maqsaf.ui.theme.Green
 import com.ncgr.maqsaf.ui.theme.Red
@@ -28,16 +26,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class UserViewModel @Inject constructor(
-    private val getItemsUseCase: GetItemsUseCase,
     private val addOrderUseCase: AddOrderUseCase,
     private val getSavedUserUseCase: GetSavedUserUseCase,
     private val signOutUseCase: SignOutUseCase,
     private val deleteSavedUserUseCase: DeleteSavedUserUseCase,
     private val saveUserUseCase: SaveUserUseCase,
 ) : ViewModel() {
-
-    private val _itemList = MutableSharedFlow<Resource<List<Item>>>()
-    val itemList = _itemList.asSharedFlow()
 
     private val _selectedZoneColor = MutableStateFlow("")
     val selectedZoneColor = _selectedZoneColor.asStateFlow()
@@ -88,7 +82,6 @@ class UserViewModel @Inject constructor(
     private lateinit var userId: String
 
     init {
-        getItemList()
         getSavedUserToken()
     }
 
@@ -137,22 +130,6 @@ class UserViewModel @Inject constructor(
                 }
                 is Resource.Error -> {
 
-                }
-            }
-        }.launchIn(viewModelScope)
-    }
-
-    private fun getItemList() {
-        getItemsUseCase().onEach { resource ->
-            when (resource) {
-                is Resource.Loading -> {
-                    _itemList.emit(resource)
-                }
-                is Resource.Success -> {
-                    _itemList.emit(resource)
-                }
-                is Resource.Error -> {
-                    _itemList.emit(resource)
                 }
             }
         }.launchIn(viewModelScope)
@@ -284,7 +261,7 @@ class UserViewModel @Inject constructor(
         _openItemDetails.value = false
     }
 
-    fun checkIfItemSelected(item: Item): MutableStateFlow<Int> {
+    fun checkIfItemSelected(item: ListItem): MutableStateFlow<Int> {
         val selected = MutableStateFlow(0)
         for (itemInList in _selectedItems.value) {
             if (item.type == itemInList.type) selected.value++

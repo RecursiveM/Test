@@ -18,7 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.ncgr.maqsaf.presentation.common.composable.AppBar
 import com.ncgr.maqsaf.presentation.home.view.HomeActivity
-import com.ncgr.maqsaf.presentation.tickets.view.TicketsActivity
+import com.ncgr.maqsaf.presentation.serviceProviderTicket.view.TicketsActivity
 import com.ncgr.maqsaf.presentation.serviceProvider.composable.OrderDetailsDialog
 import com.ncgr.maqsaf.presentation.serviceProvider.composable.ServiceProviderBody
 import com.ncgr.maqsaf.presentation.serviceProvider.composable.SignOutDialog
@@ -84,7 +84,8 @@ class ServiceProviderActivity : AppCompatActivity() {
 
         val openOrderDetails by viewModel.openOrderDetails.collectAsState()
         val orderListItem = viewModel.orderListItem.collectAsState()
-        if (openOrderDetails) OrderDetailsDialog(viewModel = viewModel, orderListItem= orderListItem.value)
+        val orderListItemIndex = viewModel.orderListItemIndex.collectAsState()
+        if (openOrderDetails) OrderDetailsDialog(viewModel = viewModel, orderListItem= orderListItem.value, orderListItemIndex = orderListItemIndex.value)
     }
 
     private fun navigateBackToHome() {

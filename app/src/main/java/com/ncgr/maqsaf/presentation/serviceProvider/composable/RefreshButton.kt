@@ -26,7 +26,7 @@ fun RefreshButton(
     Box(contentAlignment = Alignment.Center,
         modifier = modifier
             .clip(RoundedCornerShape(10))
-            .background(Color.Gray)
+            .background(Color(0xff183C69))
             .clickable {
                 viewModel.refreshOrders()
             }
