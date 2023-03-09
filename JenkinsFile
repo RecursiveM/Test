@@ -12,7 +12,6 @@ pipeline{
                     url: 'https://github.com/Maqsaf/MAQSAF.git'           
 }
         }
-    stages{
         stage('Build'){
             steps{
                     bat './gradlew.bat clean assembleDebug'                
