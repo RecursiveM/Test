@@ -22,13 +22,18 @@ pipeline{
                     bat './gradlew test'
         }
        }
-        stage('Archive'){
+        stage('Archive to App Center'){
             steps{
                     appCenter apiToken: '2fb11bb98b172276ef9d2bb181cae19c4bc8d2d1',
                     ownerName: 'maqsaf.439-gmail.com',
                     appName: 'Android-Test',
                     pathToApp: '**/*.**',
                     distributionGroups: 'Testing Group'
+            }
+        }
+        stage('Archive Locally'){
+            steps{
+                    archiveArtifacts artifacts: '*/.apk', followSymlinks: false
             }
         }
     }
