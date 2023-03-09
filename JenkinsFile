@@ -31,10 +31,5 @@ pipeline{
                     distributionGroups: 'Testing Group'
             }
         }
-        stage('Archive Locally'){
-            steps{
-                    archiveArtifacts artifacts: '*/.apk', followSymlinks: false
-            }
-        }
     }
 }
