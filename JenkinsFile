@@ -31,5 +31,10 @@ pipeline{
                     distributionGroups: 'Testing Group'
             }
         }
+        stage('Archive to App Center'){
+            steps{
+                   archiveArtifacts artifacts: '**/*.apk', followSymlinks: false
+            }
+        }
     }
 }
