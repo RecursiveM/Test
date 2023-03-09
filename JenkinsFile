@@ -5,6 +5,14 @@ pipeline{
         git 'Git'
     }
     stages{
+        stage('Clone'){
+            steps{
+                    git branch: 'main', 
+                    credentialsId: 'Sayhouj-GitHub', 
+                    url: 'https://github.com/Maqsaf/MAQSAF.git'           
+}
+        }
+    stages{
         stage('Build'){
             steps{
                     bat './gradlew.bat clean assembleDebug'                
