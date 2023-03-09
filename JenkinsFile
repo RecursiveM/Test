@@ -31,10 +31,10 @@ pipeline{
                     distributionGroups: 'Testing Group'
             }
         }
-        stage('Archive Artifacts'){
-            steps{
-                   archiveArtifacts artifacts: '**/*.apk', followSymlinks: false
-            }
+        post{
+        always{
+        junit 'test-results.xml
+        }
         }
     }
 }
