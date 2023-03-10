@@ -12,9 +12,9 @@ pipeline{
                     url: 'https://github.com/Maqsaf/MAQSAF.git'           
 }
         }
-        stage('Build'){
+        stage('Clean'){
             steps{
-                    bat './gradlew.bat clean assembleDebug'                
+                    bat './gradlew.bat clean'                
 }
         }
         stage('Unit Testing'){
@@ -22,6 +22,21 @@ pipeline{
                     bat './gradlew test'
         }
        }
+        stage('Sonar'){
+            steps{
+        withSonarQubeEnv('Sonar-Server'){
+            bat './gradlew.bat sonarqube' 
+        }
+                
+            }
+    }
+        
+        stage('Build'){
+            steps{
+                    bat './gradlew.bat assembleDebug'                
+}
+        }
+        
         stage('Upload APK to App Center'){
             steps{
                     appCenter apiToken: '2fb11bb98b172276ef9d2bb181cae19c4bc8d2d1',
@@ -31,11 +46,12 @@ pipeline{
                     distributionGroups: 'Testing Group'
             }
         }
-        
     }
+    
     post{
         always{
             junit allowEmptyResults: true, testResults: '**/*.xml'
             }
         }
+    
 }
