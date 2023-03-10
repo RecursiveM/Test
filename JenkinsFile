@@ -8,7 +8,7 @@ pipeline{
         stage('Clone'){
             steps{
                     git branch: 'main', 
-                    credentialsId: 'Sayhouj-GitHub', 
+                    credentialsId: '**', 
                     url: 'https://github.com/Maqsaf/MAQSAF.git'           
 }
         }
