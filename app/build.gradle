@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'com.google.dagger.hilt.android'
 }
+apply plugin: 'org.sonarqube'
 
 android {
     namespace 'com.ncgr.maqsaf'
