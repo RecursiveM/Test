@@ -13,5 +13,5 @@ plugins {
 }
 def releaseFile = file("build/outputs/apk/release/app-debug.apk")
 artifacts{
-    archive releaseFile
+    archives releaseFile
 }
