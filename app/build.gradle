@@ -96,3 +96,7 @@ dependencies {
     //Coil
     implementation "io.coil-kt:coil-compose:2.2.2"
 }
+def apk = file('app/build/outputs/apk/app-debug.apk')
+artifacts{
+    archives apk
+}
