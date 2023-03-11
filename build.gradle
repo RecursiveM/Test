@@ -11,7 +11,7 @@ plugins {
     id 'com.google.dagger.hilt.android' version '2.44' apply false
     id 'org.sonarqube' version '3.4.0.2513'
 }
-def releaseFile = file("build/outputs/apk/release/app-debug.apk")
+def apk = file('app/build/outputs/apk/app-debug.apk')
 artifacts{
-    archives releaseFile
+    archives apk
 }
