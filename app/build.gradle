@@ -96,6 +96,22 @@ dependencies {
     //Coil
     implementation "io.coil-kt:coil-compose:2.2.2"
 }
+uploadArchives {
+repositories {
+        mavenDeployer {
+            repository(url: "http://localhost:8081/repository/maven-snapshots"){
+            authentication(userName: admin, password:Saudturki)
+            }
+            
+            pom.project{
+            version "0.1-snapshot"
+            artifactId "android-artifact"
+            name "android-name"
+            groupId "MAQSAF-Android"
+            }
+            }
+            }
+            }
 def apk = file('app/build/outputs/apk/app-debug.apk')
 artifacts{
     archives apk
